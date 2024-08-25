@@ -190,7 +190,7 @@ class GT1000:
                 logger.warning(
                     "Device not responding, trying to open {self.portname} again"
                 )
-                self.close_ports(self.portname)
+                self.close_ports()
                 out = self.open_ports(self.portname)
                 if out is True:
                     logger.warning("Opening ports succeeded")
