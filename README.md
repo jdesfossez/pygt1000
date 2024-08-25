@@ -16,11 +16,17 @@ automation tasks.
 
 ## Installation
 
-To install the pygt1000 library, you can clone the repository and install the
-dependencies using Poetry:
+To install the pygt1000 library, you can use pip:
 
 ```bash
-git clone https://github.com/yourusername/pygt1000.git
+pip install pygt1000
+```
+
+
+Or for local development, use `poetry`:
+
+```bash
+git clone https://github.com/jdesfossez/pygt1000.git
 cd pygt1000
 poetry install
 ```
