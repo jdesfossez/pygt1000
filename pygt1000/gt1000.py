@@ -78,7 +78,7 @@ class MidiInputHandler(object):
 class GT1000:
     def __init__(self):
         self.tables = {}
-        self.device_id = DEVICE_ID_BCAST[0]
+        self.device_id = DEVICE_ID_BCAST
         self.current_state_message = None
         self.received_data = {}
         self.data_semaphore = threading.Semaphore(1)
