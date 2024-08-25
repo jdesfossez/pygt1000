@@ -130,7 +130,9 @@ class GT1000:
     def start_refresh_thread(self):
         """Background thread to refresh the known device state"""
         self.refresh_thread = threading.Thread(target=self.refresh_state_thread)
+        self.check_alive_thread = threading.Thread(target=self.check_alive_thread)
         self.refresh_thread.start()
+        self.check_alive_thread.start()
 
     def stop_refresh_thread(self):
         self.stop = True
@@ -174,6 +176,27 @@ class GT1000:
         )
         return False
 
+    def check_alive_thread(self):
+        while not self.stop:
+            for i in range(10):
+                if self.stop:
+                    return
+                time.sleep(10 / 10)
+            data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH3, EDITOR_MODE_ADDRESS_LEN3)
+            if data == EDITOR_REPLY3:
+                logger.info("Device still alive")
+                continue
+            else:
+                logger.warning(
+                    "Device not responding, trying to open {self.portname} again"
+                )
+                self.close_ports(self.portname)
+                out = self.open_ports(self.portname)
+                if out is True:
+                    logger.warning("Opening ports succeeded")
+                else:
+                    logger.warning("Opening ports failed")
+
     def _get_midi_exact_port_names(self, portname):
         """The portname usually contains an ID that can change depending on the other devices"""
         tmp_midi_out = rtmidi.MidiOut()
@@ -201,6 +224,7 @@ class GT1000:
         return in_portname, out_portname
 
     def open_ports(self, portname=MIDI_PORT):
+        self.portname = portname
         in_portname, out_portname = self._get_midi_exact_port_names(portname)
         if in_portname is None or out_portname is None:
             return False
@@ -216,6 +240,10 @@ class GT1000:
         self.midi_in.ignore_types(sysex=False)
         self.midi_in.set_callback(MidiInputHandler(in_portname), self)
         return self.open_editor_mode()
+
+    def close_ports(self):
+        self.midi_out.close()
+        self.midi_in.close()
 
     def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
         offset = self._construct_address_value(
