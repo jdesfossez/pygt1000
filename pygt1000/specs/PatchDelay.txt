@@ -1,0 +1,23 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+|# 00 01 | 0000 aaaa | |
+| 00 02 | 0000 bbbb | |
+| 00 03 | 0000 cccc | |
+| 00 04 | 0000 dddd | TIME (1 - 2018) |
+| | | 1ms - 2000ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 05 | 0aaa aaaa | FEEDBACK (0 - 100) |
+| 00 06 | 000a aaaa | HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 07 | 0aaa aaaa | EFFECT LEVEL (0 - 120) |
+| 00 08 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |

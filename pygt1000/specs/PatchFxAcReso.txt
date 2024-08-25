@@ -1,0 +1,6 @@
+| 00 00 | 0000 00aa | TYPE (0 - 2) |
+| | | NATURAL, WIDE, BRIGHT |
+| 00 01 | 0aaa aaaa | RESONANCE (0 - 100) |
+| 00 02 | 0aaa aaaa | TONE (14 - 114) |
+| | | -50 - 50 |
+| 00 03 | 0aaa aaaa | LEVEL (0 - 100) |

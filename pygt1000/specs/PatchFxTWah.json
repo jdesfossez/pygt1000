@@ -1,0 +1,97 @@
+{
+    "FILTER MODE": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "LPF": 0,
+            "BPF": 1,
+            "HPF": 2
+        }
+    },
+    "POLARITY": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "DOWN": 0,
+            "UP": 1
+        }
+    },
+    "SENS": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "FREQUENCY": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "RESONANCE": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DECAY": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "EFFECT LEVEL": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT MIX": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

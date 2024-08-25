@@ -1,0 +1,74 @@
+{
+    "stompBox": {
+        "address": [
+            0,
+            0,
+            0
+        ],
+        "table": "PatchStompBox2",
+        "hex_address": "[0x0, 0x0, 0x0]"
+    },
+    "fx1ChorusBass": {
+        "address": [
+            0,
+            1,
+            0
+        ],
+        "table": "PatchFxChorusBass",
+        "hex_address": "[0x0, 0x1, 0x0]"
+    },
+    "fx1FlangerBass": {
+        "address": [
+            0,
+            2,
+            0
+        ],
+        "table": "PatchFxFlangerBass",
+        "hex_address": "[0x0, 0x2, 0x0]"
+    },
+    "fx2ChorusBass": {
+        "address": [
+            0,
+            3,
+            0
+        ],
+        "table": "PatchFxChorusBass",
+        "hex_address": "[0x0, 0x3, 0x0]"
+    },
+    "fx2FlangerBass": {
+        "address": [
+            0,
+            4,
+            0
+        ],
+        "table": "PatchFxFlangerBass",
+        "hex_address": "[0x0, 0x4, 0x0]"
+    },
+    "fx3ChorusBass": {
+        "address": [
+            0,
+            5,
+            0
+        ],
+        "table": "PatchFxChorusBass",
+        "hex_address": "[0x0, 0x5, 0x0]"
+    },
+    "fx3FlangerBass": {
+        "address": [
+            0,
+            6,
+            0
+        ],
+        "table": "PatchFxFlangerBass",
+        "hex_address": "[0x0, 0x6, 0x0]"
+    },
+    "efct": {
+        "address": [
+            0,
+            10,
+            0
+        ],
+        "table": "PatchEfct2",
+        "hex_address": "[0x0, 0xa, 0x0]"
+    }
+}

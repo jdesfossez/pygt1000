@@ -1,0 +1,56 @@
+| 00 00 00 00 | common [SystemCommon] |
+| 00 00 10 00 | control [SystemControl] |
+| 00 00 30 00 | midi [SystemMidi] |
+| 00 00 40 00 | inout [SystemInOut] |
+| 00 00 50 00 | efct [SystemEfct] |
+| 00 00 60 00 | pitch [SystemPitch] |
+| 00 00 70 00 | control [SystemControl2] |
+| 00 01 00 00 | inputSetting 1 [SystemInputSetting] |
+| 00 01 01 00 | inputSetting 2 [SystemInputSetting] |
+| 00 01 02 00 | inputSetting 3 [SystemInputSetting] |
+| 00 01 03 00 | inputSetting 4 [SystemInputSetting] |
+| 00 01 04 00 | inputSetting 5 [SystemInputSetting] |
+| 00 01 05 00 | inputSetting 6 [SystemInputSetting] |
+| 00 01 06 00 | inputSetting 7 [SystemInputSetting] |
+| 00 01 07 00 | inputSetting 8 [SystemInputSetting] |
+| 00 01 08 00 | inputSetting 9 [SystemInputSetting] |
+| 00 01 09 00 | inputSetting 10 [SystemInputSetting] |
+| 00 10 00 00 | bank1 [PcmapPc] |
+| 00 10 04 00 | bank2 [PcmapPc] |
+| 00 10 08 00 | bank3 [PcmapPc] |
+| 00 10 0C 00 | bank4 [PcmapPc] |
+| 00 20 01 00 | efct [SetupEfct] |
+| 10 00 00 00 | patch (temporary patch) [Patch] |
+| 10 01 00 00 | patch2 (temporary patch) [Patch2] |
+| 10 02 00 00 | patch3 (temporary patch) [Patch3] |
+| 20 00 00 00 | patch 1 (user patch) [Patch] |
+| 20 01 00 00 | patch 2 (user patch) [Patch] |
+| 21 79 00 00 | patch 250 (user patch) [Patch] |
+| 21 7A 00 00 | patch2 1 (user patch) [Patch2] |
+| 21 7B 00 00 | patch2 2 (user patch) [Patch2] |
+| 23 73 00 00 | patch2 250(user patch) [Patch2] |
+| 23 74 00 00 | patch3 1 (user patch) [Patch3] |
+| 23 75 00 00 | patch3 2 (user patch) [Patch3] |
+| 25 6D 00 00 | patch3 250(user patch) [Patch3] |
+| 28 00 00 00 | patch (PEDALBOARD(*)) [Patch] |
+| 28 01 00 00 | patch2 (PEDALBOARD(*)) [Patch2] |
+| 28 02 00 00 | patch3 (PEDALBOARD(*)) [Patch3] |
+| 30 00 00 00 | patch 1 (StompBox) [Patch] |
+| 30 01 00 00 | patch 2 (StompBox) [Patch] |
+| 30 09 00 00 | patch 10 (StompBox) [Patch] |
+| 30 0A 00 00 | common 1 (StompBox) [StompBoxCommon] |
+| 30 0B 00 00 | common 2 (StompBox) [StompBoxCommon] |
+| 30 13 00 00 | common 10 (StompBox) [StompBoxCommon] |
+| 30 14 00 00 | common2 1 (StompBox) [StompBoxCommon2] |
+| 30 15 00 00 | common2 2 (StompBox) [StompBoxCommon2] |
+| 30 1D 00 00 | common2 10(StompBox) [StompBoxCommon2] |
+| 30 1E 00 00 | patch2 1 (StompBox) [Patch2] |
+| 30 1F 00 00 | patch2 2 (StompBox) [Patch2] |
+| 30 27 00 00 | patch2 10 (StompBox) [Patch2] |
+| 30 28 00 00 | common3 1 (StompBox) [StompBoxCommon3] |
+| 30 29 00 00 | common3 2 (StompBox) [StompBoxCommon3] |
+| 30 31 00 00 | common3 10(StompBox) [StompBoxCommon3] |
+| 30 32 00 00 | patch3 1 (StompBox) [Patch3] |
+| 30 33 00 00 | patch3 2 (StompBox) [Patch3] |
+| 30 3B 00 00 | patch3 10 (StompBox) [Patch3] |
++------------------------------------------------------------------------------+

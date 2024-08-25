@@ -1,0 +1,40 @@
+| 00 00 | 0000 00aa | VOICE (0 - 2) |
+| | | 1VOICE, 2MONO, 2STEREO |
+| 00 01 | 00aa aaaa | PS1:PITCH (8 - 56) |
+| | | -24 - 24 |
+| 00 02 | 00aa aaaa | PS2:PITCH (8 - 56) |
+| | | -24 - 24 |
+| 00 03 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |
+| 00 04 | 0000 00aa | PS1:MODE (0 - 3) |
+| | | FAST, MEDIUM, SLOW, MONO |
+| 00 05 | 0aaa aaaa | PS1:FINE (14 - 114) |
+| | | -50 - 50 |
+|# 00 06 | 0000 aaaa | |
+| 00 07 | 0000 bbbb | |
+| 00 08 | 0000 cccc | |
+| 00 09 | 0000 dddd | PS1:PRE-DELAY (0 - 318) |
+| | | 0ms - 300ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 0A | 0aaa aaaa | PS1:LEVEL (0 - 100) |
+| 00 0B | 0aaa aaaa | PS1:FEEDBACK (0 - 100) |
+| 00 0C | 0000 00aa | PS2:MODE (0 - 3) |
+| | | FAST, MEDIUM, SLOW, MONO |
+| 00 0D | 0aaa aaaa | PS2:FINE (14 - 114) |
+| | | -50 - 50 |
+|# 00 0E | 0000 aaaa | |
+| 00 0F | 0000 bbbb | |
+| 00 10 | 0000 cccc | |
+| 00 11 | 0000 dddd | PS2:PRE-DELAY (0 - 318) |
+| | | 0ms - 300ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 12 | 0aaa aaaa | PS2:LEVEL (0 - 100) |

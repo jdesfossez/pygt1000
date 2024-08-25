@@ -1,0 +1,11 @@
+| 00 00 | 0000 000a | MODE (0 - 1) |
+| | | NORMAL, OSC |
+| 00 01 | 0000 000a | TRIGGER (0 - 1) |
+| | | OFF, ON |
+| 00 02 | 0aaa aaaa | DEPTH (0 - 100) |
+| 00 03 | 0aaa aaaa | RISE TIME (0 - 100) |
+| 00 04 | 0aaa aaaa | OCT RISE TIME (0 - 100) |
+| 00 05 | 0aaa aaaa | FEEDBACK (0 - 100) |
+| 00 06 | 0aaa aaaa | OCT FEEDBACK (0 - 100) |
+| 00 07 | 0aaa aaaa | VIB RATE (0 - 100) |
+| 00 08 | 0aaa aaaa | VIB DEPTH (0 - 100) |

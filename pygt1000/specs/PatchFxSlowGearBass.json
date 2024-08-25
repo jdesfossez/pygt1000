@@ -1,0 +1,35 @@
+{
+    "SENS": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "RISE TIME": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "LEVEL": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

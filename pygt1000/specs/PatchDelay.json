@@ -1,0 +1,124 @@
+{
+    "SW": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "TIME": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            1,
+            2018
+        ],
+        "values": {
+            "1ms - 2000ms": 1,
+            "32ndNote": 2,
+            "Triplet16thNote": 3,
+            "Dotted32ndNote": 4,
+            "16thNote": 5,
+            "Triplet8thNote": 6,
+            "Dotted16thNote": 7,
+            "8thNote": 8,
+            "TripletQuarterNote": 9,
+            "Dotted8thNote": 10,
+            "QuarterNote": 11,
+            "TripletHalfNote": 12,
+            "DottedQuarterNote": 13,
+            "HalfNote": 14,
+            "TripletWholeNote": 15,
+            "DottedHalfNote": 16,
+            "WholeNote": 17,
+            "DottedWholeNote": 18,
+            "DoubleWholeNote": 19
+        }
+    },
+    "FEEDBACK": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "HIGH CUT": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    },
+    "EFFECT LEVEL": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            120
+        ],
+        "values": {}
+    },
+    "DIRECT LEVEL": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

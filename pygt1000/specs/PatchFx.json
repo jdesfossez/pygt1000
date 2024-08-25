@@ -1,0 +1,62 @@
+{
+    "SW": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "TYPE": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            33
+        ],
+        "values": {
+            "AC GUITAR SIM": 0,
+            "AC RESONANCE": 1,
+            "AUTO WAH": 2,
+            "CHORUS": 3,
+            "CLASSIC-VIBE": 4,
+            "COMPRESSOR": 5,
+            "DEFRETTER": 6,
+            "FEEDBACKER": 7,
+            "FLANGER": 8,
+            "HARMONIST": 9,
+            "HUMANIZER": 10,
+            "OCTAVE": 11,
+            "OVERTONE": 12,
+            "PAN": 13,
+            "PHASER": 14,
+            "PITCH SHIFTER": 15,
+            "RING MOD": 16,
+            "ROTARY": 17,
+            "SITAR SIM": 18,
+            "SLICER": 19,
+            "SLOW GEAR": 20,
+            "SOUND HOLD": 21,
+            "S-BEND": 22,
+            "TOUCH WAH": 23,
+            "TREMOLO": 24,
+            "VIBRATO": 25,
+            "CHORUS BASS": 26,
+            "DEFRETTER BASS": 27,
+            "FLANGER BASS": 28,
+            "OCTAVE BASS": 29,
+            "SLOW GEAR BASS": 30,
+            "TOUCH WAH BASS": 31,
+            "DISTORTION": 32,
+            "MASTERING FX": 33
+        }
+    }
+}

@@ -1,0 +1,62 @@
+| 00 00 | 0000 00aa | VOICE (0 - 2) |
+| | | 1VOICE, 2MONO, 2STEREO |
+| 00 01 | 000a aaaa | HR1:HARMONY (0 - 29) |
+| | | -2oct, -14th, -13th, -12th, -11th, -10th, -9th, |
+| | |-1oct, -7th, -6th, -5th, -4th, -3rd, -2nd, UNISON, |
+| | | +2nd, +3rd, +4th, +5th, +6th, +7th, +1oct, +9th, |
+| | | +10th, +11th, +12th, +13th, +14th, +2oct, USER |
+| 00 02 | 000a aaaa | HR2:HARMONY (0 - 29) |
+| | | -2oct, -14th, -13th, -12th, -11th, -10th, -9th, |
+| | |-1oct, -7th, -6th, -5th, -4th, -3rd, -2nd, UNISON, |
+| | | +2nd, +3rd, +4th, +5th, +6th, +7th, +1oct, +9th, |
+| | | +10th, +11th, +12th, +13th, +14th, +2oct, USER |
+| 00 03 | 0aaa aaaa | HR1:LEVEL (0 - 100) |
+|# 00 04 | 0000 aaaa | |
+| 00 05 | 0000 bbbb | |
+| 00 06 | 0000 cccc | |
+| 00 07 | 0000 dddd | HR1:PRE-DELAY (0 - 318) |
+| | | 0ms - 300ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 08 | 0aaa aaaa | HR1:FEEDBACK (0 - 100) |
+| 00 09 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |
+| 00 0A | 0aaa aaaa | HR2:LEVEL (0 - 100) |
+|# 00 0B | 0000 aaaa | |
+| 00 0C | 0000 bbbb | |
+| 00 0D | 0000 cccc | |
+| 00 0E | 0000 dddd | HR2:PRE-DELAY (0 - 318) |
+| | | 0ms - 300ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 0F | 00aa aaaa | HR1:C (0 - 48) |
+| 00 10 | 00aa aaaa | HR1:Db (0 - 48) |
+| 00 11 | 00aa aaaa | HR1:D (0 - 48) |
+| 00 12 | 00aa aaaa | HR1:Eb (0 - 48) |
+| 00 13 | 00aa aaaa | HR1:E (0 - 48) |
+| 00 14 | 00aa aaaa | HR1:F (0 - 48) |
+| 00 15 | 00aa aaaa | HR1:F# (0 - 48) |
+| 00 16 | 00aa aaaa | HR1:G (0 - 48) |
+| 00 17 | 00aa aaaa | HR1:Ab (0 - 48) |
+| 00 18 | 00aa aaaa | HR1:A (0 - 48) |
+| 00 19 | 00aa aaaa | HR1:Bb (0 - 48) |
+| 00 1A | 00aa aaaa | HR1:B (0 - 48) |
+| 00 1B | 00aa aaaa | HR2:C (0 - 48) |
+| 00 1C | 00aa aaaa | HR2:Db (0 - 48) |
+| 00 1D | 00aa aaaa | HR2:D (0 - 48) |
+| 00 1E | 00aa aaaa | HR2:Eb (0 - 48) |
+| 00 1F | 00aa aaaa | HR2:E (0 - 48) |
+| 00 20 | 00aa aaaa | HR2:F (0 - 48) |
+| 00 21 | 00aa aaaa | HR2:F# (0 - 48) |
+| 00 22 | 00aa aaaa | HR2:G (0 - 48) |
+| 00 23 | 00aa aaaa | HR2:Ab (0 - 48) |
+| 00 24 | 00aa aaaa | HR2:A (0 - 48) |
+| 00 25 | 00aa aaaa | HR2:Bb (0 - 48) |
+| 00 26 | 00aa aaaa | HR2:B (0 - 48) |

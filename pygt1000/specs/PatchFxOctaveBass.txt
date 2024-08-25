@@ -1,0 +1,3 @@
+| 00 06 | 0aaa aaaa | -2OCT (0 - 100) |
+| 00 07 | 0aaa aaaa | -1OCT (0 - 100) |
+| 00 08 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |

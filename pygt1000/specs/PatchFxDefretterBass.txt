@@ -1,0 +1,6 @@
+| 00 07 | 0aaa aaaa | SENS (0 - 100) |
+| 00 08 | 0aaa aaaa | ATTACK (0 - 100) |
+| 00 09 | 0aaa aaaa | TONE (14 - 114) |
+| | | -50 - 50 |
+| 00 0A | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 0B | 0aaa aaaa | DIRECT MIX (0 - 100) |

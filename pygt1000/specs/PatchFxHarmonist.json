@@ -1,0 +1,471 @@
+{
+    "VOICE": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "1VOICE": 0,
+            "2MONO": 1,
+            "2STEREO": 2
+        }
+    },
+    "HR1:HARMONY": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            29
+        ],
+        "values": {
+            "-2oct": 0,
+            "-14th": 1,
+            "-13th": 2,
+            "-12th": 3,
+            "-11th": 4,
+            "-10th": 5,
+            "-9th": 6,
+            "-1oct": 7,
+            "-7th": 8,
+            "-6th": 9,
+            "-5th": 10,
+            "-4th": 11,
+            "-3rd": 12,
+            "-2nd": 13,
+            "UNISON": 14,
+            "+2nd": 15,
+            "+3rd": 16,
+            "+4th": 17,
+            "+5th": 18,
+            "+6th": 19,
+            "+7th": 20,
+            "+1oct": 21,
+            "+9th": 22,
+            "+10th": 23,
+            "+11th": 24,
+            "+12th": 25,
+            "+13th": 26,
+            "+14th": 27,
+            "+2oct": 28,
+            "USER": 29
+        }
+    },
+    "HR2:HARMONY": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            29
+        ],
+        "values": {
+            "-2oct": 0,
+            "-14th": 1,
+            "-13th": 2,
+            "-12th": 3,
+            "-11th": 4,
+            "-10th": 5,
+            "-9th": 6,
+            "-1oct": 7,
+            "-7th": 8,
+            "-6th": 9,
+            "-5th": 10,
+            "-4th": 11,
+            "-3rd": 12,
+            "-2nd": 13,
+            "UNISON": 14,
+            "+2nd": 15,
+            "+3rd": 16,
+            "+4th": 17,
+            "+5th": 18,
+            "+6th": 19,
+            "+7th": 20,
+            "+1oct": 21,
+            "+9th": 22,
+            "+10th": 23,
+            "+11th": 24,
+            "+12th": 25,
+            "+13th": 26,
+            "+14th": 27,
+            "+2oct": 28,
+            "USER": 29
+        }
+    },
+    "HR1:LEVEL": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "HR1:PRE-DELAY": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            318
+        ],
+        "values": {
+            "0ms - 300ms": 0,
+            "32ndNote": 1,
+            "Triplet16thNote": 2,
+            "Dotted32ndNote": 3,
+            "16thNote": 4,
+            "Triplet8thNote": 5,
+            "Dotted16thNote": 6,
+            "8thNote": 7,
+            "TripletQuarterNote": 8,
+            "Dotted8thNote": 9,
+            "QuarterNote": 10,
+            "TripletHalfNote": 11,
+            "DottedQuarterNote": 12,
+            "HalfNote": 13,
+            "TripletWholeNote": 14,
+            "DottedHalfNote": 15,
+            "WholeNote": 16,
+            "DottedWholeNote": 17,
+            "DoubleWholeNote": 18
+        }
+    },
+    "HR1:FEEDBACK": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT LEVEL": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "HR2:LEVEL": {
+        "offset": [
+            0,
+            10
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "HR2:PRE-DELAY": {
+        "offset": [
+            0,
+            14
+        ],
+        "value_range": [
+            0,
+            318
+        ],
+        "values": {
+            "0ms - 300ms": 0,
+            "32ndNote": 1,
+            "Triplet16thNote": 2,
+            "Dotted32ndNote": 3,
+            "16thNote": 4,
+            "Triplet8thNote": 5,
+            "Dotted16thNote": 6,
+            "8thNote": 7,
+            "TripletQuarterNote": 8,
+            "Dotted8thNote": 9,
+            "QuarterNote": 10,
+            "TripletHalfNote": 11,
+            "DottedQuarterNote": 12,
+            "HalfNote": 13,
+            "TripletWholeNote": 14,
+            "DottedHalfNote": 15,
+            "WholeNote": 16,
+            "DottedWholeNote": 17,
+            "DoubleWholeNote": 18
+        }
+    },
+    "HR1:C": {
+        "offset": [
+            0,
+            15
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:Db": {
+        "offset": [
+            0,
+            16
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:D": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:Eb": {
+        "offset": [
+            0,
+            18
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:E": {
+        "offset": [
+            0,
+            19
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:F": {
+        "offset": [
+            0,
+            20
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:F#": {
+        "offset": [
+            0,
+            21
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:G": {
+        "offset": [
+            0,
+            22
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:Ab": {
+        "offset": [
+            0,
+            23
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:A": {
+        "offset": [
+            0,
+            24
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:Bb": {
+        "offset": [
+            0,
+            25
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR1:B": {
+        "offset": [
+            0,
+            26
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:C": {
+        "offset": [
+            0,
+            27
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:Db": {
+        "offset": [
+            0,
+            28
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:D": {
+        "offset": [
+            0,
+            29
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:Eb": {
+        "offset": [
+            0,
+            30
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:E": {
+        "offset": [
+            0,
+            31
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:F": {
+        "offset": [
+            0,
+            32
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:F#": {
+        "offset": [
+            0,
+            33
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:G": {
+        "offset": [
+            0,
+            34
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:Ab": {
+        "offset": [
+            0,
+            35
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:A": {
+        "offset": [
+            0,
+            36
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:Bb": {
+        "offset": [
+            0,
+            37
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    },
+    "HR2:B": {
+        "offset": [
+            0,
+            38
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {}
+    }
+}

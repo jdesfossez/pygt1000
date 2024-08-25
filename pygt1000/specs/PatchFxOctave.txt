@@ -1,0 +1,7 @@
+| 00 00 | 0000 000a | TYPE (0 - 1) |
+| | | MONO, POLY |
+| 00 01 | 0aaa aaaa | -2OCT (0 - 100) |
+| 00 02 | 0aaa aaaa | -1OCT (0 - 100) |
+| 00 03 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |
+| 00 04 | 0aaa aaaa | RANGE (0 - 100) |
+| 00 05 | 0aaa aaaa | OCTAVE LEVEL (0 - 100) |

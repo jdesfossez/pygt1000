@@ -1,0 +1,690 @@
+{
+    "SW": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "TYPE": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            19
+        ],
+        "values": {
+            "MONO": 0,
+            "PAN": 1,
+            "STEREO1": 2,
+            "STEREO2": 3,
+            "ANALOG": 4,
+            "ANALOG ST": 5,
+            "TAPE": 6,
+            "REVERSE": 7,
+            "SHIMMER": 8,
+            "DUAL": 9,
+            "WARP": 10,
+            "TWIST": 11,
+            "SPACE ECHO": 12,
+            "TAPE ECHO PX": 13,
+            "BIN DRUM ECHO": 14,
+            "WARM": 15,
+            "GLITCH": 16,
+            "SDE-3000": 17,
+            "DD-20 STANDARD": 18,
+            "DD-20 ANALOG": 19
+        }
+    },
+    "TIME": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            1,
+            4018
+        ],
+        "values": {
+            "1ms - 4000ms": 1,
+            "32ndNote": 2,
+            "Triplet16thNote": 3,
+            "Dotted32ndNote": 4,
+            "16thNote": 5,
+            "Triplet8thNote": 6,
+            "Dotted16thNote": 7,
+            "8thNote": 8,
+            "TripletQuarterNote": 9,
+            "Dotted8thNote": 10,
+            "QuarterNote": 11,
+            "TripletHalfNote": 12,
+            "DottedQuarterNote": 13,
+            "HalfNote": 14,
+            "TripletWholeNote": 15,
+            "DottedHalfNote": 16,
+            "WholeNote": 17,
+            "DottedWholeNote": 18,
+            "DoubleWholeNote": 19
+        }
+    },
+    "FEEDBACK": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "HIGH CUT": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    },
+    "EFFECT LEVEL": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            120
+        ],
+        "values": {}
+    },
+    "MOD RATE": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MOD DEPTH": {
+        "offset": [
+            0,
+            10
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DUCK SENS": {
+        "offset": [
+            0,
+            11
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DUCK PRE DEPTH": {
+        "offset": [
+            0,
+            12
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DUCK POST DEPTH": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT LEVEL": {
+        "offset": [
+            0,
+            14
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PITCH": {
+        "offset": [
+            0,
+            15
+        ],
+        "value_range": [
+            8,
+            56
+        ],
+        "values": {
+            "-24 - 24": 8
+        }
+    },
+    "PITCH BAL": {
+        "offset": [
+            0,
+            16
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PITCH FEEDBACK": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DUAL:MODE": {
+        "offset": [
+            0,
+            18
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "SERIES": 0,
+            "PARALLEL": 1,
+            "L/R": 2
+        }
+    },
+    "D1 TYPE": {
+        "offset": [
+            0,
+            19
+        ],
+        "value_range": [
+            0,
+            3
+        ],
+        "values": {
+            "MONO": 0,
+            "PAN": 1,
+            "ANALOG": 2,
+            "TAPE": 3
+        }
+    },
+    "D1 TIME": {
+        "offset": [
+            0,
+            23
+        ],
+        "value_range": [
+            1,
+            2018
+        ],
+        "values": {
+            "1ms - 2000ms": 1,
+            "32ndNote": 2,
+            "Triplet16thNote": 3,
+            "Dotted32ndNote": 4,
+            "16thNote": 5,
+            "Triplet8thNote": 6,
+            "Dotted16thNote": 7,
+            "8thNote": 8,
+            "TripletQuarterNote": 9,
+            "Dotted8thNote": 10,
+            "QuarterNote": 11,
+            "TripletHalfNote": 12,
+            "DottedQuarterNote": 13,
+            "HalfNote": 14,
+            "TripletWholeNote": 15,
+            "DottedHalfNote": 16,
+            "WholeNote": 17,
+            "DottedWholeNote": 18,
+            "DoubleWholeNote": 19
+        }
+    },
+    "D1 FEEDBACK": {
+        "offset": [
+            0,
+            24
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "D1 HIGH CUT": {
+        "offset": [
+            0,
+            25
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    },
+    "D1 EFFECT LEVEL": {
+        "offset": [
+            0,
+            26
+        ],
+        "value_range": [
+            0,
+            120
+        ],
+        "values": {}
+    },
+    "D2 TYPE": {
+        "offset": [
+            0,
+            27
+        ],
+        "value_range": [
+            0,
+            3
+        ],
+        "values": {
+            "MONO": 0,
+            "PAN": 1,
+            "ANALOG": 2,
+            "TAPE": 3
+        }
+    },
+    "D2 TIME": {
+        "offset": [
+            0,
+            31
+        ],
+        "value_range": [
+            1,
+            2018
+        ],
+        "values": {
+            "1ms - 2000ms": 1,
+            "32ndNote": 2,
+            "Triplet16thNote": 3,
+            "Dotted32ndNote": 4,
+            "16thNote": 5,
+            "Triplet8thNote": 6,
+            "Dotted16thNote": 7,
+            "8thNote": 8,
+            "TripletQuarterNote": 9,
+            "Dotted8thNote": 10,
+            "QuarterNote": 11,
+            "TripletHalfNote": 12,
+            "DottedQuarterNote": 13,
+            "HalfNote": 14,
+            "TripletWholeNote": 15,
+            "DottedHalfNote": 16,
+            "WholeNote": 17,
+            "DottedWholeNote": 18,
+            "DoubleWholeNote": 19
+        }
+    },
+    "D2 FEEDBACK": {
+        "offset": [
+            0,
+            32
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "D2 HIGH CUT": {
+        "offset": [
+            0,
+            33
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    },
+    "D2 EFFECT LEVEL": {
+        "offset": [
+            0,
+            34
+        ],
+        "value_range": [
+            0,
+            120
+        ],
+        "values": {}
+    },
+    "TWIST:MODE": {
+        "offset": [
+            0,
+            35
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "RISE->FALL": 0,
+            "RISE->FADE": 1
+        }
+    },
+    "TRIGGER": {
+        "offset": [
+            0,
+            36
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "RISE TIME": {
+        "offset": [
+            0,
+            37
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "FALL TIME": {
+        "offset": [
+            0,
+            38
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "LEVEL": {
+        "offset": [
+            0,
+            39
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "STAGE": {
+        "offset": [
+            0,
+            40
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "4096": 0,
+            "4096x2": 1,
+            "4096x4": 2
+        }
+    },
+    "HEAD": {
+        "offset": [
+            0,
+            41
+        ],
+        "value_range": [
+            0,
+            4
+        ],
+        "values": {
+            "1": 0,
+            "1+2": 1,
+            "1+3": 2,
+            "2+3": 3,
+            "1+2+3": 4
+        }
+    },
+    "FADE TIME": {
+        "offset": [
+            0,
+            42
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "TAP TIME": {
+        "offset": [
+            0,
+            43
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {
+            "[%]": 0
+        }
+    },
+    "WOW & FLUTTER": {
+        "offset": [
+            0,
+            44
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DRUM ECHO:HEAD": {
+        "offset": [
+            0,
+            45
+        ],
+        "value_range": [
+            0,
+            11
+        ],
+        "values": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "1+2": 4,
+            "2+3": 5,
+            "3+4": 6,
+            "1+3": 7,
+            "2+4": 8,
+            "1+2+3": 9,
+            "2+3+4": 10,
+            "1+2+3+4": 11
+        }
+    },
+    "SELECTOR": {
+        "offset": [
+            0,
+            46
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "ECHO": 0,
+            "REPEAT": 1,
+            "SWELL": 2
+        }
+    },
+    "AUTO TRIGGER": {
+        "offset": [
+            0,
+            47
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "DUTY": {
+        "offset": [
+            0,
+            48
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "TONE": {
+        "offset": [
+            0,
+            49
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

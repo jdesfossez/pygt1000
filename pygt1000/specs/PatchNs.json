@@ -1,0 +1,53 @@
+{
+    "SW": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "THRESHOLD": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "RELEASE": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DETECT": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "INPUT": 0,
+            "NS INPUT": 1,
+            "FV OUT": 2
+        }
+    }
+}

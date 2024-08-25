@@ -1,0 +1,237 @@
+{
+    "SW": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "TYPE": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            22
+        ],
+        "values": {
+            "TRANSPARENT": 0,
+            "NATURAL": 1,
+            "BOUTIQUE": 2,
+            "SUPREME": 3,
+            "MAXIMUM": 4,
+            "JUGGERNAUT": 5,
+            "X-CRUNCH": 6,
+            "X-HI GAIN": 7,
+            "X-MODDED": 8,
+            "JC-120": 9,
+            "TWIN COMBO": 10,
+            "DELUXE COMBO": 11,
+            "TWEED COMBO": 12,
+            "DIAMOND AMP": 13,
+            "BRIT STACK": 14,
+            "RECTI STACK": 15,
+            "MATCH COMBO": 16,
+            "BG COMBO": 17,
+            "ORNG STACK": 18,
+            "BGNR UB METAL": 19,
+            "NATURAL BASS": 20,
+            "X-DRIVE BASS": 21,
+            "CONCERT": 22
+        }
+    },
+    "GAIN": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            120
+        ],
+        "values": {}
+    },
+    "SAG": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            6,
+            26
+        ],
+        "values": {
+            "-10": 6,
+            "-9": 7,
+            "-8": 8,
+            "-7": 9,
+            "-6": 10,
+            "-5": 11,
+            "-4": 12,
+            "-3": 13,
+            "-2": 14,
+            "-1": 15,
+            "0": 16,
+            "1": 17,
+            "2": 18,
+            "3": 19,
+            "4": 20,
+            "5": 21,
+            "6": 22,
+            "7": 23,
+            "8": 24,
+            "9": 25,
+            "10": 26
+        }
+    },
+    "RESONANCE": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            6,
+            26
+        ],
+        "values": {
+            "-10": 6,
+            "-9": 7,
+            "-8": 8,
+            "-7": 9,
+            "-6": 10,
+            "-5": 11,
+            "-4": 12,
+            "-3": 13,
+            "-2": 14,
+            "-1": 15,
+            "0": 16,
+            "1": 17,
+            "2": 18,
+            "3": 19,
+            "4": 20,
+            "5": 21,
+            "6": 22,
+            "7": 23,
+            "8": 24,
+            "9": 25,
+            "10": 26
+        }
+    },
+    "LEVEL": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "BASS": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MIDDLE": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "TREBLE": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PRESENCE": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "BRIGHT": {
+        "offset": [
+            0,
+            10
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "GAIN SW": {
+        "offset": [
+            0,
+            11
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "LOW": 0,
+            "MIDDLE": 1,
+            "HIGH": 2
+        }
+    },
+    "SOLO SW": {
+        "offset": [
+            0,
+            12
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "SOLO LEVEL": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

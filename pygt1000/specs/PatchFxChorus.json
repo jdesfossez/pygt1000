@@ -1,0 +1,611 @@
+{
+    "TYPE": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            6
+        ],
+        "values": {
+            "MONO": 0,
+            "STEREO 1": 1,
+            "STEREO 2": 2,
+            "DUAL": 3,
+            "PRIME": 4,
+            "CE-1 CHORUS": 5,
+            "CE-1 VIBRATO": 6
+        }
+    },
+    "DIRECT LEVEL": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "OUTPUT MODE": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "MONO": 0,
+            "STEREO": 1
+        }
+    },
+    "SWEETNESS": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "BELL": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PREAMP SW": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "PREAMP GAIN": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PREAMP LEVEL": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "RATE": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            118
+        ],
+        "values": {
+            "0 - 100": 0,
+            "DoubleWholeNote": 1,
+            "DottedWholeNote": 2,
+            "WholeNote": 3,
+            "DottedHalfNote": 4,
+            "TripletWholeNote": 5,
+            "HalfNote": 6,
+            "DottedQuarterNote": 7,
+            "TripletHalfNote": 8,
+            "QuarterNote": 9,
+            "Dotted8thNote": 10,
+            "TripletQuarterNote": 11,
+            "8thNote": 12,
+            "Dotted16thNote": 13,
+            "Triplet8thNote": 14,
+            "16thNote": 15,
+            "Dotted32ndNote": 16,
+            "Triplet16thNote": 17,
+            "32ndNote": 18
+        }
+    },
+    "DEPTH": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PRE-DELAY": {
+        "offset": [
+            0,
+            10
+        ],
+        "value_range": [
+            0,
+            80
+        ],
+        "values": {
+            "0.0ms": 0,
+            "0.5ms - 40.0ms": 1
+        }
+    },
+    "EFFECT LEVEL": {
+        "offset": [
+            0,
+            11
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "WAVEFORM": {
+        "offset": [
+            0,
+            12
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TRI": 0,
+            "SINE": 1
+        }
+    },
+    "LOW CUT": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "FLAT": 0,
+            "20.0Hz": 1,
+            "25.0Hz": 2,
+            "31.5Hz": 3,
+            "40.0Hz": 4,
+            "50.0Hz": 5,
+            "63.0Hz": 6,
+            "80.0Hz": 7,
+            "100Hz": 8,
+            "125Hz": 9,
+            "160Hz": 10,
+            "200Hz": 11,
+            "250Hz": 12,
+            "315Hz": 13,
+            "400Hz": 14,
+            "500Hz": 15,
+            "630Hz": 16,
+            "800Hz": 17,
+            "1.00kHz": 18,
+            "1.25kHz": 19,
+            "1.60kHz": 20,
+            "2.00kHz": 21,
+            "2.50kHz": 22,
+            "3.15kHz": 23,
+            "4.00kHz": 24,
+            "5.00kHz": 25,
+            "6.30kHz": 26,
+            "8.00kHz": 27,
+            "10.0kHz": 28,
+            "12.5kHz": 29,
+            "16.0kHz": 30,
+            "20.0kHz": 31
+        }
+    },
+    "HIGH CUT": {
+        "offset": [
+            0,
+            14
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    },
+    "RATE 1": {
+        "offset": [
+            0,
+            15
+        ],
+        "value_range": [
+            0,
+            118
+        ],
+        "values": {
+            "0 - 100": 0,
+            "DoubleWholeNote": 1,
+            "DottedWholeNote": 2,
+            "WholeNote": 3,
+            "DottedHalfNote": 4,
+            "TripletWholeNote": 5,
+            "HalfNote": 6,
+            "DottedQuarterNote": 7,
+            "TripletHalfNote": 8,
+            "QuarterNote": 9,
+            "Dotted8thNote": 10,
+            "TripletQuarterNote": 11,
+            "8thNote": 12,
+            "Dotted16thNote": 13,
+            "Triplet8thNote": 14,
+            "16thNote": 15,
+            "Dotted32ndNote": 16,
+            "Triplet16thNote": 17,
+            "32ndNote": 18
+        }
+    },
+    "DEPTH 1": {
+        "offset": [
+            0,
+            16
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PRE-DELAY 1": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0,
+            80
+        ],
+        "values": {
+            "0.0ms": 0,
+            "0.5ms - 40.0ms": 1
+        }
+    },
+    "EFFECT LEVEL 1": {
+        "offset": [
+            0,
+            18
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "WAVEFORM 1": {
+        "offset": [
+            0,
+            19
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TRI": 0,
+            "SINE": 1
+        }
+    },
+    "LOW CUT 1": {
+        "offset": [
+            0,
+            20
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "FLAT": 0,
+            "20.0Hz": 1,
+            "25.0Hz": 2,
+            "31.5Hz": 3,
+            "40.0Hz": 4,
+            "50.0Hz": 5,
+            "63.0Hz": 6,
+            "80.0Hz": 7,
+            "100Hz": 8,
+            "125Hz": 9,
+            "160Hz": 10,
+            "200Hz": 11,
+            "250Hz": 12,
+            "315Hz": 13,
+            "400Hz": 14,
+            "500Hz": 15,
+            "630Hz": 16,
+            "800Hz": 17,
+            "1.00kHz": 18,
+            "1.25kHz": 19,
+            "1.60kHz": 20,
+            "2.00kHz": 21,
+            "2.50kHz": 22,
+            "3.15kHz": 23,
+            "4.00kHz": 24,
+            "5.00kHz": 25,
+            "6.30kHz": 26,
+            "8.00kHz": 27,
+            "10.0kHz": 28,
+            "12.5kHz": 29,
+            "16.0kHz": 30,
+            "20.0kHz": 31
+        }
+    },
+    "HIGH CUT 1": {
+        "offset": [
+            0,
+            21
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    },
+    "RATE 2": {
+        "offset": [
+            0,
+            22
+        ],
+        "value_range": [
+            0,
+            118
+        ],
+        "values": {
+            "0 - 100": 0,
+            "DoubleWholeNote": 1,
+            "DottedWholeNote": 2,
+            "WholeNote": 3,
+            "DottedHalfNote": 4,
+            "TripletWholeNote": 5,
+            "HalfNote": 6,
+            "DottedQuarterNote": 7,
+            "TripletHalfNote": 8,
+            "QuarterNote": 9,
+            "Dotted8thNote": 10,
+            "TripletQuarterNote": 11,
+            "8thNote": 12,
+            "Dotted16thNote": 13,
+            "Triplet8thNote": 14,
+            "16thNote": 15,
+            "Dotted32ndNote": 16,
+            "Triplet16thNote": 17,
+            "32ndNote": 18
+        }
+    },
+    "DEPTH 2": {
+        "offset": [
+            0,
+            23
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "PRE-DELAY 2": {
+        "offset": [
+            0,
+            24
+        ],
+        "value_range": [
+            0,
+            80
+        ],
+        "values": {
+            "0.0ms": 0,
+            "0.5ms - 40.0ms": 1
+        }
+    },
+    "EFFECT LEVEL 2": {
+        "offset": [
+            0,
+            25
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "WAVEFORM 2": {
+        "offset": [
+            0,
+            26
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TRI": 0,
+            "SINE": 1
+        }
+    },
+    "LOW CUT 2": {
+        "offset": [
+            0,
+            27
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "FLAT": 0,
+            "20.0Hz": 1,
+            "25.0Hz": 2,
+            "31.5Hz": 3,
+            "40.0Hz": 4,
+            "50.0Hz": 5,
+            "63.0Hz": 6,
+            "80.0Hz": 7,
+            "100Hz": 8,
+            "125Hz": 9,
+            "160Hz": 10,
+            "200Hz": 11,
+            "250Hz": 12,
+            "315Hz": 13,
+            "400Hz": 14,
+            "500Hz": 15,
+            "630Hz": 16,
+            "800Hz": 17,
+            "1.00kHz": 18,
+            "1.25kHz": 19,
+            "1.60kHz": 20,
+            "2.00kHz": 21,
+            "2.50kHz": 22,
+            "3.15kHz": 23,
+            "4.00kHz": 24,
+            "5.00kHz": 25,
+            "6.30kHz": 26,
+            "8.00kHz": 27,
+            "10.0kHz": 28,
+            "12.5kHz": 29,
+            "16.0kHz": 30,
+            "20.0kHz": 31
+        }
+    },
+    "HIGH CUT 2": {
+        "offset": [
+            0,
+            28
+        ],
+        "value_range": [
+            0,
+            31
+        ],
+        "values": {
+            "20.0Hz": 0,
+            "25.0Hz": 1,
+            "31.5Hz": 2,
+            "40.0Hz": 3,
+            "50.0Hz": 4,
+            "63.0Hz": 5,
+            "80.0Hz": 6,
+            "100Hz": 7,
+            "125Hz": 8,
+            "160Hz": 9,
+            "200Hz": 10,
+            "250Hz": 11,
+            "315Hz": 12,
+            "400Hz": 13,
+            "500Hz": 14,
+            "630Hz": 15,
+            "800Hz": 16,
+            "1.00kHz": 17,
+            "1.25kHz": 18,
+            "1.60kHz": 19,
+            "2.00kHz": 20,
+            "2.50kHz": 21,
+            "3.15kHz": 22,
+            "4.00kHz": 23,
+            "5.00kHz": 24,
+            "6.30kHz": 25,
+            "8.00kHz": 26,
+            "10.0kHz": 27,
+            "12.5kHz": 28,
+            "16.0kHz": 29,
+            "20.0kHz": 30,
+            "FLAT": 31
+        }
+    }
+}

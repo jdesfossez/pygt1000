@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pygt1000"
+version = "0.1.0"
+description = "Library to interact with a Boss GT-1000/GT-1000CORE over MIDI"
+authors = ["Julien Desfossez <j@jdfz.org>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-rtmidi = "^1.5.8"
+
+[tool.poetry.group.dev.dependencies]
+python-lsp-server = "^1.11.0"
+pylsp-mypy = "^0.6.8"
+python-lsp-ruff = "^2.2.2"
+ruff = "^0.6.1"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

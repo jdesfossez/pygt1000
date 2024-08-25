@@ -1,0 +1,24 @@
+| 00 00 | 0000 000a | SPEED SELECT (0 - 1) |
+| | | SLOW, FAST |
+| 00 01 | 0aaa aaaa | SLOW RATE (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 02 | 0aaa aaaa | FAST RATE (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 03 | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 04 | 0aaa aaaa | RISE TIME (0 - 100) |
+| 00 05 | 0aaa aaaa | FALL TIME (0 - 100) |
+| 00 06 | 0aaa aaaa | MIC DISTANCE (0 - 100) |
+| 00 07 | 0aaa aaaa | ROTOR/HORN (0 - 100) |
+| | | 100:0, 100:2 - 100:100 - 2:100, 0:100 |
+| 00 08 | 0aaa aaaa | DRIVE (0 - 100) |
+| 00 09 | 0aaa aaaa | DIRECT MIX (0 - 100) |

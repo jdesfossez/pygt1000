@@ -1,0 +1,6 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 0aaa aaaa | THRESHOLD (0 - 100) |
+| 00 02 | 0aaa aaaa | RELEASE (0 - 100) |
+| 00 03 | 0000 00aa | DETECT (0 - 2) |
+| | | INPUT, NS INPUT, FV OUT |

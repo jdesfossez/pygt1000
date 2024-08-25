@@ -1,0 +1,4 @@
+| 00 00 | 0000 000a | TRIGGER (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 0aaa aaaa | RISE TIME (0 - 100) |
+| 00 02 | 0aaa aaaa | EFFECT LEVEL (0 - 120) |

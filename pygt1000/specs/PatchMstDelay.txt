@@ -1,0 +1,107 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 000a aaaa | TYPE (0 - 19) |
+| | | MONO, PAN, STEREO1, STEREO2, ANALOG, ANALOG ST, |
+| | | TAPE, REVERSE, SHIMMER, DUAL, WARP, TWIST, |
+| | | SPACE ECHO, TAPE ECHO PX, BIN DRUM ECHO, WARM, |
+| | | GLITCH, SDE-3000, DD-20 STANDARD, DD-20 ANALOG |
+|# 00 02 | 0000 aaaa | |
+| 00 03 | 0000 bbbb | |
+| 00 04 | 0000 cccc | |
+| 00 05 | 0000 dddd | TIME (1 - 4018) |
+| | | 1ms - 4000ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 06 | 0aaa aaaa | FEEDBACK (0 - 100) |
+| 00 07 | 000a aaaa | HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 08 | 0aaa aaaa | EFFECT LEVEL (0 - 120) |
+| 00 09 | 0aaa aaaa | MOD RATE (0 - 100) |
+| 00 0A | 0aaa aaaa | MOD DEPTH (0 - 100) |
+| 00 0B | 0aaa aaaa | DUCK SENS (0 - 100) |
+| 00 0C | 0aaa aaaa | DUCK PRE DEPTH (0 - 100) |
+| 00 0D | 0aaa aaaa | DUCK POST DEPTH (0 - 100) |
+| 00 0E | 0aaa aaaa | DIRECT LEVEL (0 - 100) |
+| 00 0F | 00aa aaaa | PITCH (8 - 56) |
+| | | -24 - 24 |
+| 00 10 | 0aaa aaaa | PITCH BAL (0 - 100) |
+| 00 11 | 0aaa aaaa | PITCH FEEDBACK (0 - 100) |
+| 00 12 | 0000 00aa | DUAL:MODE (0 - 2) |
+| | | SERIES, PARALLEL, L/R |
+| 00 13 | 0000 00aa | D1 TYPE (0 - 3) |
+| | | MONO, PAN, ANALOG, TAPE |
+|# 00 14 | 0000 aaaa | |
+| 00 15 | 0000 bbbb | |
+| 00 16 | 0000 cccc | |
+| 00 17 | 0000 dddd | D1 TIME (1 - 2018) |
+| | | 1ms - 2000ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 18 | 0aaa aaaa | D1 FEEDBACK (0 - 100) |
+| 00 19 | 000a aaaa | D1 HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 1A | 0aaa aaaa | D1 EFFECT LEVEL (0 - 120) |
+| 00 1B | 0000 00aa | D2 TYPE (0 - 3) |
+| | | MONO, PAN, ANALOG, TAPE |
+|# 00 1C | 0000 aaaa | |
+| 00 1D | 0000 bbbb | |
+| 00 1E | 0000 cccc | |
+| 00 1F | 0000 dddd | D2 TIME (1 - 2018) |
+| | | 1ms - 2000ms, 32ndNote, Triplet16thNote, |
+| | | Dotted32ndNote, 16thNote, Triplet8thNote, |
+| | | Dotted16thNote, 8thNote, TripletQuarterNote, |
+| | | Dotted8thNote, QuarterNote, TripletHalfNote, |
+| | | DottedQuarterNote, HalfNote, TripletWholeNote, |
+| | | DottedHalfNote, WholeNote, DottedWholeNote, |
+| | | DoubleWholeNote |
+| 00 20 | 0aaa aaaa | D2 FEEDBACK (0 - 100) |
+| 00 21 | 000a aaaa | D2 HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 22 | 0aaa aaaa | D2 EFFECT LEVEL (0 - 120) |
+| 00 23 | 0000 000a | TWIST:MODE (0 - 1) |
+| | | RISE->FALL, RISE->FADE |
+| 00 24 | 0000 000a | TRIGGER (0 - 1) |
+| | | OFF, ON |
+| 00 25 | 0aaa aaaa | RISE TIME (0 - 100) |
+| 00 26 | 0aaa aaaa | FALL TIME (0 - 100) |
+| 00 27 | 0aaa aaaa | LEVEL (0 - 100) |
+| 00 28 | 0000 00aa | STAGE (0 - 2) |
+| | | 4096, 4096x2, 4096x4 |
+| 00 29 | 0000 0aaa | HEAD (0 - 4) |
+| | | 1, 1+2, 1+3, 2+3, 1+2+3 |
+| 00 2A | 0aaa aaaa | FADE TIME (0 - 100) |
+| 00 2B | 0aaa aaaa | TAP TIME (0 - 100) |
+| | | [%] |
+| 00 2C | 0aaa aaaa | WOW & FLUTTER (0 - 100) |
+| 00 2D | 0000 aaaa | DRUM ECHO:HEAD (0 - 11) |
+| | |1, 2, 3, 4, 1+2, 2+3, 3+4, 1+3, 2+4, 1+2+3, 2+3+4, |
+| | | 1+2+3+4 |
+| 00 2E | 0000 00aa | SELECTOR (0 - 2) |
+| | | ECHO, REPEAT, SWELL |
+| 00 2F | 0000 000a | AUTO TRIGGER (0 - 1) |
+| | | OFF, ON |
+| 00 30 | 0aaa aaaa | DUTY (0 - 100) |
+| 00 31 | 0aaa aaaa | TONE (0 - 100) |

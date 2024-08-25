@@ -1,0 +1,26 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 000a aaaa | TYPE (0 - 22) |
+| | | TRANSPARENT, NATURAL, BOUTIQUE, SUPREME, MAXIMUM, |
+| | |JUGGERNAUT, X-CRUNCH, X-HI GAIN, X-MODDED, JC-120, |
+| | | TWIN COMBO, DELUXE COMBO, TWEED COMBO, |
+| | |DIAMOND AMP, BRIT STACK, RECTI STACK, MATCH COMBO, |
+| | |BG COMBO, ORNG STACK, BGNR UB METAL, NATURAL BASS, |
+| | | X-DRIVE BASS, CONCERT |
+| 00 02 | 0aaa aaaa | GAIN (0 - 120) |
+| 00 03 | 000a aaaa | SAG (6 - 26) |
+| | | -10 - 10 |
+| 00 04 | 000a aaaa | RESONANCE (6 - 26) |
+| | | -10 - 10 |
+| 00 05 | 0aaa aaaa | LEVEL (0 - 100) |
+| 00 06 | 0aaa aaaa | BASS (0 - 100) |
+| 00 07 | 0aaa aaaa | MIDDLE (0 - 100) |
+| 00 08 | 0aaa aaaa | TREBLE (0 - 100) |
+| 00 09 | 0aaa aaaa | PRESENCE (0 - 100) |
+| 00 0A | 0000 000a | BRIGHT (0 - 1) |
+| | | OFF, ON |
+| 00 0B | 0000 00aa | GAIN SW (0 - 2) |
+| | | LOW, MIDDLE, HIGH |
+| 00 0C | 0000 000a | SOLO SW (0 - 1) |
+| | | OFF, ON |
+| 00 0D | 0aaa aaaa | SOLO LEVEL (0 - 100) |

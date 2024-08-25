@@ -1,0 +1,15 @@
+| 00 00 | 000a aaaa | PATTERN (0 - 19) |
+| | | P1 - P20 |
+| 00 01 | 0aaa aaaa | RATE (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 02 | 0000 000a | TRIGGER (0 - 1) |
+| | | OFF, ON |
+| 00 03 | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 04 | 0aaa aaaa | ATTACK (0 - 100) |
+| 00 05 | 0aaa aaaa | DUTY (1 - 99) |
+| 00 06 | 0aaa aaaa | DIRECT MIX (0 - 100) |

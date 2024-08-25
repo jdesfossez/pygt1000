@@ -1,0 +1,71 @@
+{
+    "TYPE": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "MONO": 0,
+            "POLY": 1
+        }
+    },
+    "-2OCT": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "-1OCT": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT LEVEL": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "RANGE": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "OCTAVE LEVEL": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

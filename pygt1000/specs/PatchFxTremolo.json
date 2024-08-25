@@ -1,0 +1,102 @@
+{
+    "RATE": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            118
+        ],
+        "values": {
+            "0 - 100": 0,
+            "DoubleWholeNote": 1,
+            "DottedWholeNote": 2,
+            "WholeNote": 3,
+            "DottedHalfNote": 4,
+            "TripletWholeNote": 5,
+            "HalfNote": 6,
+            "DottedQuarterNote": 7,
+            "TripletHalfNote": 8,
+            "QuarterNote": 9,
+            "Dotted8thNote": 10,
+            "TripletQuarterNote": 11,
+            "8thNote": 12,
+            "Dotted16thNote": 13,
+            "Triplet8thNote": 14,
+            "16thNote": 15,
+            "Dotted32ndNote": 16,
+            "Triplet16thNote": 17,
+            "32ndNote": 18
+        }
+    },
+    "DEPTH": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "WAVEFORM": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "EFFECT LEVEL": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "TRIGGER": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "RISE TIME": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT MIX": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

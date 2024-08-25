@@ -1,0 +1,6 @@
+| 00 00 | 0000 000a | TRIGGER (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 0000 0aaa | PITCH (0 - 6) |
+| | | -3OCT, -2OCT, -1OCT, +1OCT, +2OCT, +3OCT, +4OCT |
+| 00 02 | 0aaa aaaa | RISE TIME (0 - 100) |
+| 00 03 | 0aaa aaaa | FALL TIME (0 - 100) |

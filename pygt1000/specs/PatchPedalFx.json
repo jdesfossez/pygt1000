@@ -1,0 +1,141 @@
+{
+    "SW": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "TYPE": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "PEDAL BEND": 0,
+            "WAH": 1
+        }
+    },
+    "PITCH MAX": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            8,
+            56
+        ],
+        "values": {
+            "-24 - 24": 8
+        }
+    },
+    "EFFECT LEVEL": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT MIX": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "WAH TYPE": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            6
+        ],
+        "values": {
+            "CRY WAH": 0,
+            "VO WAH": 1,
+            "FAT WAH": 2,
+            "LIGHT WAH": 3,
+            "7STRING WAH": 4,
+            "RESO WAH": 5,
+            "BASS WAH": 6
+        }
+    },
+    "PEDAL MIN": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {}
+    },
+    "PEDAL MAX": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {}
+    },
+    "WAH:PEDAL POSITION": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {}
+    },
+    "PEDAL BEND:PEDAL POSITION": {
+        "offset": [
+            0,
+            21
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {}
+    },
+    "PITCH MIN": {
+        "offset": [
+            0,
+            22
+        ],
+        "value_range": [
+            8,
+            56
+        ],
+        "values": {
+            "-24 - 24": 8
+        }
+    }
+}

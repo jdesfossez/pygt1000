@@ -1,0 +1,8 @@
+| 00 00 00 | stompBox [PatchStompBox2] |
+| 00 01 00 | fx1ChorusBass [PatchFx1ChorusBass] |
+| 00 02 00 | fx1FlangerBass [PatchFx1FlangerBass] |
+| 00 03 00 | fx2ChorusBass [PatchFx2ChorusBass] |
+| 00 04 00 | fx2FlangerBass [PatchFx2FlangerBass] |
+| 00 05 00 | fx3ChorusBass [PatchFx3ChorusBass] |
+| 00 06 00 | fx3FlangerBass [PatchFx3FlangerBass] |
+| 00 0A 00 | efct [PatchEfct2] |

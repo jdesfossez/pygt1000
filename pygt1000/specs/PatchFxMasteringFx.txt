@@ -1,0 +1,10 @@
+| 00 00 | 0000 aaaa | TYPE (0 - 10) |
+| | | NATURAL COMP, MIXER COMP, LIVE COMP, NATURAL LIM, |
+| | | HARD LIM, SOLO, METAL, ACOUSTIC, ROCK, LOW BOOST, |
+| | | BRIGHTEN |
+| 00 01 | 00aa aaaa | DYNAMICS (12 - 52) |
+| | | -20 - 20 |
+| 00 02 | 00aa aaaa | TONE (26 - 38) |
+| | | -6 - 6 |
+| 00 03 | 0aaa aaaa | NATURAL (14 - 114) |
+| | | -50 - 50 |

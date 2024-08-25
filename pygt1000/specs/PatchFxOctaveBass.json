@@ -1,0 +1,35 @@
+{
+    "-2OCT": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "-1OCT": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIRECT LEVEL": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    }
+}

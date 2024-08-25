@@ -1,0 +1,902 @@
+{
+    "comp": {
+        "address": [
+            0,
+            18,
+            0
+        ],
+        "table": "PatchComp",
+        "hex_address": "[0x0, 0x12, 0x0]"
+    },
+    "dist1": {
+        "address": [
+            0,
+            19,
+            0
+        ],
+        "table": "PatchDist",
+        "hex_address": "[0x0, 0x13, 0x0]"
+    },
+    "dist2": {
+        "address": [
+            0,
+            20,
+            0
+        ],
+        "table": "PatchDist",
+        "hex_address": "[0x0, 0x14, 0x0]"
+    },
+    "preampA": {
+        "address": [
+            0,
+            21,
+            0
+        ],
+        "table": "PatchPreamp",
+        "hex_address": "[0x0, 0x15, 0x0]"
+    },
+    "preampB": {
+        "address": [
+            0,
+            22,
+            0
+        ],
+        "table": "PatchPreamp",
+        "hex_address": "[0x0, 0x16, 0x0]"
+    },
+    "ns1": {
+        "address": [
+            0,
+            23,
+            0
+        ],
+        "table": "PatchNs",
+        "hex_address": "[0x0, 0x17, 0x0]"
+    },
+    "ns2": {
+        "address": [
+            0,
+            24,
+            0
+        ],
+        "table": "PatchNs",
+        "hex_address": "[0x0, 0x18, 0x0]"
+    },
+    "eq1": {
+        "address": [
+            0,
+            25,
+            0
+        ],
+        "table": "PatchEq",
+        "hex_address": "[0x0, 0x19, 0x0]"
+    },
+    "eq2": {
+        "address": [
+            0,
+            26,
+            0
+        ],
+        "table": "PatchEq",
+        "hex_address": "[0x0, 0x1a, 0x0]"
+    },
+    "eq3": {
+        "address": [
+            0,
+            27,
+            0
+        ],
+        "table": "PatchEq",
+        "hex_address": "[0x0, 0x1b, 0x0]"
+    },
+    "eq4": {
+        "address": [
+            0,
+            28,
+            0
+        ],
+        "table": "PatchEq",
+        "hex_address": "[0x0, 0x1c, 0x0]"
+    },
+    "delay1": {
+        "address": [
+            0,
+            29,
+            0
+        ],
+        "table": "PatchDelay",
+        "hex_address": "[0x0, 0x1d, 0x0]"
+    },
+    "delay2": {
+        "address": [
+            0,
+            30,
+            0
+        ],
+        "table": "PatchDelay",
+        "hex_address": "[0x0, 0x1e, 0x0]"
+    },
+    "delay3": {
+        "address": [
+            0,
+            31,
+            0
+        ],
+        "table": "PatchDelay",
+        "hex_address": "[0x0, 0x1f, 0x0]"
+    },
+    "delay4": {
+        "address": [
+            0,
+            32,
+            0
+        ],
+        "table": "PatchDelay",
+        "hex_address": "[0x0, 0x20, 0x0]"
+    },
+    "mstDelay": {
+        "address": [
+            0,
+            33,
+            0
+        ],
+        "table": "PatchMstDelay",
+        "hex_address": "[0x0, 0x21, 0x0]"
+    },
+    "chorus": {
+        "address": [
+            0,
+            34,
+            0
+        ],
+        "table": "PatchChorus",
+        "hex_address": "[0x0, 0x22, 0x0]"
+    },
+    "fx1": {
+        "address": [
+            0,
+            35,
+            0
+        ],
+        "table": "PatchFx",
+        "hex_address": "[0x0, 0x23, 0x0]"
+    },
+    "fx1AGSim": {
+        "address": [
+            0,
+            36,
+            0
+        ],
+        "table": "PatchFxAGSim",
+        "hex_address": "[0x0, 0x24, 0x0]"
+    },
+    "fx1AcReso": {
+        "address": [
+            0,
+            37,
+            0
+        ],
+        "table": "PatchFxAcReso",
+        "hex_address": "[0x0, 0x25, 0x0]"
+    },
+    "fx1AWah": {
+        "address": [
+            0,
+            38,
+            0
+        ],
+        "table": "PatchFxAWah",
+        "hex_address": "[0x0, 0x26, 0x0]"
+    },
+    "fx1Chorus": {
+        "address": [
+            0,
+            39,
+            0
+        ],
+        "table": "PatchFxChorus",
+        "hex_address": "[0x0, 0x27, 0x0]"
+    },
+    "fx1CVibe": {
+        "address": [
+            0,
+            40,
+            0
+        ],
+        "table": "PatchFxCVibe",
+        "hex_address": "[0x0, 0x28, 0x0]"
+    },
+    "fx1Comp": {
+        "address": [
+            0,
+            41,
+            0
+        ],
+        "table": "PatchFxComp",
+        "hex_address": "[0x0, 0x29, 0x0]"
+    },
+    "fx1Defretter": {
+        "address": [
+            0,
+            42,
+            0
+        ],
+        "table": "PatchFxDefretter",
+        "hex_address": "[0x0, 0x2a, 0x0]"
+    },
+    "fx1Feedbacker": {
+        "address": [
+            0,
+            43,
+            0
+        ],
+        "table": "PatchFxFeedbacker",
+        "hex_address": "[0x0, 0x2b, 0x0]"
+    },
+    "fx1Flanger": {
+        "address": [
+            0,
+            44,
+            0
+        ],
+        "table": "PatchFxFlanger",
+        "hex_address": "[0x0, 0x2c, 0x0]"
+    },
+    "fx1Harmonist": {
+        "address": [
+            0,
+            45,
+            0
+        ],
+        "table": "PatchFxHarmonist",
+        "hex_address": "[0x0, 0x2d, 0x0]"
+    },
+    "fx1Humanizer": {
+        "address": [
+            0,
+            46,
+            0
+        ],
+        "table": "PatchFxHumanizer",
+        "hex_address": "[0x0, 0x2e, 0x0]"
+    },
+    "fx1Octave": {
+        "address": [
+            0,
+            47,
+            0
+        ],
+        "table": "PatchFxOctave",
+        "hex_address": "[0x0, 0x2f, 0x0]"
+    },
+    "fx1Overtone": {
+        "address": [
+            0,
+            48,
+            0
+        ],
+        "table": "PatchFxOvertone",
+        "hex_address": "[0x0, 0x30, 0x0]"
+    },
+    "fx1Pan": {
+        "address": [
+            0,
+            49,
+            0
+        ],
+        "table": "PatchFxPan",
+        "hex_address": "[0x0, 0x31, 0x0]"
+    },
+    "fx1Phaser": {
+        "address": [
+            0,
+            50,
+            0
+        ],
+        "table": "PatchFxPhaser",
+        "hex_address": "[0x0, 0x32, 0x0]"
+    },
+    "fx1PitchShift": {
+        "address": [
+            0,
+            51,
+            0
+        ],
+        "table": "PatchFxPitchShift",
+        "hex_address": "[0x0, 0x33, 0x0]"
+    },
+    "fx1RingMod": {
+        "address": [
+            0,
+            52,
+            0
+        ],
+        "table": "PatchFxRingMod",
+        "hex_address": "[0x0, 0x34, 0x0]"
+    },
+    "fx1Rotary": {
+        "address": [
+            0,
+            53,
+            0
+        ],
+        "table": "PatchFxRotary",
+        "hex_address": "[0x0, 0x35, 0x0]"
+    },
+    "fx1SitarSim": {
+        "address": [
+            0,
+            54,
+            0
+        ],
+        "table": "PatchFxSitarSim",
+        "hex_address": "[0x0, 0x36, 0x0]"
+    },
+    "fx1Slicer": {
+        "address": [
+            0,
+            55,
+            0
+        ],
+        "table": "PatchFxSlicer",
+        "hex_address": "[0x0, 0x37, 0x0]"
+    },
+    "fx1SlowGear": {
+        "address": [
+            0,
+            56,
+            0
+        ],
+        "table": "PatchFxSlowGear",
+        "hex_address": "[0x0, 0x38, 0x0]"
+    },
+    "fx1SoundHold": {
+        "address": [
+            0,
+            57,
+            0
+        ],
+        "table": "PatchFxSoundHold",
+        "hex_address": "[0x0, 0x39, 0x0]"
+    },
+    "fx1SBend": {
+        "address": [
+            0,
+            58,
+            0
+        ],
+        "table": "PatchFxSBend",
+        "hex_address": "[0x0, 0x3a, 0x0]"
+    },
+    "fx1Tremolo": {
+        "address": [
+            0,
+            59,
+            0
+        ],
+        "table": "PatchFxTremolo",
+        "hex_address": "[0x0, 0x3b, 0x0]"
+    },
+    "fx1TWah": {
+        "address": [
+            0,
+            60,
+            0
+        ],
+        "table": "PatchFxTWah",
+        "hex_address": "[0x0, 0x3c, 0x0]"
+    },
+    "fx1Vibrato": {
+        "address": [
+            0,
+            61,
+            0
+        ],
+        "table": "PatchFxVibrato",
+        "hex_address": "[0x0, 0x3d, 0x0]"
+    },
+    "fx2": {
+        "address": [
+            0,
+            62,
+            0
+        ],
+        "table": "PatchFx",
+        "hex_address": "[0x0, 0x3e, 0x0]"
+    },
+    "fx2AGSim": {
+        "address": [
+            0,
+            63,
+            0
+        ],
+        "table": "PatchFxAGSim",
+        "hex_address": "[0x0, 0x3f, 0x0]"
+    },
+    "fx2AcReso": {
+        "address": [
+            0,
+            64,
+            0
+        ],
+        "table": "PatchFxAcReso",
+        "hex_address": "[0x0, 0x40, 0x0]"
+    },
+    "fx2AWah": {
+        "address": [
+            0,
+            65,
+            0
+        ],
+        "table": "PatchFxAWah",
+        "hex_address": "[0x0, 0x41, 0x0]"
+    },
+    "fx2Chorus": {
+        "address": [
+            0,
+            66,
+            0
+        ],
+        "table": "PatchFxChorus",
+        "hex_address": "[0x0, 0x42, 0x0]"
+    },
+    "fx2CVibe": {
+        "address": [
+            0,
+            67,
+            0
+        ],
+        "table": "PatchFxCVibe",
+        "hex_address": "[0x0, 0x43, 0x0]"
+    },
+    "fx2Comp": {
+        "address": [
+            0,
+            68,
+            0
+        ],
+        "table": "PatchFxComp",
+        "hex_address": "[0x0, 0x44, 0x0]"
+    },
+    "fx2Defretter": {
+        "address": [
+            0,
+            69,
+            0
+        ],
+        "table": "PatchFxDefretter",
+        "hex_address": "[0x0, 0x45, 0x0]"
+    },
+    "fx2Feedbacker": {
+        "address": [
+            0,
+            70,
+            0
+        ],
+        "table": "PatchFxFeedbacker",
+        "hex_address": "[0x0, 0x46, 0x0]"
+    },
+    "fx2Flanger": {
+        "address": [
+            0,
+            71,
+            0
+        ],
+        "table": "PatchFxFlanger",
+        "hex_address": "[0x0, 0x47, 0x0]"
+    },
+    "fx2Harmonist": {
+        "address": [
+            0,
+            72,
+            0
+        ],
+        "table": "PatchFxHarmonist",
+        "hex_address": "[0x0, 0x48, 0x0]"
+    },
+    "fx2Humanizer": {
+        "address": [
+            0,
+            73,
+            0
+        ],
+        "table": "PatchFxHumanizer",
+        "hex_address": "[0x0, 0x49, 0x0]"
+    },
+    "fx2Octave": {
+        "address": [
+            0,
+            74,
+            0
+        ],
+        "table": "PatchFxOctave",
+        "hex_address": "[0x0, 0x4a, 0x0]"
+    },
+    "fx2Overtone": {
+        "address": [
+            0,
+            75,
+            0
+        ],
+        "table": "PatchFxOvertone",
+        "hex_address": "[0x0, 0x4b, 0x0]"
+    },
+    "fx2Pan": {
+        "address": [
+            0,
+            76,
+            0
+        ],
+        "table": "PatchFxPan",
+        "hex_address": "[0x0, 0x4c, 0x0]"
+    },
+    "fx2Phaser": {
+        "address": [
+            0,
+            77,
+            0
+        ],
+        "table": "PatchFxPhaser",
+        "hex_address": "[0x0, 0x4d, 0x0]"
+    },
+    "fx2PitchShift": {
+        "address": [
+            0,
+            78,
+            0
+        ],
+        "table": "PatchFxPitchShift",
+        "hex_address": "[0x0, 0x4e, 0x0]"
+    },
+    "fx2RingMod": {
+        "address": [
+            0,
+            79,
+            0
+        ],
+        "table": "PatchFxRingMod",
+        "hex_address": "[0x0, 0x4f, 0x0]"
+    },
+    "fx2Rotary": {
+        "address": [
+            0,
+            80,
+            0
+        ],
+        "table": "PatchFxRotary",
+        "hex_address": "[0x0, 0x50, 0x0]"
+    },
+    "fx2SitarSim": {
+        "address": [
+            0,
+            81,
+            0
+        ],
+        "table": "PatchFxSitarSim",
+        "hex_address": "[0x0, 0x51, 0x0]"
+    },
+    "fx2Slicer": {
+        "address": [
+            0,
+            82,
+            0
+        ],
+        "table": "PatchFxSlicer",
+        "hex_address": "[0x0, 0x52, 0x0]"
+    },
+    "fx2SlowGear": {
+        "address": [
+            0,
+            83,
+            0
+        ],
+        "table": "PatchFxSlowGear",
+        "hex_address": "[0x0, 0x53, 0x0]"
+    },
+    "fx2SoundHold": {
+        "address": [
+            0,
+            84,
+            0
+        ],
+        "table": "PatchFxSoundHold",
+        "hex_address": "[0x0, 0x54, 0x0]"
+    },
+    "fx2SBend": {
+        "address": [
+            0,
+            85,
+            0
+        ],
+        "table": "PatchFxSBend",
+        "hex_address": "[0x0, 0x55, 0x0]"
+    },
+    "fx2Tremolo": {
+        "address": [
+            0,
+            86,
+            0
+        ],
+        "table": "PatchFxTremolo",
+        "hex_address": "[0x0, 0x56, 0x0]"
+    },
+    "fx2TWah": {
+        "address": [
+            0,
+            87,
+            0
+        ],
+        "table": "PatchFxTWah",
+        "hex_address": "[0x0, 0x57, 0x0]"
+    },
+    "fx2Vibrato": {
+        "address": [
+            0,
+            88,
+            0
+        ],
+        "table": "PatchFxVibrato",
+        "hex_address": "[0x0, 0x58, 0x0]"
+    },
+    "fx3": {
+        "address": [
+            0,
+            89,
+            0
+        ],
+        "table": "PatchFx",
+        "hex_address": "[0x0, 0x59, 0x0]"
+    },
+    "fx3AGSim": {
+        "address": [
+            0,
+            90,
+            0
+        ],
+        "table": "PatchFxAGSim",
+        "hex_address": "[0x0, 0x5a, 0x0]"
+    },
+    "fx3AcReso": {
+        "address": [
+            0,
+            91,
+            0
+        ],
+        "table": "PatchFxAcReso",
+        "hex_address": "[0x0, 0x5b, 0x0]"
+    },
+    "fx3AWah": {
+        "address": [
+            0,
+            92,
+            0
+        ],
+        "table": "PatchFxAWah",
+        "hex_address": "[0x0, 0x5c, 0x0]"
+    },
+    "fx3Chorus": {
+        "address": [
+            0,
+            93,
+            0
+        ],
+        "table": "PatchFxChorus",
+        "hex_address": "[0x0, 0x5d, 0x0]"
+    },
+    "fx3CVibe": {
+        "address": [
+            0,
+            94,
+            0
+        ],
+        "table": "PatchFxCVibe",
+        "hex_address": "[0x0, 0x5e, 0x0]"
+    },
+    "fx3Comp": {
+        "address": [
+            0,
+            95,
+            0
+        ],
+        "table": "PatchFxComp",
+        "hex_address": "[0x0, 0x5f, 0x0]"
+    },
+    "fx3Defretter": {
+        "address": [
+            0,
+            96,
+            0
+        ],
+        "table": "PatchFxDefretter",
+        "hex_address": "[0x0, 0x60, 0x0]"
+    },
+    "fx3Feedbacker": {
+        "address": [
+            0,
+            97,
+            0
+        ],
+        "table": "PatchFxFeedbacker",
+        "hex_address": "[0x0, 0x61, 0x0]"
+    },
+    "fx3Flanger": {
+        "address": [
+            0,
+            98,
+            0
+        ],
+        "table": "PatchFxFlanger",
+        "hex_address": "[0x0, 0x62, 0x0]"
+    },
+    "fx3Harmonist": {
+        "address": [
+            0,
+            99,
+            0
+        ],
+        "table": "PatchFxHarmonist",
+        "hex_address": "[0x0, 0x63, 0x0]"
+    },
+    "fx3Humanizer": {
+        "address": [
+            0,
+            100,
+            0
+        ],
+        "table": "PatchFxHumanizer",
+        "hex_address": "[0x0, 0x64, 0x0]"
+    },
+    "fx3Octave": {
+        "address": [
+            0,
+            101,
+            0
+        ],
+        "table": "PatchFxOctave",
+        "hex_address": "[0x0, 0x65, 0x0]"
+    },
+    "fx3Overtone": {
+        "address": [
+            0,
+            102,
+            0
+        ],
+        "table": "PatchFxOvertone",
+        "hex_address": "[0x0, 0x66, 0x0]"
+    },
+    "fx3Pan": {
+        "address": [
+            0,
+            103,
+            0
+        ],
+        "table": "PatchFxPan",
+        "hex_address": "[0x0, 0x67, 0x0]"
+    },
+    "fx3Phaser": {
+        "address": [
+            0,
+            104,
+            0
+        ],
+        "table": "PatchFxPhaser",
+        "hex_address": "[0x0, 0x68, 0x0]"
+    },
+    "fx3PitchShift": {
+        "address": [
+            0,
+            105,
+            0
+        ],
+        "table": "PatchFxPitchShift",
+        "hex_address": "[0x0, 0x69, 0x0]"
+    },
+    "fx3RingMod": {
+        "address": [
+            0,
+            106,
+            0
+        ],
+        "table": "PatchFxRingMod",
+        "hex_address": "[0x0, 0x6a, 0x0]"
+    },
+    "fx3Rotary": {
+        "address": [
+            0,
+            107,
+            0
+        ],
+        "table": "PatchFxRotary",
+        "hex_address": "[0x0, 0x6b, 0x0]"
+    },
+    "fx3SitarSim": {
+        "address": [
+            0,
+            108,
+            0
+        ],
+        "table": "PatchFxSitarSim",
+        "hex_address": "[0x0, 0x6c, 0x0]"
+    },
+    "fx3Slicer": {
+        "address": [
+            0,
+            109,
+            0
+        ],
+        "table": "PatchFxSlicer",
+        "hex_address": "[0x0, 0x6d, 0x0]"
+    },
+    "fx3SlowGear": {
+        "address": [
+            0,
+            110,
+            0
+        ],
+        "table": "PatchFxSlowGear",
+        "hex_address": "[0x0, 0x6e, 0x0]"
+    },
+    "fx3SoundHold": {
+        "address": [
+            0,
+            111,
+            0
+        ],
+        "table": "PatchFxSoundHold",
+        "hex_address": "[0x0, 0x6f, 0x0]"
+    },
+    "fx3SBend": {
+        "address": [
+            0,
+            112,
+            0
+        ],
+        "table": "PatchFxSBend",
+        "hex_address": "[0x0, 0x70, 0x0]"
+    },
+    "fx3Tremolo": {
+        "address": [
+            0,
+            113,
+            0
+        ],
+        "table": "PatchFxTremolo",
+        "hex_address": "[0x0, 0x71, 0x0]"
+    },
+    "fx3TWah": {
+        "address": [
+            0,
+            114,
+            0
+        ],
+        "table": "PatchFxTWah",
+        "hex_address": "[0x0, 0x72, 0x0]"
+    },
+    "fx3Vibrato": {
+        "address": [
+            0,
+            115,
+            0
+        ],
+        "table": "PatchFxVibrato",
+        "hex_address": "[0x0, 0x73, 0x0]"
+    },
+    "reverb": {
+        "address": [
+            0,
+            116,
+            0
+        ],
+        "table": "PatchReverb",
+        "hex_address": "[0x0, 0x74, 0x0]"
+    },
+    "pedalFx": {
+        "address": [
+            0,
+            117,
+            0
+        ],
+        "table": "PatchPedalFx",
+        "hex_address": "[0x0, 0x75, 0x0]"
+    }
+}

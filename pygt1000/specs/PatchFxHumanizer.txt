@@ -1,0 +1,17 @@
+| 00 00 | 0000 000a | MODE (0 - 1) |
+| | | PICKING, AUTO |
+| 00 01 | 0000 0aaa | VOWEL1 (0 - 4) |
+| | | a, e, i, o, u |
+| 00 02 | 0000 0aaa | VOWEL2 (0 - 4) |
+| | | a, e, i, o, u |
+| 00 03 | 0aaa aaaa | SENS (0 - 100) |
+| 00 04 | 0aaa aaaa | RATE (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 05 | 0aaa aaaa | DEPTH (0 - 100) |
+| 00 06 | 0aaa aaaa | MANUAL (0 - 100) |
+| 00 07 | 0aaa aaaa | LEVEL (0 - 100) |

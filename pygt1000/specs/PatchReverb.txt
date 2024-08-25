@@ -1,0 +1,100 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 0000 aaaa | TYPE (0 - 9) |
+| | | HALL1, HALL2, PLATE, ROOM1, ROOM2, AMBIENCE, |
+| | | SPRING, SHIMMER, DUAL, TERA ECHO |
+| 00 02 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |
+| 00 03 | 0aaa aaaa | LOW DAMP (14 - 114) |
+| | | -50 - 50 |
+| 00 04 | 0aaa aaaa | HIGH DAMP (14 - 114) |
+| | | -50 - 50 |
+| 00 05 | 0aaa aaaa | MOD RATE (0 - 100) |
+| 00 06 | 0aaa aaaa | MOD DEPTH (0 - 100) |
+| 00 07 | 0aaa aaaa | DUCK SENS (0 - 100) |
+| 00 08 | 0aaa aaaa | DUCK PRE DEPTH (0 - 100) |
+| 00 09 | 0aaa aaaa | DUCK POST DEPTH (0 - 100) |
+| 00 0A | 0aaa aaaa | TIME (1 - 100) |
+| | | 0.1s, 0.2s - 10.0s |
+| 00 0B | 0aaa aaaa | TONE (14 - 114) |
+| | | -50 - 50 |
+| 00 0C | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 0D | 0000 aaaa | DENSITY (1 - 10) |
+|# 00 0E | 0000 aaaa | |
+| 00 0F | 0000 bbbb | PRE-DELAY (0 - 200) |
+| | | [ms] |
+| 00 10 | 000a aaaa | LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 11 | 000a aaaa | HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 12 | 00aa aaaa | PITCH 1 (8 - 56) |
+| | | -24 - 24 |
+| 00 13 | 0aaa aaaa | LEVEL 1 (0 - 100) |
+| 00 14 | 0000 00aa | TYPE 1 (0 - 2) |
+| | | HALL, PLATE, ROOM |
+| 00 15 | 0aaa aaaa | TIME 1 (1 - 100) |
+| | | 0.1s, 0.2s - 10.0s |
+| 00 16 | 0aaa aaaa | TONE 1 (14 - 114) |
+| | | -50 - 50 |
+| 00 17 | 0aaa aaaa | EFFECT LEVEL 1 (0 - 100) |
+| 00 18 | 0000 aaaa | DENSITY 1 (1 - 10) |
+|# 00 19 | 0000 aaaa | |
+| 00 1A | 0000 bbbb | PRE-DELAY 1 (0 - 200) |
+| | | [ms] |
+| 00 1B | 000a aaaa | LOW CUT 1 (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 1C | 000a aaaa | HIGH CUT 1 (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 1D | 00aa aaaa | PITCH 2 (8 - 56) |
+| | | -24 - 24 |
+| 00 1E | 0aaa aaaa | LEVEL 2 (0 - 100) |
+| 00 1F | 0000 00aa | TYPE 2 (0 - 2) |
+| | | HALL, PLATE, ROOM |
+| 00 20 | 0aaa aaaa | TIME 2 (1 - 100) |
+| | | 0.1s, 0.2s - 10.0s |
+| 00 21 | 0aaa aaaa | TONE 2 (14 - 114) |
+| | | -50 - 50 |
+| 00 22 | 0aaa aaaa | EFFECT LEVEL 2 (0 - 100) |
+| 00 23 | 0000 aaaa | DENSITY 2 (1 - 10) |
+|# 00 24 | 0000 aaaa | |
+| 00 25 | 0000 bbbb | PRE-DELAY 2 (0 - 200) |
+| | | [ms] |
+| 00 26 | 000a aaaa | LOW CUT 2 (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 27 | 000a aaaa | HIGH CUT 2 (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 28 | 0000 00aa | MODE (0 - 2) |
+| | | MONO, STEREO1, STEREO2 |
+| 00 29 | 0aaa aaaa | SPREAD TIME (0 - 100) |
+| 00 2A | 0aaa aaaa | FEEDBACK (0 - 100) |
+| 00 2B | 0000 000a | TRIGGER (0 - 1) |
+| | | OFF, ON |

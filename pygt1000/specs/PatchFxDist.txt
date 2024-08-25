@@ -1,0 +1,19 @@
+| 00 00 | 00aa aaaa | TYPE (0 - 36) |
+| | | MID BOOST, CLEAN BOOST, TREBLE BOOST, CRUNCH, |
+| | | NATURAL OD, WARM OD, FAT DS, LEAD DS, METAL DS, |
+| | | OCT FUZZ, A-DIST, X-OD, X-DIST, BLUES OD, OD-1, |
+| | | T-SCREAM, TURBO OD, DIST, RAT, GUV DS, DIST+, |
+| | | METAL ZONE, '60S FUZZ, MUFF FUZZ, CENTA OD, HM-2, |
+| | | METAL CORE, BASS OD, BASS DS, BASS MT, BASS FUZZ, |
+| | |HI BAND DRIVE, X-BASS OD, BASS DRV, BASS DI, SD-1, |
+| | | DS-1 |
+| 00 01 | 0aaa aaaa | DRIVE (0 - 120) |
+| 00 02 | 0aaa aaaa | TONE (14 - 114) |
+| | | -50 - 50 |
+| 00 03 | 0aaa aaaa | LEVEL (0 - 100) |
+| 00 04 | 0aaa aaaa | BOTTOM (14 - 114) |
+| | | -50 - 50 |
+| 00 05 | 0aaa aaaa | DIRECT MIX (0 - 100) |
+| 00 06 | 0000 000a | SOLO SW (0 - 1) |
+| | | OFF, ON |
+| 00 07 | 0aaa aaaa | SOLO LEVEL (0 - 100) |

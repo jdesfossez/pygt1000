@@ -1,0 +1,14 @@
+| 00 00 | 0000 0aaa | TYPE (0 - 5) |
+| | | BOSS COMP, X-COMP, D-COMP, ORANGE, STEREO COMP, |
+| | | X-BASS COMP |
+| 00 01 | 0aaa aaaa | SUSTAIN (0 - 100) |
+| 00 02 | 0aaa aaaa | ATTACK (0 - 100) |
+| 00 03 | 0aaa aaaa | LEVEL (0 - 100) |
+| 00 04 | 0aaa aaaa | TONE (14 - 114) |
+| | | -50 - 50 |
+| 00 05 | 000a aaaa | RATIO (0 - 17) |
+| | | 1:1, 1.2:1, 1.4:1, 1.6:1, 1.8:1, 2:1, 2.3:1, |
+| | |2.6:1, 3:1, 3.5:1, 4:1, 5:1, 6:1, 8:1, 10:1, 12:1, |
+| | | 20:1, INF:1 |
+| 00 06 | 0aaa aaaa | DIRECT MIX (0 - 100) |
+| 00 07 | 0aaa aaaa | THRESHOLD (0 - 100) |

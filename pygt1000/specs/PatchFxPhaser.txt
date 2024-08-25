@@ -1,0 +1,49 @@
+| 00 00 | 0000 000a | TYPE (0 - 1) |
+| | | PRIME, SCRIPT |
+| 00 01 | 0000 0aaa | STAGE (0 - 4) |
+| | | 2 STAGE, 4 STAGE, 8 STAGE, 16 STAGE, 24 STAGE |
+| 00 02 | 0aaa aaaa | RATE (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 03 | 0aaa aaaa | DEPTH (0 - 100) |
+| 00 04 | 0aaa aaaa | RESONANCE (0 - 100) |
+| 00 05 | 0aaa aaaa | MANUAL (0 - 100) |
+| 00 06 | 0000 000a | WAVEFORM (0 - 1) |
+| | | TRI, SINE |
+| 00 07 | 0aaa aaaa | STEP RATE (0 - 119) |
+| | | OFF, 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 08 | 0000 000a | BI-PHASE (0 - 1) |
+| | | OFF, ON |
+| 00 09 | 0000 aaaa | SEPARATION (0 - 12) |
+| | | 0, 15 - 180 |
+|# 00 0A | 0000 aaaa | |
+| 00 0B | 0000 bbbb | LOW DAMP (28 - 128) |
+| | | -100 - 0 |
+|# 00 0C | 0000 aaaa | |
+| 00 0D | 0000 bbbb | HIGH DAMP (28 - 128) |
+| | | -100 - 0 |
+| 00 0E | 000a aaaa | LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 0F | 000a aaaa | HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 10 | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 11 | 0aaa aaaa | DIRECT MIX (0 - 100) |

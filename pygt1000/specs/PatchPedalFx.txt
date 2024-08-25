@@ -1,0 +1,29 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 0000 000a | TYPE (0 - 1) |
+| | | PEDAL BEND, WAH |
+| 00 02 | 00aa aaaa | PITCH MAX (8 - 56) |
+| | | -24 - 24 |
+| 00 03 | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 04 | 0aaa aaaa | DIRECT MIX (0 - 100) |
+| 00 05 | 0000 0aaa | WAH TYPE (0 - 6) |
+| | | CRY WAH, VO WAH, FAT WAH, LIGHT WAH, 7STRING WAH, |
+| | | RESO WAH, BASS WAH |
+|# 00 06 | 0000 aaaa | |
+| 00 07 | 0000 bbbb | |
+| 00 08 | 0000 cccc | |
+| 00 09 | 0000 dddd | PEDAL MIN (0 - 1000) |
+|# 00 0A | 0000 aaaa | |
+| 00 0B | 0000 bbbb | |
+| 00 0C | 0000 cccc | |
+| 00 0D | 0000 dddd | PEDAL MAX (0 - 1000) |
+|# 00 0E | 0000 aaaa | |
+| 00 0F | 0000 bbbb | |
+| 00 10 | 0000 cccc | |
+| 00 11 | 0000 dddd | WAH:PEDAL POSITION (0 - 1000) |
+|# 00 12 | 0000 aaaa | |
+| 00 13 | 0000 bbbb | |
+| 00 14 | 0000 cccc | |
+| 00 15 | 0000 dddd | PEDAL BEND:PEDAL POSITION (0 - 1000) |
+| 00 16 | 00aa aaaa | PITCH MIN (8 - 56) |
+| | | -24 - 24 |

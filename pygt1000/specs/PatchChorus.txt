@@ -1,0 +1,88 @@
+| 00 00 | 0000 000a | SW (0 - 1) |
+| | | OFF, ON |
+| 00 01 | 0000 00aa | TYPE (0 - 3) |
+| | | MONO, STEREO 1, STEREO 2, DUAL |
+| 00 02 | 0aaa aaaa | RATE (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 03 | 0aaa aaaa | DEPTH (0 - 100) |
+| 00 04 | 0aaa aaaa | PRE-DELAY (0 - 80) |
+| | | 0.0ms, 0.5ms - 40.0ms |
+| 00 05 | 0aaa aaaa | EFFECT LEVEL (0 - 100) |
+| 00 06 | 0000 000a | WAVEFORM (0 - 1) |
+| | | TRI, SINE |
+| 00 07 | 000a aaaa | LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 08 | 000a aaaa | HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 09 | 0aaa aaaa | RATE 1 (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 0A | 0aaa aaaa | DEPTH 1 (0 - 100) |
+| 00 0B | 0aaa aaaa | PRE-DELAY 1 (0 - 80) |
+| | | 0.0ms, 0.5ms - 40.0ms |
+| 00 0C | 0aaa aaaa | EFFECT LEVEL 1 (0 - 100) |
+| 00 0D | 0000 000a | WAVEFORM 1 (0 - 1) |
+| | | TRI, SINE |
+| 00 0E | 000a aaaa | LOW CUT 1 (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 0F | 000a aaaa | HIGH CUT 1 (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 10 | 0aaa aaaa | RATE 2 (0 - 118) |
+| | | 0 - 100, DoubleWholeNote, DottedWholeNote, |
+| | | WholeNote, DottedHalfNote, TripletWholeNote, |
+| | | HalfNote, DottedQuarterNote, TripletHalfNote, |
+| | | QuarterNote, Dotted8thNote, TripletQuarterNote, |
+| | |8thNote, Dotted16thNote, Triplet8thNote, 16thNote, |
+| | | Dotted32ndNote, Triplet16thNote, 32ndNote |
+| 00 11 | 0aaa aaaa | DEPTH 2 (0 - 100) |
+| 00 12 | 0aaa aaaa | PRE-DELAY 2 (0 - 80) |
+| | | 0.0ms, 0.5ms - 40.0ms |
+| 00 13 | 0aaa aaaa | EFFECT LEVEL 2 (0 - 100) |
+| 00 14 | 0000 000a | WAVEFORM 2 (0 - 1) |
+| | | TRI, SINE |
+| 00 15 | 000a aaaa | LOW CUT 2 (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | |63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 16 | 000a aaaa | HIGH CUT 2 (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 17 | 0aaa aaaa | DIRECT LEVEL (0 - 100) |
+| 00 18 | 0000 000a | OUTPUT MODE (0 - 1) |
+| | | MONO, STEREO |
