@@ -242,8 +242,8 @@ class GT1000:
         return self.open_editor_mode()
 
     def close_ports(self):
-        self.midi_out.close()
-        self.midi_in.close()
+        self.midi_out.close_port()
+        self.midi_in.close_port()
 
     def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
         offset = self._construct_address_value(
