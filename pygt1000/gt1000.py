@@ -197,35 +197,38 @@ class GT1000:
                 else:
                     logger.warning("Opening ports failed")
 
-    def _get_midi_exact_port_names(self, portname):
+    def _get_midi_exact_port_names(self, in_portname, out_portname):
         """The portname usually contains an ID that can change depending on the other devices"""
         tmp_midi_out = rtmidi.MidiOut()
         port_count = tmp_midi_out.get_port_count()
         out_portname = None
         for i in range(port_count):
-            if tmp_midi_out.get_port_name(i).startswith(portname):
+            if tmp_midi_out.get_port_name(i).startswith(out_portname):
                 out_portname = tmp_midi_out.get_port_name(i)
 
         tmp_midi_in = rtmidi.MidiIn()
         port_count = tmp_midi_in.get_port_count()
         in_portname = None
         for i in range(port_count):
-            if tmp_midi_in.get_port_name(i).startswith(portname):
+            if tmp_midi_in.get_port_name(i).startswith(in_portname):
                 in_portname = tmp_midi_in.get_port_name(i)
         if in_portname is None:
             logger.error(
-                f"Failed to find MIDI input port starting with {portname}. Found {tmp_midi_in.get_ports()}"
+                f"Failed to find MIDI input port. Found {tmp_midi_in.get_ports()}"
             )
 
         if out_portname is None:
             logger.error(
-                f"Failed to find MIDI output port starting with {portname}. Found {tmp_midi_out.get_ports()}"
+                f"Failed to find MIDI output port. Found {tmp_midi_out.get_ports()}"
             )
         return in_portname, out_portname
 
-    def open_ports(self, portname=MIDI_PORT):
-        self.portname = portname
-        in_portname, out_portname = self._get_midi_exact_port_names(portname)
+    def open_ports(self, in_portname=MIDI_PORT, out_portname=MIDI_PORT):
+        self.in_portname = in_portname
+        self.out_portname = out_portname
+        in_portname, out_portname = self._get_midi_exact_port_names(
+            in_portname, out_portname
+        )
         if in_portname is None or out_portname is None:
             return False
         try:

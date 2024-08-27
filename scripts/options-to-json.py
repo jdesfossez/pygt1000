@@ -76,7 +76,7 @@ def process_data(lines):
                 offset_bytes.append(int(i, 16))
 
             name_with_range = parts[3].strip()
-            if not "(" in name_with_range:
+            if "(" not in name_with_range:
                 continue
             name, value_range = name_with_range.rsplit("(", 1)
             name = name.strip()
