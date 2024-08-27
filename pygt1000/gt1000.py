@@ -188,10 +188,10 @@ class GT1000:
                 continue
             else:
                 logger.warning(
-                    "Device not responding, trying to open {self.portname} again"
+                    "Device not responding, trying to open {self.in_portname} again"
                 )
                 self.close_ports()
-                out = self.open_ports(self.portname)
+                out = self.open_ports(self.in_portname, self.out_portname)
                 if out is True:
                     logger.warning("Opening ports succeeded")
                 else:
@@ -224,13 +224,13 @@ class GT1000:
         return in_portname, out_portname
 
     def open_ports(self, in_portname=MIDI_PORT, out_portname=MIDI_PORT):
-        self.in_portname = in_portname
-        self.out_portname = out_portname
         in_portname, out_portname = self._get_midi_exact_port_names(
             in_portname, out_portname
         )
         if in_portname is None or out_portname is None:
             return False
+        self.in_portname = in_portname
+        self.out_portname = out_portname
         try:
             self.midi_out, port_name = open_midioutput(out_portname)
         except (EOFError, KeyboardInterrupt):
