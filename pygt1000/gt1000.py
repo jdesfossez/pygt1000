@@ -208,22 +208,30 @@ class GT1000:
 
         tmp_midi_in = rtmidi.MidiIn()
         port_count = tmp_midi_in.get_port_count()
-        in_portname = None
+        exact_in_portname = None
         for i in range(port_count):
             if tmp_midi_in.get_port_name(i).startswith(in_portname):
-                in_portname = tmp_midi_in.get_port_name(i)
-        if in_portname is None:
+                exact_in_portname = tmp_midi_in.get_port_name(i)
+        if exact_in_portname is None:
             logger.error(
                 f"Failed to find MIDI input port. Found {tmp_midi_in.get_ports()}"
             )
 
-        if out_portname is None:
+        tmp_midi_out = rtmidi.MidiOut()
+        port_count = tmp_midi_out.get_port_count()
+        exact_out_portname = None
+        for i in range(port_count):
+            if tmp_midi_out.get_port_name(i).startswith(out_portname):
+                exact_out_portname = tmp_midi_out.get_port_name(i)
+        if exact_out_portname is None:
             logger.error(
                 f"Failed to find MIDI output port. Found {tmp_midi_out.get_ports()}"
             )
+
         return in_portname, out_portname
 
     def open_ports(self, in_portname=MIDI_PORT, out_portname=MIDI_PORT):
+        logger.info(f"Opening MIDI ports: {in_portname} and {out_portname}")
         in_portname, out_portname = self._get_midi_exact_port_names(
             in_portname, out_portname
         )
