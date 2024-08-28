@@ -492,9 +492,9 @@ class GT1000:
 
         # FIXME we don't compute the right checksum here for some reason, but the others are good
         data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH1, EDITOR_MODE_ADDRESS_LEN1, [0])
-        if data != EDITOR_REPLY1:
+        if data is None:
             return False
-        logger.debug("command1 ok")
+        logger.debug(f"command1 ok, received {data}")
 
         self.set_byte(EDITOR_MODE_ADDRESS_SET2, EDITOR_MODE_ADDESS_VALUE2)
         data = self.wait_recv_data(EDITOR_MODE_ADDRESS_SET2)
