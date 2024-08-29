@@ -13,6 +13,7 @@ from pathlib import Path
 from .constants import (
     SYSEX_END,
     ONE_BYTE,
+    TABLE_SUFFIX_TO_NAME,
     MODEL_ID,
     PATCH_NAMES_LEN,
     EDITOR_REPLY1,
@@ -50,7 +51,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def bytes_to_int(value):
@@ -85,6 +86,14 @@ class GT1000:
         self.stop = False
         # The current name for fx1-4
         self.current_fx_names = {}
+        # Map the 2 MSBs of an address to a section
+        self.first_two_bytes = {}
+        # Map an offset to its patch table (PatchFX, PatchEq, etc)
+        # One entry for each of the 3 Patch tables
+        self.offset_in_patch_tables = {}
+        # Option entry for the last byte (ex: "SW")
+        # One entry per table
+        self.last_byte_option = {}
 
         # Protect current_state and prevent state changes while refreshing
         self.state_lock = threading.Semaphore(1)
@@ -115,8 +124,11 @@ class GT1000:
         for i in (Path(__file__).parent / "specs").glob("*.json"):
             table_name = i.name.split(".")[0]
             table = json.loads(i.read_text())
-            if table_name == "Patch" or table_name == "Patch3":
+            if table_name in ["Patch", "Patch2", "Patch3"]:
+                if table_name not in self.offset_in_patch_tables:
+                    self.offset_in_patch_tables[table_name] = {}
                 for key in table:
+                    self.offset_in_patch_tables[table_name][table[key]["address"][1]] = (key, table[key]["table"])
                     if key in ["preampA", "preampB"]:
                         fx_type = "preamp"
                     else:
@@ -125,7 +137,80 @@ class GT1000:
                         continue
                     self.fx_types_count[fx_type] += 1
                     self.fx_tables[fx_type] = table[key]["table"]
+            elif table_name == "base-addresses":
+                for section in table:
+                    msbs = [table[section]["address"][0],
+                            table[section]["address"][1]]
+                    self.first_two_bytes[str(msbs)] = (section, table[section]["table"])
+            elif table_name.startswith("Patch"):
+                self.last_byte_option[table_name] = {}
+                for option in table:
+                    # For this copy the whole entry so we can decide later if we only want
+                    # the value or the name associated with the value.
+                    self.last_byte_option[table_name][table[option]["offset"][1]] = (option, table[option])
+
             self.tables[table_name] = table
+
+    def lookup(self, address, value):
+        ret = {}
+        if len(address) != 4:
+            logger.error(f"Unknown address format received {address}")
+            return None
+        if isinstance(value, list):
+            logger.error(f"value format must be int, received {value}")
+            return None
+        msbs = str([address[0], address[1]])
+        if not msbs in self.first_two_bytes:
+            logger.info(f"Data received for unknown address {bytes_as_hex(address)}")
+            return None
+        section, table = self.first_two_bytes[msbs]
+        if table not in self.offset_in_patch_tables:
+            return None
+        if address[2] not in self.offset_in_patch_tables[table]:
+            return None
+        name, patch_table = self.offset_in_patch_tables[table][address[2]]
+        if patch_table not in self.last_byte_option:
+            return None
+        value_name, value_entry = self.last_byte_option[patch_table][address[3]]
+        str_value = None
+        for i in value_entry["values"]:
+            if value_entry["values"][i] == value:
+                str_value = i
+        ret["section"] = section
+        ret["table"] = table
+        ret["name"] = name
+        ret["patch_table"] = patch_table
+        ret["value_name"] = value_name
+        ret["str_value"] = str_value
+        ret["int_value"] = value
+
+        # Now check if it's an fx_type and extract its fx_id
+        fx_type = None
+        fx_id = None
+        for i in self.fx_types:
+            if name.startswith(i):
+                fx_type = i
+                if name == i:
+                    fx_id = ""
+        if fx_type is None:
+            return ret
+        if fx_id is None:
+            if fx_type == "preamp" and name == "preampA":
+                fx_id = "1"
+            elif fx_type == "preamp" and name == "preampB":
+                fx_id = "2"
+            elif fx_type == "fx":
+                fx_id = name[2]
+            else:
+                fx_id = name.replace(fx_type, "")
+        if fx_type == "fx" and len(name) > 3:
+            fx_name = name[3:]
+            ret["fx_table_suffix"] = fx_name
+            if fx_name in TABLE_SUFFIX_TO_NAME:
+                ret["fx_name"] = TABLE_SUFFIX_TO_NAME[fx_name]
+        ret["fx_type"] = fx_type
+        ret["fx_id"] = fx_id
+        return ret
 
     def start_refresh_thread(self):
         """Background thread to refresh the known device state"""
@@ -456,7 +541,11 @@ class GT1000:
             self.assemble_message(RQ1_SYSEX_HEADER, offset + length, override_checksum),
             offset=offset,
         )
-        return self.wait_recv_data(offset)
+        data = self.wait_recv_data(offset)
+        if data is not None:
+            with self.data_semaphore:
+                del self.received_data[str(offset)]
+        return data
 
     def set_byte(self, offset, data):
         self.send_message(
@@ -690,27 +779,65 @@ class GT1000:
         return True
 
     def process_received_message(self, message):
-        # logger.debug("receiving")
-        if self.device_id == DEVICE_ID_BCAST and self._msg_identity_reply(message):
-            logger.debug("identity ok")
-            return
-        received_data_header = (
-            SYSEX_START + MANUFACTURER_ID + [self.device_id] + MODEL_ID + DT1_COMMAND_ID
-        )
-        for i in range(len(received_data_header)):
-            if message[i] != received_data_header[i]:
-                # logger.debug("Ignored received data")
+        # Process the data received by the callback
+        try:
+            # logger.debug("receiving")
+            if self.device_id == DEVICE_ID_BCAST and self._msg_identity_reply(message):
+                logger.debug("identity ok")
                 return
-        received_offset = message[
-            len(received_data_header) : len(received_data_header) + 4
-        ]
-        # The actual data is after the header and before the checksum + SYSEX_END
-        self.received_data[str(received_offset)] = message[
-            len(received_data_header) + 4 : -2
-        ]
-        logger.debug(
-            f"data received: {self.received_data[str(received_offset)]} for offset {received_offset}"
-        )
+            received_data_header = (
+                SYSEX_START + MANUFACTURER_ID + [self.device_id] + MODEL_ID + DT1_COMMAND_ID
+            )
+            # Make sure this message is coming from the unit
+            for i in range(len(received_data_header)):
+                if message[i] != received_data_header[i]:
+                    # logger.debug("Ignored received data")
+                    return
+            received_offset = message[ len(received_data_header) : len(received_data_header) + 4 ]
+            # The actual data is after the header and before the checksum + SYSEX_END
+            received_data = message[len(received_data_header) + 4 : -2]
+            logger.debug(
+                f"data received: {bytes_as_hex(received_data)} for offset {bytes_as_hex(received_offset)}"
+            )
+            with self.data_semaphore:
+                # If we are expecting that data, save it and return
+                if str(received_offset) in self.received_data:
+                    logger.debug("returning data")
+                    self.received_data[str(received_offset)] = received_data
+                    return
+            # If we are not waiting for that data, it's a message sent by the unit
+            # on its own we need to decode it and process the state change
+            logger.debug("data emitted by the unit")
+            self._process_data_from_unit(received_offset, received_data)
+        # Catch-all because otherwise nothing gets logged from the callback
+        # context and it is very confusing
+        except Exception:
+            logger.exception("process_received_message")
+
+
+    def _process_data_from_unit(self, received_offset, received_data):
+        ret = self.lookup(received_offset, received_data[0])
+        if ret is None:
+            logger.debug("unknown data received by the unit, ignoring")
+            return
+
+        # This could be a slider change
+        if "fx_table_suffix" in ret:
+            pass
+        else:
+            # This is state/name change
+            for fx in self.current_state[ret["fx_type"]]:
+                if fx["fx_id"] == ret["fx_id"]:
+                    now = datetime.now()
+                    with self.state_lock:
+                        if ret["value_name"] == "SW":
+                            logger.info(f"Changing state for {ret['fx_type']}{ret['fx_id']} from {fx['state']} to {ret['str_value']}")
+                            fx['state'] = ret['str_value']
+                        elif ret["value_name"] == "TYPE":
+                            logger.info(f"Changing type for {ret['fx_type']}{ret['fx_id']} from {fx['name']} to {ret['str_value']}")
+                            fx['name'] = ret['str_value']
+                        self.current_state["last_sync_ts"][ret["fx_type"]] = now
+
 
     def _construct_address_value(self, start_section, option, setting, param):
         # param is the setting we want to set, if None we just contruct the base address

@@ -103,3 +103,5 @@ FX_TO_TABLE_SUFFIX = {
     "SLOW GEAR BASS": "PatchFxSlowGearBass",
     "TOUCH WAH BASS": "PatchFxTWahBass",
 }
+
+TABLE_SUFFIX_TO_NAME = dict((v,k) for k,v in FX_TO_TABLE_SUFFIX.items())
