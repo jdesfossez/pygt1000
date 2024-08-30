@@ -171,6 +171,8 @@ class GT1000:
         name, patch_table = self.offset_in_patch_tables[table][address[2]]
         if patch_table not in self.last_byte_option:
             return None
+        if not address[3] in self.last_byte_option[patch_table]:
+            return None
         value_name, value_entry = self.last_byte_option[patch_table][address[3]]
         str_value = None
         for i in value_entry["values"]:
@@ -821,22 +823,34 @@ class GT1000:
             logger.debug("unknown data received by the unit, ignoring")
             return
 
-        # This could be a slider change
-        if "fx_table_suffix" in ret:
-            pass
-        else:
-            # This is state/name change
-            for fx in self.current_state[ret["fx_type"]]:
-                if fx["fx_id"] == ret["fx_id"]:
-                    now = datetime.now()
-                    with self.state_lock:
-                        if ret["value_name"] == "SW":
-                            logger.info(f"Changing state for {ret['fx_type']}{ret['fx_id']} from {fx['state']} to {ret['str_value']}")
-                            fx['state'] = ret['str_value']
-                        elif ret["value_name"] == "TYPE":
-                            logger.info(f"Changing type for {ret['fx_type']}{ret['fx_id']} from {fx['name']} to {ret['str_value']}")
-                            fx['name'] = ret['str_value']
-                        self.current_state["last_sync_ts"][ret["fx_type"]] = now
+        now = datetime.now()
+        for fx in self.current_state[ret["fx_type"]]:
+            if fx["fx_id"] != ret["fx_id"]:
+                continue
+            matches = False
+            with self.state_lock:
+                if ret["value_name"] == "SW":
+                    logger.info(f"{ret['fx_type']}{ret['fx_id']}: {fx['state']} -> {ret['str_value']}")
+                    fx['state'] = ret['str_value']
+                    matches = True
+                elif ret["value_name"] == "TYPE":
+                    logger.info(f"{ret['fx_type']}{ret['fx_id']}: {fx['name']} -> {ret['str_value']}")
+                    fx['name'] = ret['str_value']
+                    matches = True
+                else:
+                    if fx["slider1"] is not None:
+                        if fx["slider1"]["label"] == ret["value_name"]:
+                            logger.info(f"{ret['fx_type']}{ret['fx_id']} slider1 {ret['value_name']}: {fx['slider1']['value']} -> {ret['int_value']}")
+                            fx["slider1"]["value"] = ret["int_value"]
+                            matches = True
+                    if fx["slider2"] is not None:
+                        if fx["slider2"]["label"] == ret["value_name"]:
+                            logger.info(f"{ret['fx_type']}{ret['fx_id']} slider2 {ret['value_name']}: {fx['slider2']['value']} -> {ret['int_value']}")
+                            fx["slider2"]["value"] = ret["int_value"]
+                            matches = True
+                if matches:
+                    self.current_state["last_sync_ts"][ret["fx_type"]] = now
+                return
 
 
     def _construct_address_value(self, start_section, option, setting, param):
