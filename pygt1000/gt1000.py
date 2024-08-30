@@ -14,15 +14,13 @@ from .constants import (
     SYSEX_END,
     ONE_BYTE,
     TABLE_SUFFIX_TO_NAME,
+    PROGRAM_CHANGE_OFFSET,
     MODEL_ID,
     PATCH_NAMES_LEN,
-    EDITOR_REPLY1,
     EDITOR_REPLY2,
     EDITOR_REPLY3,
     DEVICE_ID_BCAST,
     PATCH_NAMES_BEGIN_OFFSET,
-    EDITOR_MODE_ADDRESS_FETCH1,
-    EDITOR_MODE_ADDRESS_LEN1,
     EDITOR_MODE_ADDRESS_SET2,
     EDITOR_MODE_ADDESS_VALUE2,
     EDITOR_MODE_ADDRESS_FETCH3,
@@ -95,6 +93,9 @@ class GT1000:
         # One entry per table
         self.last_byte_option = {}
 
+        # Block the refresh thread until we detect a program change
+        self.refresh_event = threading.Event()
+
         # Protect current_state and prevent state changes while refreshing
         self.state_lock = threading.Semaphore(1)
         # The known state of the effects
@@ -128,7 +129,9 @@ class GT1000:
                 if table_name not in self.offset_in_patch_tables:
                     self.offset_in_patch_tables[table_name] = {}
                 for key in table:
-                    self.offset_in_patch_tables[table_name][table[key]["address"][1]] = (key, table[key]["table"])
+                    self.offset_in_patch_tables[table_name][
+                        table[key]["address"][1]
+                    ] = (key, table[key]["table"])
                     if key in ["preampA", "preampB"]:
                         fx_type = "preamp"
                     else:
@@ -139,15 +142,17 @@ class GT1000:
                     self.fx_tables[fx_type] = table[key]["table"]
             elif table_name == "base-addresses":
                 for section in table:
-                    msbs = [table[section]["address"][0],
-                            table[section]["address"][1]]
+                    msbs = [table[section]["address"][0], table[section]["address"][1]]
                     self.first_two_bytes[str(msbs)] = (section, table[section]["table"])
             elif table_name.startswith("Patch"):
                 self.last_byte_option[table_name] = {}
                 for option in table:
                     # For this copy the whole entry so we can decide later if we only want
                     # the value or the name associated with the value.
-                    self.last_byte_option[table_name][table[option]["offset"][1]] = (option, table[option])
+                    self.last_byte_option[table_name][table[option]["offset"][1]] = (
+                        option,
+                        table[option],
+                    )
 
             self.tables[table_name] = table
 
@@ -160,7 +165,7 @@ class GT1000:
             logger.error(f"value format must be int, received {value}")
             return None
         msbs = str([address[0], address[1]])
-        if not msbs in self.first_two_bytes:
+        if msbs not in self.first_two_bytes:
             logger.info(f"Data received for unknown address {bytes_as_hex(address)}")
             return None
         section, table = self.first_two_bytes[msbs]
@@ -171,7 +176,7 @@ class GT1000:
         name, patch_table = self.offset_in_patch_tables[table][address[2]]
         if patch_table not in self.last_byte_option:
             return None
-        if not address[3] in self.last_byte_option[patch_table]:
+        if address[3] not in self.last_byte_option[patch_table]:
             return None
         value_name, value_entry = self.last_byte_option[patch_table][address[3]]
         str_value = None
@@ -241,11 +246,10 @@ class GT1000:
 
     def refresh_state_thread(self):
         while not self.stop:
-            for i in range(10):
-                if self.stop:
-                    return
-                time.sleep(REFRESH_STATE_POLL_RATE_SEC / 10)
-            self.refresh_state()
+            time.sleep(REFRESH_STATE_POLL_RATE_SEC / 10)
+            if self.refresh_event.is_set():
+                self.refresh_event.clear()
+                self.refresh_state()
 
     def request_identity(self):
         # TODO: this should be a background thread so we update the ID if the
@@ -582,10 +586,12 @@ class GT1000:
         # device is responsive.
 
         # FIXME we don't compute the right checksum here for some reason, but the others are good
-        data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH1, EDITOR_MODE_ADDRESS_LEN1, [0])
-        if data is None:
-            return False
-        logger.debug(f"command1 ok, received {data}")
+        # Disabled this fetch, it doesn't seem to respond the first time, so we timeout and retry
+        # also it's not clear what that does, everything works fine without it.
+        # data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH1, EDITOR_MODE_ADDRESS_LEN1, [0])
+        # if data is None:
+        #    return False
+        # logger.debug(f"command1 ok, received {data}")
 
         self.set_byte(EDITOR_MODE_ADDRESS_SET2, EDITOR_MODE_ADDESS_VALUE2)
         data = self.wait_recv_data(EDITOR_MODE_ADDRESS_SET2)
@@ -788,14 +794,20 @@ class GT1000:
                 logger.debug("identity ok")
                 return
             received_data_header = (
-                SYSEX_START + MANUFACTURER_ID + [self.device_id] + MODEL_ID + DT1_COMMAND_ID
+                SYSEX_START
+                + MANUFACTURER_ID
+                + [self.device_id]
+                + MODEL_ID
+                + DT1_COMMAND_ID
             )
             # Make sure this message is coming from the unit
             for i in range(len(received_data_header)):
                 if message[i] != received_data_header[i]:
                     # logger.debug("Ignored received data")
                     return
-            received_offset = message[ len(received_data_header) : len(received_data_header) + 4 ]
+            received_offset = message[
+                len(received_data_header) : len(received_data_header) + 4
+            ]
             # The actual data is after the header and before the checksum + SYSEX_END
             received_data = message[len(received_data_header) + 4 : -2]
             logger.debug(
@@ -816,8 +828,13 @@ class GT1000:
         except Exception:
             logger.exception("process_received_message")
 
-
     def _process_data_from_unit(self, received_offset, received_data):
+        # program change, we need to refresh the whole state
+        if received_offset == PROGRAM_CHANGE_OFFSET:
+            logger.info(f"Switching to program {bytes_as_hex(received_data)}")
+            # Unblock the refresh thread
+            self.refresh_event.set()
+            return
         ret = self.lookup(received_offset, received_data[0])
         if ret is None:
             logger.debug("unknown data received by the unit, ignoring")
@@ -830,28 +847,36 @@ class GT1000:
             matches = False
             with self.state_lock:
                 if ret["value_name"] == "SW":
-                    logger.info(f"{ret['fx_type']}{ret['fx_id']}: {fx['state']} -> {ret['str_value']}")
-                    fx['state'] = ret['str_value']
+                    logger.info(
+                        f"{ret['fx_type']}{ret['fx_id']}: {fx['state']} -> {ret['str_value']}"
+                    )
+                    fx["state"] = ret["str_value"]
                     matches = True
                 elif ret["value_name"] == "TYPE":
-                    logger.info(f"{ret['fx_type']}{ret['fx_id']}: {fx['name']} -> {ret['str_value']}")
-                    fx['name'] = ret['str_value']
+                    # TODO: when switching type, we also need to refresh the sliders
+                    logger.info(
+                        f"{ret['fx_type']}{ret['fx_id']}: {fx['name']} -> {ret['str_value']}"
+                    )
+                    fx["name"] = ret["str_value"]
                     matches = True
                 else:
                     if fx["slider1"] is not None:
                         if fx["slider1"]["label"] == ret["value_name"]:
-                            logger.info(f"{ret['fx_type']}{ret['fx_id']} slider1 {ret['value_name']}: {fx['slider1']['value']} -> {ret['int_value']}")
+                            logger.info(
+                                f"{ret['fx_type']}{ret['fx_id']} slider1 {ret['value_name']}: {fx['slider1']['value']} -> {ret['int_value']}"
+                            )
                             fx["slider1"]["value"] = ret["int_value"]
                             matches = True
                     if fx["slider2"] is not None:
                         if fx["slider2"]["label"] == ret["value_name"]:
-                            logger.info(f"{ret['fx_type']}{ret['fx_id']} slider2 {ret['value_name']}: {fx['slider2']['value']} -> {ret['int_value']}")
+                            logger.info(
+                                f"{ret['fx_type']}{ret['fx_id']} slider2 {ret['value_name']}: {fx['slider2']['value']} -> {ret['int_value']}"
+                            )
                             fx["slider2"]["value"] = ret["int_value"]
                             matches = True
                 if matches:
                     self.current_state["last_sync_ts"][ret["fx_type"]] = now
                 return
-
 
     def _construct_address_value(self, start_section, option, setting, param):
         # param is the setting we want to set, if None we just contruct the base address

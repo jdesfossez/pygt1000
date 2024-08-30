@@ -19,6 +19,9 @@ IDENTITY_REPLY = [0x02]
 
 ONE_BYTE = [0x0, 0x0, 0x0, 0x1]
 
+# This is where the current program ID gets stored
+PROGRAM_CHANGE_OFFSET = [0x7F, 0x0, 0x1, 0x0]
+
 # [0xf0, 0x7e, 0x7f, 0x6, 0x1, 0xf7]
 IDENTITY_REQUEST_MSG = (
     SYSEX_START + NON_RT_MSG + BCAST_DEV_ID + GEN_INFO + IDENTITY_REQUEST + SYSEX_END
@@ -104,4 +107,4 @@ FX_TO_TABLE_SUFFIX = {
     "TOUCH WAH BASS": "PatchFxTWahBass",
 }
 
-TABLE_SUFFIX_TO_NAME = dict((v,k) for k,v in FX_TO_TABLE_SUFFIX.items())
+TABLE_SUFFIX_TO_NAME = dict((v, k) for k, v in FX_TO_TABLE_SUFFIX.items())
