@@ -112,6 +112,7 @@ class GT1000:
             "chorus",
             "fx",
             "pedalFx",
+            "reverb",
         ]
         self.fx_tables = {}
         self.fx_types_count = {}
