@@ -49,7 +49,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def bytes_to_int(value):
@@ -925,3 +925,21 @@ class GT1000:
 
         setting_entry = self.tables[option_entry["table"]][setting]
         return setting_entry["value_range"]
+
+    def _sliceindex(self, x):
+        i = 0
+        for c in x:
+            if c.isalpha():
+                i = i + 1
+                return i
+            i = i + 1
+
+    def _upperfirst(self, x):
+        i = self._sliceindex(x)
+        return x[:i].upper() + x[i:]
+
+    def get_all_fx_types(self, fx_type):
+        table_name = f"Patch{self._upperfirst(fx_type)}"
+        if not table_name in self.tables:
+            return None
+        return self.tables[table_name]["TYPE"]["values"]

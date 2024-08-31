@@ -135,3 +135,13 @@ def test_value_lookup():
     assert gt.lookup([0x10, 0x0, 0x24, 0x0], 0x1)["fx_table_suffix"] == "AGSim"
     assert gt.lookup([0x10, 0x0, 0x24, 0x0], 0x1)["patch_table"] == "PatchFxAGSim"
     assert gt.lookup([0x10, 0x0, 0x24, 0x0], 0x1)["fx_name"] == "AC GUITAR SIM"
+
+def test_get_all_fx_types():
+    gt = GT1000()
+    all_types = gt.get_all_fx_types("fx")
+    assert "CHORUS" in all_types
+
+    for fx_type in gt.fx_types:
+        if fx_type in ["ns", "delay"]:
+            continue
+        assert len(gt.get_all_fx_types(fx_type)) > 0
