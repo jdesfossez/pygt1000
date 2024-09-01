@@ -145,3 +145,8 @@ def test_get_all_fx_types():
         if fx_type in ["ns", "delay"]:
             continue
         assert len(gt.get_all_fx_types(fx_type)) > 0
+
+def test_get_value_from_value_name():
+    gt = GT1000()
+    value = gt.get_fx_value_from_value_name("fx", "TYPE", "CHORUS")
+    assert value == 3

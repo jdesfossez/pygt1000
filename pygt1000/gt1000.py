@@ -343,7 +343,7 @@ class GT1000:
 
     def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
         offset = self._construct_address_value(
-            self._get_start_section(fx_type, fx_id),
+            self._get_start_section(fx_type, str(fx_id)),
             f"{fx_type}{fx_id}",
             value_entry,
             None,
@@ -384,7 +384,7 @@ class GT1000:
 
     def _get_one_slider(self, fx_type, fx_id, option):
         value_range = self._lookup_value_range(
-            self._get_start_section(fx_type, fx_id), f"{fx_type}{fx_id}", option
+            self._get_start_section(fx_type, str(fx_id)), f"{fx_type}{fx_id}", option
         )
         value = self._get_one_fx_type_value(fx_type, fx_id, option, just_range=True)
         return {
@@ -531,15 +531,7 @@ class GT1000:
         logger.debug("get_all_fx_type_state")
         out = []
         for i in range(self.fx_types_count[fx_type]):
-            # Blocks with a single instance like "comp" don't have an numeric ID
-            if self.fx_types_count[fx_type] == 1:
-                fx_id = ""
-            elif fx_type == "preamp" and i == 0:
-                fx_id = "A"
-            elif fx_type == "preamp" and i == 1:
-                fx_id = "B"
-            else:
-                fx_id = str(i + 1)
+            fx_type, fx_id = self._normalize_fx_block(fx_type, i + 1)
             out.append(self._get_one_fx_state(fx_type, fx_id))
         return out
 
@@ -644,14 +636,18 @@ class GT1000:
             return "patch3 (temporary patch)"
         return "patch (temporary patch)"
 
-    def toggle_fx_state(self, fx_type, fx_id, state):
-        # Strip the number for blocks with only one instance
+    def _normalize_fx_block(self, fx_type, fx_id):
         if self.fx_types_count[fx_type] == 1:
             fx_id = ""
         elif fx_type == "preamp" and fx_id == 1:
             fx_id = "A"
         elif fx_type == "preamp" and fx_id == 2:
             fx_id = "B"
+        return fx_type, fx_id
+
+    def toggle_fx_state(self, fx_type, fx_id, state):
+        fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
+        # Strip the number for blocks with only one instance
         self.send_message(
             self.build_dt_message(
                 self._get_start_section(fx_type, fx_id),
@@ -665,14 +661,9 @@ class GT1000:
         # the sliders can want to send float
         value = int(value)
         # Strip the number for blocks with only one instance
-        if self.fx_types_count[fx_type] == 1:
-            fx_id = ""
-        elif fx_type == "preamp" and fx_id == 1:
-            fx_id = "A"
-        elif fx_type == "preamp" and fx_id == 2:
-            fx_id = "B"
+        fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         if fx_type == "fx":
-            fx_name = self.current_fx_names[str(fx_id)]
+            fx_name = self.current_fx_names[fx_id]
             table_suffix = FX_TO_TABLE_SUFFIX[fx_name]
             full_name = f"fx{fx_id}{table_suffix}"
             logger.info(
@@ -694,6 +685,35 @@ class GT1000:
                     f"{fx_type}{fx_id}",
                     option,
                     value,
+                )
+            )
+
+    def get_fx_value_from_value_name(self, fx_type, prop, value_name):
+        table_name = self.fx_type_table_name(fx_type)
+        if table_name is None:
+            logger.error(f"{fx_type} not found in tables")
+            return None
+        if not prop in self.tables[table_name]:
+            logger.error(f"{prop} not found in {self.tables[table_name].keys()}")
+            return None
+        if not "values" in self.tables[table_name][prop]:
+            logger.error("No 'values' field in table {table_name} {prop}")
+            return None
+        for name in self.tables[table_name][prop]["values"]:
+            if name == value_name:
+                return self.tables[table_name][prop]["values"][name]
+        return None
+
+    def set_fx_type_type(self, fx_type, fx_id, new_type):
+        type_value = self.get_fx_value_from_value_name(fx_type, "TYPE", new_type)
+        if type_value is None:
+            logger.error("Failed to set {fx_type}{fx_id} TYPE to {new_type}")
+        self.send_message(
+            self.build_dt_message(
+                self._get_start_section(fx_type, fx_id),
+                f"{fx_type}{fx_id}",
+                "TYPE",
+                type_value,
                 )
             )
 
@@ -938,8 +958,13 @@ class GT1000:
         i = self._sliceindex(x)
         return x[:i].upper() + x[i:]
 
+    def fx_type_table_name(self, fx_type):
+        return f"Patch{self._upperfirst(fx_type)}"
+
     def get_all_fx_types(self, fx_type):
-        table_name = f"Patch{self._upperfirst(fx_type)}"
+        if fx_type in ["ns", "delay"]:
+            return []
+        table_name = self.fx_type_table_name(fx_type)
         if not table_name in self.tables:
             return None
-        return self.tables[table_name]["TYPE"]["values"]
+        return list(self.tables[table_name]["TYPE"]["values"].keys())
