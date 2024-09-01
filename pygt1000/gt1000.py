@@ -863,7 +863,7 @@ class GT1000:
 
         now = datetime.now()
         for fx in self.current_state[ret["fx_type"]]:
-            if fx["fx_id"] != ret["fx_id"]:
+            if str(fx["fx_id"]) != str(ret["fx_id"]):
                 continue
             matches = False
             with self.state_lock:
@@ -874,11 +874,17 @@ class GT1000:
                     fx["state"] = ret["str_value"]
                     matches = True
                 elif ret["value_name"] == "TYPE":
-                    # TODO: when switching type, we also need to refresh the sliders
                     logger.info(
                         f"{ret['fx_type']}{ret['fx_id']}: {fx['name']} -> {ret['str_value']}"
                     )
                     fx["name"] = ret["str_value"]
+                    # FIXME: we can't ask from here, need async method to update the sliders
+                    #slider1, slider2 = self._get_sliders(ret['fx_type'], int(ret['fx_id']) - 1, ret["str_value"])
+                    #fx["slider1"] = slider1
+                    #fx["slider2"] = slider2
+                    # FIXME, this is too heavy, we know exactly what we want here, no need for
+                    # a full scan
+                    self.refresh_event.set()
                     matches = True
                 else:
                     if fx["slider1"] is not None:
