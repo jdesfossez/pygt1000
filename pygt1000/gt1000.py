@@ -95,6 +95,12 @@ class GT1000:
 
         # Block the refresh thread until we detect a program change
         self.refresh_event = threading.Event()
+        # What do we need to refresh when the refresh thread kicks off ?
+        # {type: "full"}: scan all the blocks
+        # {type: "sliders", fx_type: <fx_type>, fx_id: <fx_id>}: just the sliders for
+        # a specific fx type/id.
+        # Add/remove to the queue protected by the state_lock
+        self.refresh_queue = []
 
         # Protect current_state and prevent state changes while refreshing
         self.state_lock = threading.Semaphore(1)
@@ -250,7 +256,28 @@ class GT1000:
             time.sleep(REFRESH_STATE_POLL_RATE_SEC / 10)
             if self.refresh_event.is_set():
                 self.refresh_event.clear()
-                self.refresh_state()
+                with self.state_lock:
+                    if len(self.refresh_queue) < 1:
+                        logger.error("Refresh started, but refresh queue empty")
+                        continue
+                    task = self.refresh_queue.pop(0)
+                    # If it was the last event, clear the refresh_event
+                    if len(self.refresh_queue) == 0:
+                        self.refresh_event.clear()
+                if task["type"] == "full":
+                    self.refresh_state()
+                elif task["type"] == "sliders":
+                    slider1, slider2 = self._get_sliders(
+                        task["fx_type"], task["fx_id"], None
+                    )
+                    with self.state_lock:
+                        for fx in self.current_state[task["fx_type"]]:
+                            if str(fx["fx_id"]) == str(task["fx_id"]):
+                                fx["slider1"] = slider1
+                                fx["slider2"] = slider2
+                                break
+                else:
+                    logger.error("Unknown refresh task {task}")
 
     def request_identity(self):
         # TODO: this should be a background thread so we update the ID if the
@@ -371,6 +398,8 @@ class GT1000:
             value_entry,
             None,
         )
+        if offset is None:
+            return None
         data = self.fetch_mem(offset, ONE_BYTE)
         if data is None:
             logger.warning(f"_get_one_fx_value no data for {fx_type}{fx_id} {fx_name}")
@@ -402,6 +431,8 @@ class GT1000:
             option,
         )
         value = self._get_one_fx_value(fx_type, fx_id, option)
+        if value is None:
+            return None
         return {
             "value": value,
             "label": option,
@@ -693,10 +724,10 @@ class GT1000:
         if table_name is None:
             logger.error(f"{fx_type} not found in tables")
             return None
-        if not prop in self.tables[table_name]:
+        if prop not in self.tables[table_name]:
             logger.error(f"{prop} not found in {self.tables[table_name].keys()}")
             return None
-        if not "values" in self.tables[table_name][prop]:
+        if "values" not in self.tables[table_name][prop]:
             logger.error("No 'values' field in table {table_name} {prop}")
             return None
         for name in self.tables[table_name][prop]["values"]:
@@ -708,14 +739,15 @@ class GT1000:
         type_value = self.get_fx_value_from_value_name(fx_type, "TYPE", new_type)
         if type_value is None:
             logger.error("Failed to set {fx_type}{fx_id} TYPE to {new_type}")
+        fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         self.send_message(
             self.build_dt_message(
                 self._get_start_section(fx_type, fx_id),
                 f"{fx_type}{fx_id}",
                 "TYPE",
                 type_value,
-                )
             )
+        )
 
     def send_message(self, message, offset=None):
         with self.data_semaphore:
@@ -854,6 +886,8 @@ class GT1000:
         if received_offset == PROGRAM_CHANGE_OFFSET:
             logger.info(f"Switching to program {bytes_as_hex(received_data)}")
             # Unblock the refresh thread
+            with self.state_lock:
+                self.refresh_queue.append({"type": "full"})
             self.refresh_event.set()
             return
         ret = self.lookup(received_offset, received_data[0])
@@ -862,11 +896,15 @@ class GT1000:
             return
 
         now = datetime.now()
-        for fx in self.current_state[ret["fx_type"]]:
-            if str(fx["fx_id"]) != str(ret["fx_id"]):
-                continue
-            matches = False
-            with self.state_lock:
+        with self.state_lock:
+            # Make sure we finished the first state gathering before entering
+            # here.
+            if (len(self.current_state) - 1) != len(self.fx_types):
+                return
+            for fx in self.current_state[ret["fx_type"]]:
+                if str(fx["fx_id"]) != str(ret["fx_id"]):
+                    continue
+                matches = False
                 if ret["value_name"] == "SW":
                     logger.info(
                         f"{ret['fx_type']}{ret['fx_id']}: {fx['state']} -> {ret['str_value']}"
@@ -878,12 +916,15 @@ class GT1000:
                         f"{ret['fx_type']}{ret['fx_id']}: {fx['name']} -> {ret['str_value']}"
                     )
                     fx["name"] = ret["str_value"]
-                    # FIXME: we can't ask from here, need async method to update the sliders
-                    #slider1, slider2 = self._get_sliders(ret['fx_type'], int(ret['fx_id']) - 1, ret["str_value"])
-                    #fx["slider1"] = slider1
-                    #fx["slider2"] = slider2
-                    # FIXME, this is too heavy, we know exactly what we want here, no need for
-                    # a full scan
+                    if ret["fx_type"] == "fx":
+                        self.current_fx_names[int(ret["fx_id"])] = fx["name"]
+                    if len(ret["fx_id"]) > 0:
+                        fx_id = int(ret["fx_id"])
+                    else:
+                        fx_id = ""
+                    self.refresh_queue.append(
+                        {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}
+                    )
                     self.refresh_event.set()
                     matches = True
                 else:
@@ -914,9 +955,15 @@ class GT1000:
         section_entry = self.tables["base-addresses"][start_section]
         address = bytes_to_int(section_entry["address"])
 
+        if option not in self.tables[section_entry["table"]]:
+            logger.error(f"{option} not in section table")
+            return None
         option_entry = self.tables[section_entry["table"]][option]
         option_address_offset = bytes_to_int(option_entry["address"])
 
+        if setting not in self.tables[option_entry["table"]]:
+            logger.error(f"{setting} not in option_entry")
+            return None
         setting_entry = self.tables[option_entry["table"]][setting]
         setting_address_offset = bytes_to_int(setting_entry["offset"])
 
@@ -947,6 +994,9 @@ class GT1000:
 
         section_entry = self.tables["base-addresses"][start_section]
 
+        if option not in self.tables[section_entry["table"]]:
+            logger.error(f"Entry {option} not in section table")
+            return None
         option_entry = self.tables[section_entry["table"]][option]
 
         setting_entry = self.tables[option_entry["table"]][setting]
@@ -971,6 +1021,11 @@ class GT1000:
         if fx_type in ["ns", "delay"]:
             return []
         table_name = self.fx_type_table_name(fx_type)
-        if not table_name in self.tables:
+        if table_name not in self.tables:
             return None
-        return list(self.tables[table_name]["TYPE"]["values"].keys())
+        return [
+            x
+            for x in self.tables[table_name]["TYPE"]["values"].keys()
+            if x
+            not in ["DEFRETTER BASS", "OCTAVE BASS", "SLOW GEAR BASS", "TOUCH WAH BASS"]
+        ]
