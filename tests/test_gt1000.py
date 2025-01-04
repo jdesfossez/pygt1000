@@ -120,6 +120,7 @@ def test_set_value_message():
         0xF7,
     ]
 
+
 def test_value_lookup():
     gt = GT1000()
     assert gt.lookup([0x10, 0x0, 0x23, 0x0], 0x1)["name"] == "fx1"
@@ -136,6 +137,7 @@ def test_value_lookup():
     assert gt.lookup([0x10, 0x0, 0x24, 0x0], 0x1)["patch_table"] == "PatchFxAGSim"
     assert gt.lookup([0x10, 0x0, 0x24, 0x0], 0x1)["fx_name"] == "AC GUITAR SIM"
 
+
 def test_get_all_fx_types():
     gt = GT1000()
     all_types = gt.get_all_fx_types("fx")
@@ -145,6 +147,7 @@ def test_get_all_fx_types():
         if fx_type in ["ns", "delay"]:
             continue
         assert len(gt.get_all_fx_types(fx_type)) > 0
+
 
 def test_get_value_from_value_name():
     gt = GT1000()

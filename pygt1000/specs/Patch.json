@@ -1,4 +1,13 @@
 {
+    "efct": {
+        "address": [
+            0,
+            16,
+            0
+        ],
+        "table": "PatchEfct",
+        "hex_address": "[0x0, 0x10, 0x0]"
+    },
     "comp": {
         "address": [
             0,

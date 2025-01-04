@@ -38,6 +38,8 @@ from .constants import (
     GT1000_FAMILY,
 )
 
+from .chain import parse_chain, serialize_chain
+
 MIDI_PORT = "GT-1000:GT-1000 MIDI 1"
 SLEEP_WAIT_SEC = 0.1
 REFRESH_STATE_POLL_RATE_SEC = 2
@@ -963,6 +965,7 @@ class GT1000:
 
         if setting not in self.tables[option_entry["table"]]:
             logger.error(f"{setting} not in option_entry")
+            logger.debug(f"entries: {self.tables[option_entry['table']].keys()}")
             return None
         setting_entry = self.tables[option_entry["table"]][setting]
         setting_address_offset = bytes_to_int(setting_entry["offset"])
@@ -1029,3 +1032,40 @@ class GT1000:
             if x
             not in ["DEFRETTER BASS", "OCTAVE BASS", "SLOW GEAR BASS", "TOUCH WAH BASS"]
         ]
+
+    def _chain_byte_list(self):
+        start_section = self._get_start_section("efct", "0")
+        option = "efct"
+        setting = "CHAIN ELEMENT1"
+        return self._construct_address_value(start_section, option, setting, None)
+
+    def read_chain(self):
+        # Return the chain as a list of words
+        int_chain = self.fetch_mem(self._chain_byte_list(), ONE_BYTE)
+        txt_chain = []
+        for i in int_chain:
+            txt_chain.append(self.tables["ChainElement"][str(i)])
+        return txt_chain
+
+    def parse_chain(self, txt_chain):
+        # Return the chain as an object list
+        return parse_chain(txt_chain)
+
+    def serialize_chain(self, chain):
+        return serialize_chain(chain)
+
+    def write_chain_from_txt(self, txt_chain):
+        # Send the chain to the unit from a text list.
+        # ex: ['PEDALFX', 'COMPRESSOR', 'EQUALIZER3', ...]
+        int_chain = []
+        for i in txt_chain:
+            int_chain.append(int(self.tables["ChainElement"][i]))
+
+        set_chain = self._build_message(
+            DT1_SYSEX_HEADER, self._chain_byte_list() + int_chain
+        )
+        self.send_message(set_chain)
+
+    def write_chain_from_obj(self, obj_chain):
+        txt_chain = self.serialize_chain(obj_chain)
+        self.write_chain_from_txt(txt_chain)
