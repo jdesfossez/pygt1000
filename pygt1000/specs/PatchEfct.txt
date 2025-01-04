@@ -1,0 +1,224 @@
+|# 00 00 | 0000 aaaa | |
+| 00 01 | 0000 bbbb | |
+| 00 02 | 0000 cccc | |
+| 00 03 | 0000 dddd | FOOT VOLUME:VOLUME MIN (0 - 1000) |
+| | | 0.0 - 100.0 |
+|# 00 04 | 0000 aaaa | |
+| 00 05 | 0000 bbbb | |
+| 00 06 | 0000 cccc | |
+| 00 07 | 0000 dddd | FOOT VOLUME:VOLUME MAX (0 - 1000) |
+| | | 0.0 - 100.0 |
+|# 00 08 | 0000 aaaa | |
+| 00 09 | 0000 bbbb | |
+| 00 0A | 0000 cccc | |
+| 00 0B | 0000 dddd | FOOT VOLUME:PEDAL POSITION (0 - 1000) |
+| | | 0.0 - 100.0 |
+| 00 0C | 0000 00aa | FOOT VOLUME:VOLUME CURVE (0 - 3) |
+| | | SLOW1, SLOW2, NORMAL, FAST |
+| 00 0D | 0000 000a | DIV1:MODE (0 - 1) |
+| | | SINGLE, DUAL |
+| 00 0E | 0000 000a | DIV1:CH SELECT (0 - 1) |
+| | | A, B |
+| 00 0F | 0000 00aa | DIV1 A:DYNAMIC (0 - 2) |
+| | | OFF, POLAR+, POLAR- |
+| 00 10 | 0aaa aaaa | DIV1 A:DYNA SENS (0 - 100) |
+| 00 11 | 0000 00aa | DIV1 A:FILTER (0 - 2) |
+| | | OFF, LPF, HPF |
+| 00 12 | 000a aaaa | DIV1 A:CUTOFF FREQ (0 - 16) |
+| | | 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, 400Hz, |
+| | | 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, 1.60kHz, |
+| | | 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz |
+| 00 13 | 0000 00aa | DIV1 B:DYNAMIC (0 - 2) |
+| | | OFF, POLAR+, POLAR- |
+| 00 14 | 0aaa aaaa | DIV1 B:DYNA SENS (0 - 100) |
+| 00 15 | 0000 00aa | DIV1 B:FILTER (0 - 2) |
+| | | OFF, LPF, HPF |
+| 00 16 | 000a aaaa | DIV1 B:CUTOFF FREQ (0 - 16) |
+| | | 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, 400Hz, |
+| | | 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, 1.60kHz, |
+| | | 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz |
+| 00 17 | 0000 000a | MIX1:MODE (0 - 1) |
+| | | STEREO, PAN L/R |
+| 00 18 | 0aaa aaaa | MIX1:A/B BALANCE (0 - 100) |
+| | | 100:0, 100:2 - 100:100 - 2:100, 0:100 |
+| 00 19 | 0aaa aaaa | MIX1:SPREAD (0 - 100) |
+| 00 1A | 0000 000a | DIV2:MODE (0 - 1) |
+| | | SINGLE, DUAL |
+| 00 1B | 0000 000a | DIV2:CH SELECT (0 - 1) |
+| | | A, B |
+| 00 1C | 0000 00aa | DIV2 A:DYNAMIC (0 - 2) |
+| | | OFF, POLAR+, POLAR- |
+| 00 1D | 0aaa aaaa | DIV2 A:DYNA SENS (0 - 100) |
+| 00 1E | 0000 00aa | DIV2 A:FILTER (0 - 2) |
+| | | OFF, LPF, HPF |
+| 00 1F | 000a aaaa | DIV2 A:CUTOFF FREQ (0 - 16) |
+| | | 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, 400Hz, |
+| | | 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, 1.60kHz, |
+| | | 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz |
+| 00 20 | 0000 00aa | DIV2 B:DYNAMIC (0 - 2) |
+| | | OFF, POLAR+, POLAR- |
+| 00 21 | 0aaa aaaa | DIV2 B:DYNA SENS (0 - 100) |
+| 00 22 | 0000 00aa | DIV2 B:FILTER (0 - 2) |
+| | | OFF, LPF, HPF |
+| 00 23 | 000a aaaa | DIV2 B:CUTOFF FREQ (0 - 16) |
+| | | 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, 400Hz, |
+| | | 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, 1.60kHz, |
+| | | 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz |
+| 00 24 | 0000 000a | MIX2:MODE (0 - 1) |
+| | | STEREO, PAN L/R |
+| 00 25 | 0aaa aaaa | MIX2:A/B BALANCE (0 - 100) |
+| | | 100:0, 100:2 - 100:100 - 2:100, 0:100 |
+| 00 26 | 0aaa aaaa | MIX2:SPREAD (0 - 100) |
+| 00 27 | 0000 000a | DIV3:MODE (0 - 1) |
+| | | SINGLE, DUAL |
+| 00 28 | 0000 000a | DIV3:CH SELECT (0 - 1) |
+| | | A, B |
+| 00 29 | 0000 00aa | DIV3 A:DYNAMIC (0 - 2) |
+| | | OFF, POLAR+, POLAR- |
+| 00 2A | 0aaa aaaa | DIV3 A:DYNA SENS (0 - 100) |
+| 00 2B | 0000 00aa | DIV3 A:FILTER (0 - 2) |
+| | | OFF, LPF, HPF |
+| 00 2C | 000a aaaa | DIV3 A:CUTOFF FREQ (0 - 16) |
+| | | 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, 400Hz, |
+| | | 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, 1.60kHz, |
+| | | 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz |
+| 00 2D | 0000 00aa | DIV3 B:DYNAMIC (0 - 2) |
+| | | OFF, POLAR+, POLAR- |
+| 00 2E | 0aaa aaaa | DIV3 B:DYNA SENS (0 - 100) |
+| 00 2F | 0000 00aa | DIV3 B:FILTER (0 - 2) |
+| | | OFF, LPF, HPF |
+| 00 30 | 000a aaaa | DIV3 B:CUTOFF (0 - 16) |
+| | | 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, 400Hz, |
+| | | 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, 1.60kHz, |
+| | | 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz |
+| 00 31 | 0000 000a | MIX3:MODE (0 - 1) |
+| | | STEREO, PAN L/R |
+| 00 32 | 0aaa aaaa | MIX3:A/B BALANCE (0 - 100) |
+| | | 100:0, 100:2 - 100:100 - 2:100, 0:100 |
+| 00 33 | 0aaa aaaa | MIX3:SPREAD (0 - 100) |
+| 00 34 | 0000 000a | SEND/RETURN 1/2:STEREO LINK (0 - 1) |
+| | | OFF, ON |
+| 00 35 | 0000 000a | SEND/RETURN 1:ON/OFF (0 - 1) |
+| | | OFF, ON |
+| 00 36 | 0000 00aa | SEND/RETURN 1:MODE (0 - 2) |
+| | | NORMAL, DIRECT MIX, BRANCH OUT |
+|# 00 37 | 0000 aaaa | |
+| 00 38 | 0000 bbbb | SEND/RETURN 1:SEND LEVEL (0 - 200) |
+|# 00 39 | 0000 aaaa | |
+| 00 3A | 0000 bbbb | SEND/RETURN 1:RETURN LEVEL (0 - 200) |
+| 00 3B | 0aaa aaaa | SEND/RETURN 1:ADJUST (0 - 100) |
+| 00 3C | 0000 000a | SEND/RETURN 2:ON/OFF (0 - 1) |
+| | | OFF, ON |
+| 00 3D | 0000 00aa | SEND/RETURN 2:MODE (0 - 2) |
+| | | NORMAL, DIRECT MIX, BRANCH OUT |
+|# 00 3E | 0000 aaaa | |
+| 00 3F | 0000 bbbb | SEND/RETURN 2:SEND LEVEL (0 - 200) |
+|# 00 40 | 0000 aaaa | |
+| 00 41 | 0000 bbbb | SEND/RETURN 2:RETURN LEVEL (0 - 200) |
+| 00 42 | 0aaa aaaa | SEND/RETURN 2:ADJUST (0 - 100) |
+| 00 43 | 0000 000a | N/A(fixed value) (1) |
+| 00 44 | 0aaa aaaa | LOOPER:PLAY LEVEL (0 - 100) |
+| 00 45 | 0000 000a | MAIN:STEREO LINK (0 - 1) |
+| | | OFF, ON |
+| 00 46 | 000a aaaa | MAIN L:SP TYPE (0 - 29) |
+| | | OFF, ORIGINAL, 1x8", 1x10", 1x12", 2x12", 4x10", |
+| | | 4x12", 8x12", USER 1, USER 2, USER 3, USER 4, |
+| | | B1x15", B1x18", B2x15", B4x10", B8x10", |
+| | | USER 5 - USER16 |
+| 00 47 | 0000 0aaa | MAIN L:MIC TYPE (0 - 4) |
+| | | DYN57, DYN421, CND451, CND87, FLAT |
+| 00 48 | 0000 00aa | MAIN L:MIC DISTANCE (0 - 2) |
+| | | SHORT, MEDIUM, LONG |
+| 00 49 | 0000 aaaa | MAIN L:MIC POSITION (0 - 10) |
+| | | CENTER, 1cm - 10cm |
+| 00 4A | 0aaa aaaa | MAIN L:MIC LEVEL (0 - 100) |
+| 00 4B | 0aaa aaaa | MAIN L:DIRECT MIX (0 - 100) |
+| 00 4C | 000a aaaa | MAIN R:SP TYPE (0 - 29) |
+| | | OFF, ORIGINAL, 1x8", 1x10", 1x12", 2x12", 4x10", |
+| | | 4x12", 8x12", USER 1, USER 2, USER 3, USER 4, |
+| | | B1x15", B1x18", B2x15", B4x10", B8x10", |
+| | | USER 5 - USER16 |
+| 00 4D | 0000 0aaa | MAIN R:MIC TYPE (0 - 4) |
+| | | DYN57, DYN421, CND451, CND87, FLAT |
+| 00 4E | 0000 00aa | MAIN R:MIC DISTANCE (0 - 2) |
+| | | SHORT, MEDIUM, LONG |
+| 00 4F | 0000 aaaa | MAIN R:MIC POSITION (0 - 10) |
+| | | CENTER, 1cm - 10cm |
+| 00 50 | 0aaa aaaa | MAIN R:MIC LEVEL (0 - 100) |
+| 00 51 | 0aaa aaaa | MAIN R:DIRECT MIX (0 - 100) |
+| 00 52 | 0000 000a | SUB:STEREO LINK (0 - 1) |
+| | | OFF, ON |
+| 00 53 | 000a aaaa | SUB L:SP TYPE (0 - 29) |
+| | | OFF, ORIGINAL, 1x8", 1x10", 1x12", 2x12", 4x10", |
+| | | 4x12", 8x12", USER 1, USER 2, USER 3, USER 4, |
+| | | B1x15", B1x18", B2x15", B4x10", B8x10", |
+| | | USER 5 - USER16 |
+| 00 54 | 0000 0aaa | SUB L:MIC TYPE (0 - 4) |
+| | | DYN57, DYN421, CND451, CND87, FLAT |
+| 00 55 | 0000 00aa | SUB L:MIC DISTANCE (0 - 2) |
+| | | SHORT, MEDIUM, LONG |
+| 00 56 | 0000 aaaa | SUB L:MIC POSITION (0 - 10) |
+| | | CENTER, 1cm - 10cm |
+| 00 57 | 0aaa aaaa | SUB L:MIC LEVEL (0 - 100) |
+| 00 58 | 0aaa aaaa | SUB L:DIRECT MIX (0 - 100) |
+| 00 59 | 000a aaaa | SUB R:SP TYPE (0 - 29) |
+| | | OFF, ORIGINAL, 1x8", 1x10", 1x12", 2x12", 4x10", |
+| | | 4x12", 8x12", USER 1, USER 2, USER 3, USER 4, |
+| | | B1x15", B1x18", B2x15", B4x10", B8x10", |
+| | | USER 5 - USER16 |
+| 00 5A | 0000 0aaa | SUB R:MIC TYPE (0 - 4) |
+| | | DYN57, DYN421, CND451, CND87, FLAT |
+| 00 5B | 0000 00aa | SUB R:MIC DISTANCE (0 - 2) |
+| | | SHORT, MEDIUM, LONG |
+| 00 5C | 0000 aaaa | SUB R:MIC POSITION (0 - 10) |
+| | | CENTER, 1cm - 10cm |
+| 00 5D | 0aaa aaaa | SUB R:MIC LEVEL (0 - 100) |
+| 00 5E | 0aaa aaaa | SUB R:DIRECT MIX (0 - 100) |
+|# 00 5F | 0000 aaaa | |
+| 00 60 | 0000 bbbb | MASTER:PATCH LEVEL (0 - 200) |
+|# 00 61 | 0000 aaaa | |
+| 00 62 | 0000 bbbb | |
+| 00 63 | 0000 cccc | |
+| 00 64 | 0000 dddd | MASTER:BPM (400 - 2500) |
+| 00 65 | 0000 aaaa | MASTER:KEY (0 - 11) |
+| | | C(Am), Db(Bbm), D(Bm), Eb(Cm), E(C#m), F(Dm), |
+| | | F#(D#m), G(Em), Ab(Fm), A(F#m), Bb(Gm), B(G#m) |
+| 00 66 | 0000 000a | MASTER:AMP CTL1 (0 - 1) |
+| | | OFF, ON |
+| 00 67 | 0000 000a | MASTER:AMP CTL2 (0 - 1) |
+| | | OFF, ON |
+| 00 68 | 00aa aaaa | CHAIN ELEMENT1 (0 - 48) |
+| | | *4 |
+| 00 69 | 00aa aaaa | CHAIN ELEMENT2 (0 - 48) |
+| | | *4 |
+| : | | |
+| | | |
+| 01 18 | 00aa aaaa | CHAIN ELEMENT49 (0 - 48) |
+| | | *4 |
+| | | From "CHAIN ELEMENT1" to "CHAIN ELEMENT49" are |
+| | | group parameters. |
+| | | The DT1 to each parameter is temporarily |
+| | | suspended, and the DT1 to the group parameter |
+| | | final address automatically checks the pending |
+| | | parameters, and if there is no problem, the value |
+| | | is set. If the value is incomplete it will not be |
+| | | set. |
+| | | Parameters before set are read out for the RQ1 to |
+| | | pending parameters. Pending values can not be |
+| | | read. |
+| | | |
+| 01 19 | 0000 000a | MASTER:CARRYOVER (0 - 1) |
+| | | OFF, ON |
+| 01 1A | 0000 000a | CONTROL/ASSIGN:TEMPO HOLD (0 - 1) |
+| | | OFF, ON |
+| 01 1B | 0aaa aaaa | CONTROL/ASSIGN:INPUT SENS (0 - 100) |
+| 01 1C | 0000 000a | BASS MODE (0 - 1) |
+| | | OFF, ON |
+| 01 1D | 0000 000a | FX EXPANSION(*) (0 - 1) |
+| | | OFF, ON |
+| 01 1E | 0000 000a | MAIN CH SELECT(*) (0 - 1) |
+| | | L, R |
+| 01 1F | 0000 000a | SUB CH SELECT(*) (0 - 1) |
+| | | L, R |
+| 01 20 | 0000 000a | ROUTING(**) (0 - 1) |
+| | | STEREO, SELECTOR |

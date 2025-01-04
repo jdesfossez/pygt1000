@@ -55,8 +55,8 @@ gt1000.close_ports()
 ```
 ## Crafting messages
 
-Most of the [MIDI specifications from BOSS](https://www.boss.info/global/support/by_product/gt-1000/owners_manuals/564517d2-518e-469e-b50b-2bdca359d24d/
-) have been imported as JSON files in the specs/ directory. This allows the user to construct MIDI messages using option names rather than manually crafting hexadecimal messages. For example:
+Most of the [MIDI specifications from BOSS](https://static.roland.com/assets/media/pdf/GT-1000_MIDI_Implementation08.pdf)
+have been imported as JSON files in the specs/ directory. This allows the user to construct MIDI messages using option names rather than manually crafting hexadecimal messages. For example:
 
 ```python
 gt = GT1000()

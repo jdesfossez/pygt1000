@@ -43,6 +43,8 @@ def process_data(lines):
         # FIXME: these are offsets that span multiple bytes, need to find a solution
         if line.startswith("|# "):
             continue
+        if line.startswith("| : | | |"):
+            continue
         if current_name and line.startswith("| | |"):
             # EQ range is not written as a CSV list, fix it manually here
             if line == "| | | -20 - 0 - +20 [dB] |":

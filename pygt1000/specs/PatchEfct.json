@@ -1,0 +1,1500 @@
+{
+    "FOOT VOLUME:VOLUME MIN": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {
+            "0.0 - 100.0": 0
+        }
+    },
+    "FOOT VOLUME:VOLUME MAX": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {
+            "0.0 - 100.0": 0
+        }
+    },
+    "FOOT VOLUME:PEDAL POSITION": {
+        "offset": [
+            0,
+            11
+        ],
+        "value_range": [
+            0,
+            1000
+        ],
+        "values": {
+            "0.0 - 100.0": 0
+        }
+    },
+    "FOOT VOLUME:VOLUME CURVE": {
+        "offset": [
+            0,
+            12
+        ],
+        "value_range": [
+            0,
+            3
+        ],
+        "values": {
+            "SLOW1": 0,
+            "SLOW2": 1,
+            "NORMAL": 2,
+            "FAST": 3
+        }
+    },
+    "DIV1:MODE": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "SINGLE": 0,
+            "DUAL": 1
+        }
+    },
+    "DIV1:CH SELECT": {
+        "offset": [
+            0,
+            14
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "A": 0,
+            "B": 1
+        }
+    },
+    "DIV1 A:DYNAMIC": {
+        "offset": [
+            0,
+            15
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "POLAR+": 1,
+            "POLAR-": 2
+        }
+    },
+    "DIV1 A:DYNA SENS": {
+        "offset": [
+            0,
+            16
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV1 A:FILTER": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "LPF": 1,
+            "HPF": 2
+        }
+    },
+    "DIV1 A:CUTOFF FREQ": {
+        "offset": [
+            0,
+            18
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "100Hz": 0,
+            "125Hz": 1,
+            "160Hz": 2,
+            "200Hz": 3,
+            "250Hz": 4,
+            "315Hz": 5,
+            "400Hz": 6,
+            "500Hz": 7,
+            "630Hz": 8,
+            "800Hz": 9,
+            "1.00kHz": 10,
+            "1.25kHz": 11,
+            "1.60kHz": 12,
+            "2.00kHz": 13,
+            "2.50kHz": 14,
+            "3.15kHz": 15,
+            "4.00kHz": 16
+        }
+    },
+    "DIV1 B:DYNAMIC": {
+        "offset": [
+            0,
+            19
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "POLAR+": 1,
+            "POLAR-": 2
+        }
+    },
+    "DIV1 B:DYNA SENS": {
+        "offset": [
+            0,
+            20
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV1 B:FILTER": {
+        "offset": [
+            0,
+            21
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "LPF": 1,
+            "HPF": 2
+        }
+    },
+    "DIV1 B:CUTOFF FREQ": {
+        "offset": [
+            0,
+            22
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "100Hz": 0,
+            "125Hz": 1,
+            "160Hz": 2,
+            "200Hz": 3,
+            "250Hz": 4,
+            "315Hz": 5,
+            "400Hz": 6,
+            "500Hz": 7,
+            "630Hz": 8,
+            "800Hz": 9,
+            "1.00kHz": 10,
+            "1.25kHz": 11,
+            "1.60kHz": 12,
+            "2.00kHz": 13,
+            "2.50kHz": 14,
+            "3.15kHz": 15,
+            "4.00kHz": 16
+        }
+    },
+    "MIX1:MODE": {
+        "offset": [
+            0,
+            23
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "STEREO": 0,
+            "PAN L/R": 1
+        }
+    },
+    "MIX1:A/B BALANCE": {
+        "offset": [
+            0,
+            24
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {
+            "100:0": 0,
+            "100:2 - 100:100 - 2:100": 1,
+            "0:100": 2
+        }
+    },
+    "MIX1:SPREAD": {
+        "offset": [
+            0,
+            25
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV2:MODE": {
+        "offset": [
+            0,
+            26
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "SINGLE": 0,
+            "DUAL": 1
+        }
+    },
+    "DIV2:CH SELECT": {
+        "offset": [
+            0,
+            27
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "A": 0,
+            "B": 1
+        }
+    },
+    "DIV2 A:DYNAMIC": {
+        "offset": [
+            0,
+            28
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "POLAR+": 1,
+            "POLAR-": 2
+        }
+    },
+    "DIV2 A:DYNA SENS": {
+        "offset": [
+            0,
+            29
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV2 A:FILTER": {
+        "offset": [
+            0,
+            30
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "LPF": 1,
+            "HPF": 2
+        }
+    },
+    "DIV2 A:CUTOFF FREQ": {
+        "offset": [
+            0,
+            31
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "100Hz": 0,
+            "125Hz": 1,
+            "160Hz": 2,
+            "200Hz": 3,
+            "250Hz": 4,
+            "315Hz": 5,
+            "400Hz": 6,
+            "500Hz": 7,
+            "630Hz": 8,
+            "800Hz": 9,
+            "1.00kHz": 10,
+            "1.25kHz": 11,
+            "1.60kHz": 12,
+            "2.00kHz": 13,
+            "2.50kHz": 14,
+            "3.15kHz": 15,
+            "4.00kHz": 16
+        }
+    },
+    "DIV2 B:DYNAMIC": {
+        "offset": [
+            0,
+            32
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "POLAR+": 1,
+            "POLAR-": 2
+        }
+    },
+    "DIV2 B:DYNA SENS": {
+        "offset": [
+            0,
+            33
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV2 B:FILTER": {
+        "offset": [
+            0,
+            34
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "LPF": 1,
+            "HPF": 2
+        }
+    },
+    "DIV2 B:CUTOFF FREQ": {
+        "offset": [
+            0,
+            35
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "100Hz": 0,
+            "125Hz": 1,
+            "160Hz": 2,
+            "200Hz": 3,
+            "250Hz": 4,
+            "315Hz": 5,
+            "400Hz": 6,
+            "500Hz": 7,
+            "630Hz": 8,
+            "800Hz": 9,
+            "1.00kHz": 10,
+            "1.25kHz": 11,
+            "1.60kHz": 12,
+            "2.00kHz": 13,
+            "2.50kHz": 14,
+            "3.15kHz": 15,
+            "4.00kHz": 16
+        }
+    },
+    "MIX2:MODE": {
+        "offset": [
+            0,
+            36
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "STEREO": 0,
+            "PAN L/R": 1
+        }
+    },
+    "MIX2:A/B BALANCE": {
+        "offset": [
+            0,
+            37
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {
+            "100:0": 0,
+            "100:2 - 100:100 - 2:100": 1,
+            "0:100": 2
+        }
+    },
+    "MIX2:SPREAD": {
+        "offset": [
+            0,
+            38
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV3:MODE": {
+        "offset": [
+            0,
+            39
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "SINGLE": 0,
+            "DUAL": 1
+        }
+    },
+    "DIV3:CH SELECT": {
+        "offset": [
+            0,
+            40
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "A": 0,
+            "B": 1
+        }
+    },
+    "DIV3 A:DYNAMIC": {
+        "offset": [
+            0,
+            41
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "POLAR+": 1,
+            "POLAR-": 2
+        }
+    },
+    "DIV3 A:DYNA SENS": {
+        "offset": [
+            0,
+            42
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV3 A:FILTER": {
+        "offset": [
+            0,
+            43
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "LPF": 1,
+            "HPF": 2
+        }
+    },
+    "DIV3 A:CUTOFF FREQ": {
+        "offset": [
+            0,
+            44
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "100Hz": 0,
+            "125Hz": 1,
+            "160Hz": 2,
+            "200Hz": 3,
+            "250Hz": 4,
+            "315Hz": 5,
+            "400Hz": 6,
+            "500Hz": 7,
+            "630Hz": 8,
+            "800Hz": 9,
+            "1.00kHz": 10,
+            "1.25kHz": 11,
+            "1.60kHz": 12,
+            "2.00kHz": 13,
+            "2.50kHz": 14,
+            "3.15kHz": 15,
+            "4.00kHz": 16
+        }
+    },
+    "DIV3 B:DYNAMIC": {
+        "offset": [
+            0,
+            45
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "POLAR+": 1,
+            "POLAR-": 2
+        }
+    },
+    "DIV3 B:DYNA SENS": {
+        "offset": [
+            0,
+            46
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "DIV3 B:FILTER": {
+        "offset": [
+            0,
+            47
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "OFF": 0,
+            "LPF": 1,
+            "HPF": 2
+        }
+    },
+    "DIV3 B:CUTOFF": {
+        "offset": [
+            0,
+            48
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "100Hz": 0,
+            "125Hz": 1,
+            "160Hz": 2,
+            "200Hz": 3,
+            "250Hz": 4,
+            "315Hz": 5,
+            "400Hz": 6,
+            "500Hz": 7,
+            "630Hz": 8,
+            "800Hz": 9,
+            "1.00kHz": 10,
+            "1.25kHz": 11,
+            "1.60kHz": 12,
+            "2.00kHz": 13,
+            "2.50kHz": 14,
+            "3.15kHz": 15,
+            "4.00kHz": 16
+        }
+    },
+    "MIX3:MODE": {
+        "offset": [
+            0,
+            49
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "STEREO": 0,
+            "PAN L/R": 1
+        }
+    },
+    "MIX3:A/B BALANCE": {
+        "offset": [
+            0,
+            50
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {
+            "100:0": 0,
+            "100:2 - 100:100 - 2:100": 1,
+            "0:100": 2
+        }
+    },
+    "MIX3:SPREAD": {
+        "offset": [
+            0,
+            51
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "SEND/RETURN 1/2:STEREO LINK": {
+        "offset": [
+            0,
+            52
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "SEND/RETURN 1:ON/OFF": {
+        "offset": [
+            0,
+            53
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "SEND/RETURN 1:MODE": {
+        "offset": [
+            0,
+            54
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "NORMAL": 0,
+            "DIRECT MIX": 1,
+            "BRANCH OUT": 2
+        }
+    },
+    "SEND/RETURN 1:SEND LEVEL": {
+        "offset": [
+            0,
+            56
+        ],
+        "value_range": [
+            0,
+            200
+        ],
+        "values": {}
+    },
+    "SEND/RETURN 1:RETURN LEVEL": {
+        "offset": [
+            0,
+            58
+        ],
+        "value_range": [
+            0,
+            200
+        ],
+        "values": {}
+    },
+    "SEND/RETURN 1:ADJUST": {
+        "offset": [
+            0,
+            59
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "SEND/RETURN 2:ON/OFF": {
+        "offset": [
+            0,
+            60
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "SEND/RETURN 2:MODE": {
+        "offset": [
+            0,
+            61
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "NORMAL": 0,
+            "DIRECT MIX": 1,
+            "BRANCH OUT": 2
+        }
+    },
+    "SEND/RETURN 2:SEND LEVEL": {
+        "offset": [
+            0,
+            63
+        ],
+        "value_range": [
+            0,
+            200
+        ],
+        "values": {}
+    },
+    "SEND/RETURN 2:RETURN LEVEL": {
+        "offset": [
+            0,
+            65
+        ],
+        "value_range": [
+            0,
+            200
+        ],
+        "values": {}
+    },
+    "SEND/RETURN 2:ADJUST": {
+        "offset": [
+            0,
+            66
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)": {
+        "offset": [
+            0,
+            67
+        ],
+        "value_range": [
+            1
+        ],
+        "values": {}
+    },
+    "LOOPER:PLAY LEVEL": {
+        "offset": [
+            0,
+            68
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MAIN:STEREO LINK": {
+        "offset": [
+            0,
+            69
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "MAIN L:SP TYPE": {
+        "offset": [
+            0,
+            70
+        ],
+        "value_range": [
+            0,
+            29
+        ],
+        "values": {
+            "OFF": 0,
+            "ORIGINAL": 1,
+            "1x8\"": 2,
+            "1x10\"": 3,
+            "1x12\"": 4,
+            "2x12\"": 5,
+            "4x10\"": 6,
+            "4x12\"": 7,
+            "8x12\"": 8,
+            "USER 1": 9,
+            "USER 2": 10,
+            "USER 3": 11,
+            "USER 4": 12,
+            "B1x15\"": 13,
+            "B1x18\"": 14,
+            "B2x15\"": 15,
+            "B4x10\"": 16,
+            "B8x10\"": 17,
+            "USER 5 - USER16": 18
+        }
+    },
+    "MAIN L:MIC TYPE": {
+        "offset": [
+            0,
+            71
+        ],
+        "value_range": [
+            0,
+            4
+        ],
+        "values": {
+            "DYN57": 0,
+            "DYN421": 1,
+            "CND451": 2,
+            "CND87": 3,
+            "FLAT": 4
+        }
+    },
+    "MAIN L:MIC DISTANCE": {
+        "offset": [
+            0,
+            72
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "SHORT": 0,
+            "MEDIUM": 1,
+            "LONG": 2
+        }
+    },
+    "MAIN L:MIC POSITION": {
+        "offset": [
+            0,
+            73
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "CENTER": 0,
+            "1cm - 10cm": 1
+        }
+    },
+    "MAIN L:MIC LEVEL": {
+        "offset": [
+            0,
+            74
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MAIN L:DIRECT MIX": {
+        "offset": [
+            0,
+            75
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MAIN R:SP TYPE": {
+        "offset": [
+            0,
+            76
+        ],
+        "value_range": [
+            0,
+            29
+        ],
+        "values": {
+            "OFF": 0,
+            "ORIGINAL": 1,
+            "1x8\"": 2,
+            "1x10\"": 3,
+            "1x12\"": 4,
+            "2x12\"": 5,
+            "4x10\"": 6,
+            "4x12\"": 7,
+            "8x12\"": 8,
+            "USER 1": 9,
+            "USER 2": 10,
+            "USER 3": 11,
+            "USER 4": 12,
+            "B1x15\"": 13,
+            "B1x18\"": 14,
+            "B2x15\"": 15,
+            "B4x10\"": 16,
+            "B8x10\"": 17,
+            "USER 5 - USER16": 18
+        }
+    },
+    "MAIN R:MIC TYPE": {
+        "offset": [
+            0,
+            77
+        ],
+        "value_range": [
+            0,
+            4
+        ],
+        "values": {
+            "DYN57": 0,
+            "DYN421": 1,
+            "CND451": 2,
+            "CND87": 3,
+            "FLAT": 4
+        }
+    },
+    "MAIN R:MIC DISTANCE": {
+        "offset": [
+            0,
+            78
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "SHORT": 0,
+            "MEDIUM": 1,
+            "LONG": 2
+        }
+    },
+    "MAIN R:MIC POSITION": {
+        "offset": [
+            0,
+            79
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "CENTER": 0,
+            "1cm - 10cm": 1
+        }
+    },
+    "MAIN R:MIC LEVEL": {
+        "offset": [
+            0,
+            80
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MAIN R:DIRECT MIX": {
+        "offset": [
+            0,
+            81
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "SUB:STEREO LINK": {
+        "offset": [
+            0,
+            82
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "SUB L:SP TYPE": {
+        "offset": [
+            0,
+            83
+        ],
+        "value_range": [
+            0,
+            29
+        ],
+        "values": {
+            "OFF": 0,
+            "ORIGINAL": 1,
+            "1x8\"": 2,
+            "1x10\"": 3,
+            "1x12\"": 4,
+            "2x12\"": 5,
+            "4x10\"": 6,
+            "4x12\"": 7,
+            "8x12\"": 8,
+            "USER 1": 9,
+            "USER 2": 10,
+            "USER 3": 11,
+            "USER 4": 12,
+            "B1x15\"": 13,
+            "B1x18\"": 14,
+            "B2x15\"": 15,
+            "B4x10\"": 16,
+            "B8x10\"": 17,
+            "USER 5 - USER16": 18
+        }
+    },
+    "SUB L:MIC TYPE": {
+        "offset": [
+            0,
+            84
+        ],
+        "value_range": [
+            0,
+            4
+        ],
+        "values": {
+            "DYN57": 0,
+            "DYN421": 1,
+            "CND451": 2,
+            "CND87": 3,
+            "FLAT": 4
+        }
+    },
+    "SUB L:MIC DISTANCE": {
+        "offset": [
+            0,
+            85
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "SHORT": 0,
+            "MEDIUM": 1,
+            "LONG": 2
+        }
+    },
+    "SUB L:MIC POSITION": {
+        "offset": [
+            0,
+            86
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "CENTER": 0,
+            "1cm - 10cm": 1
+        }
+    },
+    "SUB L:MIC LEVEL": {
+        "offset": [
+            0,
+            87
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "SUB L:DIRECT MIX": {
+        "offset": [
+            0,
+            88
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "SUB R:SP TYPE": {
+        "offset": [
+            0,
+            89
+        ],
+        "value_range": [
+            0,
+            29
+        ],
+        "values": {
+            "OFF": 0,
+            "ORIGINAL": 1,
+            "1x8\"": 2,
+            "1x10\"": 3,
+            "1x12\"": 4,
+            "2x12\"": 5,
+            "4x10\"": 6,
+            "4x12\"": 7,
+            "8x12\"": 8,
+            "USER 1": 9,
+            "USER 2": 10,
+            "USER 3": 11,
+            "USER 4": 12,
+            "B1x15\"": 13,
+            "B1x18\"": 14,
+            "B2x15\"": 15,
+            "B4x10\"": 16,
+            "B8x10\"": 17,
+            "USER 5 - USER16": 18
+        }
+    },
+    "SUB R:MIC TYPE": {
+        "offset": [
+            0,
+            90
+        ],
+        "value_range": [
+            0,
+            4
+        ],
+        "values": {
+            "DYN57": 0,
+            "DYN421": 1,
+            "CND451": 2,
+            "CND87": 3,
+            "FLAT": 4
+        }
+    },
+    "SUB R:MIC DISTANCE": {
+        "offset": [
+            0,
+            91
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "SHORT": 0,
+            "MEDIUM": 1,
+            "LONG": 2
+        }
+    },
+    "SUB R:MIC POSITION": {
+        "offset": [
+            0,
+            92
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "CENTER": 0,
+            "1cm - 10cm": 1
+        }
+    },
+    "SUB R:MIC LEVEL": {
+        "offset": [
+            0,
+            93
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "SUB R:DIRECT MIX": {
+        "offset": [
+            0,
+            94
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MASTER:PATCH LEVEL": {
+        "offset": [
+            0,
+            96
+        ],
+        "value_range": [
+            0,
+            200
+        ],
+        "values": {}
+    },
+    "MASTER:BPM": {
+        "offset": [
+            0,
+            100
+        ],
+        "value_range": [
+            400,
+            2500
+        ],
+        "values": {}
+    },
+    "MASTER:KEY": {
+        "offset": [
+            0,
+            101
+        ],
+        "value_range": [
+            0,
+            11
+        ],
+        "values": {
+            "C(Am)": 0,
+            "Db(Bbm)": 1,
+            "D(Bm)": 2,
+            "Eb(Cm)": 3,
+            "E(C#m)": 4,
+            "F(Dm)": 5,
+            "F#(D#m)": 6,
+            "G(Em)": 7,
+            "Ab(Fm)": 8,
+            "A(F#m)": 9,
+            "Bb(Gm)": 10,
+            "B(G#m)": 11
+        }
+    },
+    "MASTER:AMP CTL1": {
+        "offset": [
+            0,
+            102
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "MASTER:AMP CTL2": {
+        "offset": [
+            0,
+            103
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "CHAIN ELEMENT1": {
+        "offset": [
+            0,
+            104
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {
+            "*4": 0
+        }
+    },
+    "CHAIN ELEMENT2": {
+        "offset": [
+            0,
+            105
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {
+            "*4": 0
+        }
+    },
+    "CHAIN ELEMENT49": {
+        "offset": [
+            1,
+            24
+        ],
+        "value_range": [
+            0,
+            48
+        ],
+        "values": {
+            "*4": 0,
+            "From \"CHAIN ELEMENT1\" to \"CHAIN ELEMENT49\" are": 1,
+            "group parameters.": 2,
+            "The DT1 to each parameter is temporarily": 3,
+            "suspended": 4,
+            "and the DT1 to the group parameter": 5,
+            "final address automatically checks the pending": 6,
+            "parameters": 7,
+            "and if there is no problem": 8,
+            "the value": 9,
+            "is set. If the value is incomplete it will not be": 10,
+            "set.": 11,
+            "Parameters before set are read out for the RQ1 to": 12,
+            "pending parameters. Pending values can not be": 13,
+            "read.": 14
+        }
+    },
+    "MASTER:CARRYOVER": {
+        "offset": [
+            1,
+            25
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "CONTROL/ASSIGN:TEMPO HOLD": {
+        "offset": [
+            1,
+            26
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "CONTROL/ASSIGN:INPUT SENS": {
+        "offset": [
+            1,
+            27
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "BASS MODE": {
+        "offset": [
+            1,
+            28
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "FX EXPANSION(*)": {
+        "offset": [
+            1,
+            29
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "OFF": 0,
+            "ON": 1
+        }
+    },
+    "MAIN CH SELECT(*)": {
+        "offset": [
+            1,
+            30
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "L": 0,
+            "R": 1
+        }
+    },
+    "SUB CH SELECT(*)": {
+        "offset": [
+            1,
+            31
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "L": 0,
+            "R": 1
+        }
+    },
+    "ROUTING(**)": {
+        "offset": [
+            1,
+            32
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "STEREO": 0,
+            "SELECTOR": 1
+        }
+    }
+}
