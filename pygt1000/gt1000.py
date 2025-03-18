@@ -681,14 +681,21 @@ class GT1000:
     def toggle_fx_state(self, fx_type, fx_id, state):
         fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         # Strip the number for blocks with only one instance
-        self.send_message(
-            self.build_dt_message(
-                self._get_start_section(fx_type, fx_id),
-                f"{fx_type}{fx_id}",
-                "SW",
-                state,
+        with self.state_lock:
+            self.send_message(
+                self.build_dt_message(
+                    self._get_start_section(fx_type, fx_id),
+                    f"{fx_type}{fx_id}",
+                    "SW",
+                    state,
+                )
             )
-        )
+            if len(self.current_state[fx_type]) == 1:
+                self.current_state[fx_type][0]["state"] = state
+            else:
+                for i in self.current_state[fx_type]:
+                    if str(i["fx_id"]) == str(fx_id):
+                        i["state"] = state
 
     def set_fx_value(self, fx_type, fx_id, option, value):
         # the sliders can want to send float
