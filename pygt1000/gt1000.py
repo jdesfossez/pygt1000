@@ -542,7 +542,7 @@ class GT1000:
             slider2 = None
         return slider1, slider2
 
-    def _get_one_fx_state(self, fx_type, fx_id):
+    def _get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
         state = self._get_one_fx_type_value(fx_type, fx_id, "SW")
         # These don't have a TYPE field in the spec
         if fx_type in ["ns", "delay"]:
@@ -551,14 +551,21 @@ class GT1000:
             name = self._get_one_fx_type_value(fx_type, fx_id, "TYPE")
         if fx_type == "fx":
             self.current_fx_names[fx_id] = name
-        slider1, slider2 = self._get_sliders(fx_type, fx_id, name)
-        return {
-            "fx_id": fx_id,
-            "state": state,
-            "name": name,
-            "slider1": slider1,
-            "slider2": slider2,
-        }
+        if get_sliders is True:
+            slider1, slider2 = self._get_sliders(fx_type, fx_id, name)
+            return {
+                "fx_id": fx_id,
+                "state": state,
+                "name": name,
+                "slider1": slider1,
+                "slider2": slider2,
+            }
+        else:
+            return {
+                    "fx_id": fx_id,
+                    "state": state,
+                    "name": name,
+                    }
 
     def get_all_fx_type_states(self, fx_type):
         logger.debug("get_all_fx_type_state")
@@ -567,6 +574,16 @@ class GT1000:
             fx_type, fx_id = self._normalize_fx_block(fx_type, i + 1)
             out.append(self._get_one_fx_state(fx_type, fx_id))
         return out
+
+    def get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
+        logger.debug("get_one_fx_state")
+        for i in range(self.fx_types_count[fx_type]):
+            fx_type, _fx_id = self._normalize_fx_block(fx_type, i + 1)
+            if not fx_id:
+                return self._get_one_fx_state(fx_type, _fx_id, get_sliders)
+            elif fx_id == _fx_id:
+                return self._get_one_fx_state(fx_type, _fx_id, get_sliders)
+        return None
 
     def fetch_mem(self, offset, length, override_checksum=None):
         self.send_message(
