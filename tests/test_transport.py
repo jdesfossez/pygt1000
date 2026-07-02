@@ -1,0 +1,69 @@
+"""Characterise the transport seam: the narrow ``Transport`` port that carries
+raw MIDI messages, and the two adapters that implement it.
+
+The protocol (address arithmetic, message assembly, decode, state) talks to a
+``Transport`` and never to ``rtmidi``. ``FakeTransport`` records what the
+protocol sent and can inject canned device replies, so command tests assert on
+``sent`` and pipeline tests drive ``receive``.
+"""
+
+from pygt1000 import GT1000
+from pygt1000.transport import FakeTransport, RtMidiTransport, Transport
+
+
+# --------------------------------------------------------------------------
+# The port contract
+# --------------------------------------------------------------------------
+
+def test_fake_transport_is_a_transport():
+    assert isinstance(FakeTransport(), Transport)
+    assert isinstance(RtMidiTransport(), Transport)
+
+
+def test_send_message_reaches_the_transport():
+    t = FakeTransport()
+    gt = GT1000(transport=t)
+    gt.send_message([0xF0, 0x01, 0xF7])
+    assert t.sent == [[0xF0, 0x01, 0xF7]]
+
+
+def test_receive_injects_an_inbound_message_into_the_protocol():
+    t = FakeTransport()
+    gt = GT1000(transport=t)
+    seen = []
+    gt.process_received_message = seen.append
+    # A freshly wired transport delivers inbound bytes to the protocol.
+    gt._transport.set_on_receive(gt.process_received_message)
+    t.receive([0xF0, 0x7E, 0x10, 0xF7])
+    assert seen == [[0xF0, 0x7E, 0x10, 0xF7]]
+
+
+def test_default_transport_is_rtmidi():
+    assert isinstance(GT1000()._transport, RtMidiTransport)
+
+
+# --------------------------------------------------------------------------
+# Prefactor: _build_message must not mutate the shared header constant
+# --------------------------------------------------------------------------
+
+def test_build_message_does_not_mutate_shared_header():
+    from pygt1000.constants import DT1_SYSEX_HEADER
+
+    before = list(DT1_SYSEX_HEADER)
+    gt = GT1000(transport=FakeTransport())
+    gt.device_id = 0x10
+    gt.build_dt_message(gt._get_start_section("fx", "1"), "fx1", "SW", "ON")
+    assert DT1_SYSEX_HEADER == before
+    # And the negotiated device id still lands in the message.
+    msg = gt.build_dt_message(gt._get_start_section("fx", "1"), "fx1", "SW", "ON")
+    assert msg[2] == 0x10
+
+
+# --------------------------------------------------------------------------
+# rtmidi is confined to the production adapter
+# --------------------------------------------------------------------------
+
+def test_protocol_module_imports_no_rtmidi():
+    import pygt1000.gt1000 as protocol
+
+    assert not hasattr(protocol, "rtmidi")

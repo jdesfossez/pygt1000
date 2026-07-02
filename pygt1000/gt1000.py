@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
-import rtmidi
 import time
 import threading
 import logging
 from time import sleep
 from datetime import datetime
-from rtmidi.midiutil import open_midiinput, open_midioutput
 
 from .constants import (
     SYSEX_END,
@@ -37,8 +35,8 @@ from .constants import (
 
 from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
+from .transport import MIDI_PORT, RtMidiTransport
 
-MIDI_PORT = "GT-1000:GT-1000 MIDI 1"
 SLEEP_WAIT_SEC = 0.1
 REFRESH_STATE_POLL_RATE_SEC = 2
 RETRY_COUNT = 100
@@ -116,22 +114,8 @@ FX_NAME_SLIDER_PARAMS = {
 }
 
 
-class MidiInputHandler(object):
-    def __init__(self, port):
-        self.port = port
-        self._wallclock = time.time()
-
-    def __call__(self, event, gt1000):
-        message, deltatime = event
-        self._wallclock += deltatime
-        logger.debug(
-            "[%s] @%0.6f %s" % (self.port, self._wallclock, bytes_as_hex(message))
-        )
-        gt1000.process_received_message(message)
-
-
 class GT1000:
-    def __init__(self):
+    def __init__(self, transport=None):
         self.device_id = DEVICE_ID_BCAST
         self.current_state_message = None
         self.received_data = {}
@@ -171,6 +155,14 @@ class GT1000:
         # keeps backward-compatible accessors that delegate to it (see the
         # registry properties below).
         self._address_map = AddressMap(self.fx_types)
+
+        # The transport is the seam to the MIDI wire. Production uses rtmidi;
+        # tests inject a fake. Inbound raw messages are delivered back to the
+        # protocol via process_received_message; the request/response
+        # correlation (received_data + wait/retry) lives here on the protocol
+        # side, driven by that callback.
+        self._transport = transport if transport is not None else RtMidiTransport()
+        self._transport.set_on_receive(self.process_received_message)
 
         logger.info(f"GT1000 instance created {self}")
 
@@ -285,67 +277,21 @@ class GT1000:
                 logger.info("Device still alive")
                 continue
             else:
-                logger.warning(
-                    "Device not responding, trying to open {self.in_portname} again"
-                )
+                logger.warning("Device not responding, trying to reopen ports")
                 self.close_ports()
-                out = self.open_ports(self.in_portname, self.out_portname)
+                out = self.open_ports()
                 if out is True:
                     logger.warning("Opening ports succeeded")
                 else:
                     logger.warning("Opening ports failed")
 
-    def _get_midi_exact_port_names(self, in_portname, out_portname):
-        """The portname usually contains an ID that can change depending on the other devices"""
-        tmp_midi_in = rtmidi.MidiIn()
-        port_count = tmp_midi_in.get_port_count()
-        exact_in_portname = None
-        for i in range(port_count):
-            if tmp_midi_in.get_port_name(i).startswith(in_portname):
-                exact_in_portname = tmp_midi_in.get_port_name(i)
-        if exact_in_portname is None:
-            logger.error(
-                f"Failed to find MIDI input port. Found {tmp_midi_in.get_ports()}"
-            )
-
-        tmp_midi_out = rtmidi.MidiOut()
-        port_count = tmp_midi_out.get_port_count()
-        exact_out_portname = None
-        for i in range(port_count):
-            if tmp_midi_out.get_port_name(i).startswith(out_portname):
-                exact_out_portname = tmp_midi_out.get_port_name(i)
-        if exact_out_portname is None:
-            logger.error(
-                f"Failed to find MIDI output port. Found {tmp_midi_out.get_ports()}"
-            )
-
-        return exact_in_portname, exact_out_portname
-
     def open_ports(self, in_portname=MIDI_PORT, out_portname=MIDI_PORT):
-        logger.info(f"Opening MIDI ports: {in_portname} and {out_portname}")
-        in_portname, out_portname = self._get_midi_exact_port_names(
-            in_portname, out_portname
-        )
-        if in_portname is None or out_portname is None:
+        if not self._transport.open(in_portname, out_portname):
             return False
-        self.in_portname = in_portname
-        self.out_portname = out_portname
-        try:
-            self.midi_out, port_name = open_midioutput(out_portname)
-        except (EOFError, KeyboardInterrupt):
-            return False
-
-        try:
-            self.midi_in, port_name = open_midiinput(in_portname)
-        except (EOFError, KeyboardInterrupt):
-            return False
-        self.midi_in.ignore_types(sysex=False)
-        self.midi_in.set_callback(MidiInputHandler(in_portname), self)
         return self.open_editor_mode()
 
     def close_ports(self):
-        self.midi_out.close_port()
-        self.midi_in.close_port()
+        self._transport.close()
 
     def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
         offset = self._construct_address_value(
@@ -643,15 +589,16 @@ class GT1000:
         with self.data_semaphore:
             self.received_data[str(offset)] = None
             logger.debug(f"sending: {bytes_as_hex(message)}")
-            self.midi_out.send_message(message)
+            self._transport.send(message)
 
     def _build_message(self, header, address_value, override_checksum=None):
         if override_checksum is not None:
             checksum = override_checksum
         else:
             checksum = self.calculate_checksum(address_value)
-        # Override the broadcast address
-        header[1] = self.device_id
+        # Substitute our negotiated device id for the broadcast address without
+        # mutating the shared module-level header constant.
+        header = header[:1] + [self.device_id] + header[2:]
         return SYSEX_START + header + address_value + checksum + SYSEX_END
 
     def build_dt_message(self, start_section, option, setting, param):

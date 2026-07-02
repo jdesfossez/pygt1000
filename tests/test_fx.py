@@ -144,11 +144,9 @@ def test_fx_name_slider_map(echo_slider_labels, fx_name, expected):
 
 @pytest.fixture
 def captured(gt):
-    """A GT1000 whose ``send_message`` records outgoing messages instead of
-    touching the wire."""
-    sent = []
-    gt.send_message = lambda message, offset=None: sent.append(message)
-    gt.sent = sent
+    """A GT1000 whose fake transport records outgoing messages instead of
+    touching the wire; ``gt.sent`` is that record."""
+    gt.sent = gt._transport.sent
     return gt
 
 

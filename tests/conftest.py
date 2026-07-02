@@ -1,86 +1,24 @@
-"""Test bootstrap: run the suite without the compiled ``python-rtmidi`` binding.
+"""Test bootstrap.
 
-``pygt1000.gt1000`` imports ``rtmidi`` (a C extension for real MIDI I/O) at module
-load time. None of the behaviour we characterise here touches the wire, so we
-install a minimal stub in ``sys.modules`` before the package is imported. Anything
-that would actually send/receive MIDI is mocked at the ``GT1000`` method boundary
-inside the individual tests.
+``pygt1000`` no longer imports the compiled ``python-rtmidi`` binding at load
+time — rtmidi is confined to ``RtMidiTransport``, which imports it lazily. Tests
+build a ``GT1000`` on a ``FakeTransport`` instead: it records what the protocol
+sent and can inject canned device replies, so nothing here touches the wire.
 """
 
-import sys
-import types
+import logging
 
+import pytest
 
-def _install_rtmidi_stub():
-    if "rtmidi" in sys.modules:
-        return
-
-    rtmidi = types.ModuleType("rtmidi")
-
-    class _MidiPort:
-        def __init__(self, *args, **kwargs):
-            self._ports = []
-
-        def get_port_count(self):
-            return len(self._ports)
-
-        def get_port_name(self, index):
-            return self._ports[index]
-
-        def get_ports(self):
-            return list(self._ports)
-
-        def open_port(self, *args, **kwargs):
-            return self
-
-        def close_port(self):
-            pass
-
-        def send_message(self, message):
-            pass
-
-        def set_callback(self, *args, **kwargs):
-            pass
-
-        def ignore_types(self, *args, **kwargs):
-            pass
-
-    rtmidi.MidiIn = _MidiPort
-    rtmidi.MidiOut = _MidiPort
-
-    midiutil = types.ModuleType("rtmidi.midiutil")
-
-    def open_midiinput(port, *args, **kwargs):
-        return _MidiPort(), port
-
-    def open_midioutput(port, *args, **kwargs):
-        return _MidiPort(), port
-
-    midiutil.open_midiinput = open_midiinput
-    midiutil.open_midioutput = open_midioutput
-
-    rtmidi.midiutil = midiutil
-    sys.modules["rtmidi"] = rtmidi
-    sys.modules["rtmidi.midiutil"] = midiutil
-
-
-_install_rtmidi_stub()
-
-
-# Imports below run *after* the rtmidi stub is installed, on purpose: importing
-# pygt1000 any earlier would pull in the real (unbuilt) binding. Hence E402.
-import logging  # noqa: E402
-
-import pytest  # noqa: E402
-
-from pygt1000 import GT1000  # noqa: E402
+from pygt1000 import GT1000
+from pygt1000.transport import FakeTransport
 
 
 @pytest.fixture
 def gt():
-    """A fresh GT1000 with the spec tables loaded and logging quietened."""
+    """A fresh GT1000 on a fake transport, spec tables loaded, logging quiet."""
     logging.disable(logging.CRITICAL)
-    instance = GT1000()
+    instance = GT1000(transport=FakeTransport())
     yield instance
     logging.disable(logging.NOTSET)
 

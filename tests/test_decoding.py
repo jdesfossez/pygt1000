@@ -77,7 +77,11 @@ def test_encode_decode_roundtrip_switch(gt, fx_type, fx_id, option, setting):
 
 
 # --------------------------------------------------------------------------
-# process_received_message -> _process_data_from_unit
+# inbound-message pipeline -> _process_data_from_unit
+#
+# Bytes are fed through the fake transport (``receive``), exactly as rtmidi
+# would deliver them to the on_receive callback, rather than calling the
+# protocol method directly.
 # --------------------------------------------------------------------------
 
 def _unit_message(device_id, offset, data):
@@ -87,14 +91,14 @@ def _unit_message(device_id, offset, data):
 
 def test_received_switch_updates_state(gt_with_state):
     gt = gt_with_state
-    gt.process_received_message(_unit_message(0x10, [0x10, 0x0, 0x23, 0x0], [0x1]))
+    gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x0], [0x1]))
     assert gt.current_state["fx"][0]["state"] == "ON"
 
 
 def test_received_type_change_updates_name_and_queues_slider_refresh(gt_with_state):
     gt = gt_with_state
     # fx1 TYPE -> CHORUS (value 3) lives at [0x10, 0x0, 0x23, 0x1].
-    gt.process_received_message(_unit_message(0x10, [0x10, 0x0, 0x23, 0x1], [0x3]))
+    gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x1], [0x3]))
     assert gt.current_state["fx"][0]["name"] == "CHORUS"
     # A type change schedules a slider re-read for that block.
     assert any(t["type"] == "sliders" for t in gt.refresh_queue)
@@ -104,11 +108,11 @@ def test_received_message_from_other_device_is_ignored(gt_with_state):
     gt = gt_with_state
     before = gt.current_state["fx"][0]["state"]
     # device id in the header does not match the negotiated id.
-    gt.process_received_message(_unit_message(0x05, [0x10, 0x0, 0x23, 0x0], [0x1]))
+    gt._transport.receive(_unit_message(0x05, [0x10, 0x0, 0x23, 0x0], [0x1]))
     assert gt.current_state["fx"][0]["state"] == before
 
 
 def test_program_change_queues_full_refresh(gt_with_state):
     gt = gt_with_state
-    gt.process_received_message(_unit_message(0x10, list(PROGRAM_CHANGE_OFFSET), [0x5]))
+    gt._transport.receive(_unit_message(0x10, list(PROGRAM_CHANGE_OFFSET), [0x5]))
     assert {"type": "full"} in gt.refresh_queue
