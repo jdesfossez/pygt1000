@@ -72,12 +72,12 @@ def test_construct_address_unknown_inputs_return_none(gt):
     ],
 )
 def test_calculate_checksum(gt, data, expected):
-    assert gt.calculate_checksum(data) == expected
+    assert gt._codec.calculate_checksum(data) == expected
 
 
 def test_checksum_makes_payload_sum_multiple_of_128(gt):
     payload = [0x52, 0x0, 0x0, 0x0, 0x7]
-    checksum = gt.calculate_checksum(payload)
+    checksum = gt._codec.calculate_checksum(payload)
     assert (sum(payload) + checksum[0]) % 128 == 0
 
 
@@ -86,8 +86,10 @@ def test_checksum_makes_payload_sum_multiple_of_128(gt):
 # --------------------------------------------------------------------------
 
 def test_build_dt_message_full_bytes(gt):
+    # The encode path is address arithmetic (AddressMap) framed by the codec.
     section = gt._get_start_section("fx", "1")
-    message = gt.build_dt_message(section, "fx1", "SW", "ON")
+    address_value = gt._construct_address_value(section, "fx1", "SW", "ON")
+    message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message == [
         0xF0, 0x41, 0x7F, 0x0, 0x0, 0x0, 0x4F, 0x12,
         0x10, 0x0, 0x23, 0x0, 0x1, 0x4C, 0xF7,
@@ -96,14 +98,17 @@ def test_build_dt_message_full_bytes(gt):
 
 def test_build_dt_message_is_wrapped_sysex(gt):
     section = gt._get_start_section("comp", "1")
-    message = gt.build_dt_message(section, "comp", "SW", "ON")
+    address_value = gt._construct_address_value(section, "comp", "SW", "ON")
+    message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message[0] == 0xF0  # SYSEX start
     assert message[-1] == 0xF7  # SYSEX end
     assert message[1] == MANUFACTURER_ID[0]
 
 
 def test_build_rq_message_carries_length(gt):
-    message = gt.build_rq_message([0x10, 0x0, 0x23, 0x0], [0x0, 0x0, 0x0, 0x1])
+    message = gt._codec.encode_rq1(
+        gt.device_id, [0x10, 0x0, 0x23, 0x0], [0x0, 0x0, 0x0, 0x1]
+    )
     assert message[0] == 0xF0 and message[-1] == 0xF7
     # RQ1 command id sits in the header right after MODEL_ID.
     assert 0x11 in message
@@ -112,7 +117,9 @@ def test_build_rq_message_carries_length(gt):
 def test_header_carries_current_device_id(gt):
     # The broadcast id (0x7F) is replaced by the negotiated device id.
     gt.device_id = 0x10
-    message = gt.build_dt_message(gt._get_start_section("fx", "1"), "fx1", "SW", "ON")
+    section = gt._get_start_section("fx", "1")
+    address_value = gt._construct_address_value(section, "fx1", "SW", "ON")
+    message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message[2] == 0x10
 
 

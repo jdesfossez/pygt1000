@@ -36,7 +36,8 @@ def test_set_value_message():
     gt = GT1000()
 
     start_section = gt._get_start_section("fx", "1")
-    message = gt.build_dt_message(start_section, "fx1", "SW", "ON")
+    address_value = gt._construct_address_value(start_section, "fx1", "SW", "ON")
+    message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message == [
         0xF0,
         0x41,
@@ -56,7 +57,8 @@ def test_set_value_message():
     ]
 
     start_section = gt._get_start_section("fx", "4")
-    message = gt.build_dt_message(start_section, "fx4", "TYPE", "CHORUS")
+    address_value = gt._construct_address_value(start_section, "fx4", "TYPE", "CHORUS")
+    message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message == [
         0xF0,
         0x41,

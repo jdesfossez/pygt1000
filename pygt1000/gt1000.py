@@ -7,10 +7,8 @@ from time import sleep
 from datetime import datetime
 
 from .constants import (
-    SYSEX_END,
     ONE_BYTE,
     PROGRAM_CHANGE_OFFSET,
-    MODEL_ID,
     PATCH_NAMES_LEN,
     EDITOR_REPLY2,
     EDITOR_REPLY3,
@@ -20,22 +18,14 @@ from .constants import (
     EDITOR_MODE_ADDESS_VALUE2,
     EDITOR_MODE_ADDRESS_FETCH3,
     EDITOR_MODE_ADDRESS_LEN3,
-    DT1_SYSEX_HEADER,
-    DT1_COMMAND_ID,
-    RQ1_SYSEX_HEADER,
-    SYSEX_START,
     IDENTITY_REQUEST_MSG,
-    NON_RT_MSG,
-    GEN_INFO,
-    IDENTITY_REPLY,
-    MANUFACTURER_ID,
     FX_TO_TABLE_SUFFIX,
-    GT1000_FAMILY,
 )
 
 from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
 from .patch_state import PatchState
+from .sysex_codec import SysExCodec
 from .transport import MIDI_PORT, RtMidiTransport
 
 SLEEP_WAIT_SEC = 0.1
@@ -152,6 +142,11 @@ class GT1000:
         # keeps backward-compatible accessors that delegate to it (see the
         # registry properties below).
         self._address_map = AddressMap(self.fx_types)
+
+        # The SysEx wire format (DT1/RQ1 framing, checksum, reply parsing) lives
+        # behind the codec; GT1000 supplies the negotiated device_id and calls
+        # it instead of hand-rolling frames.
+        self._codec = SysExCodec()
 
         # The device state model lives behind PatchState: it owns the state
         # dict, its lock, and last_sync_ts. GT1000 only translates decoded
@@ -405,7 +400,7 @@ class GT1000:
 
     def fetch_mem(self, offset, length, override_checksum=None):
         self.send_message(
-            self.assemble_message(RQ1_SYSEX_HEADER, offset + length, override_checksum),
+            self._codec.encode_rq1(self.device_id, offset, length, override_checksum),
             offset=offset,
         )
         data = self.wait_recv_data(offset)
@@ -416,7 +411,7 @@ class GT1000:
 
     def set_byte(self, offset, data):
         self.send_message(
-            self.assemble_message(DT1_SYSEX_HEADER, offset + data), offset
+            self._codec.encode_dt1(self.device_id, offset + data), offset
         )
 
     def fetch_patch_names(self):
@@ -467,10 +462,6 @@ class GT1000:
         logger.info("Device opened in editor mode")
         return True
 
-    def calculate_checksum(self, data):
-        total = sum(data) % 128
-        return [128 - total]
-
     def _get_start_section(self, fx_type, fx_id):
         return self._address_map.start_section(fx_type, fx_id)
 
@@ -489,14 +480,13 @@ class GT1000:
     def toggle_fx_state(self, fx_type, fx_id, state):
         fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         # Strip the number for blocks with only one instance
-        self.send_message(
-            self.build_dt_message(
-                self._get_start_section(fx_type, fx_id),
-                f"{fx_type}{fx_id}",
-                "SW",
-                state,
-            )
+        address_value = self._construct_address_value(
+            self._get_start_section(fx_type, fx_id),
+            f"{fx_type}{fx_id}",
+            "SW",
+            state,
         )
+        self.send_message(self._codec.encode_dt1(self.device_id, address_value))
         self._state.set_fx(fx_type, fx_id, "state", state)
 
     def set_fx_value(self, fx_type, fx_id, option, value):
@@ -511,24 +501,22 @@ class GT1000:
             logger.info(
                 f"Setting {fx_type}{fx_id} {fx_name} ({full_name}) {option} to {value}"
             )
-            self.send_message(
-                self.build_dt_message(
-                    self._get_fx_start_section(fx_id, fx_name),
-                    full_name,
-                    option,
-                    value,
-                )
+            address_value = self._construct_address_value(
+                self._get_fx_start_section(fx_id, fx_name),
+                full_name,
+                option,
+                value,
             )
+            self.send_message(self._codec.encode_dt1(self.device_id, address_value))
         else:
             logger.info(f"Setting {fx_type}{fx_id} {option} to {value}")
-            self.send_message(
-                self.build_dt_message(
-                    self._get_start_section(fx_type, fx_id),
-                    f"{fx_type}{fx_id}",
-                    option,
-                    value,
-                )
+            address_value = self._construct_address_value(
+                self._get_start_section(fx_type, fx_id),
+                f"{fx_type}{fx_id}",
+                option,
+                value,
             )
+            self.send_message(self._codec.encode_dt1(self.device_id, address_value))
 
     def get_fx_value_from_value_name(self, fx_type, prop, value_name):
         return self._address_map.value_for(fx_type, prop, value_name)
@@ -538,14 +526,13 @@ class GT1000:
         if type_value is None:
             logger.error("Failed to set {fx_type}{fx_id} TYPE to {new_type}")
         fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
-        self.send_message(
-            self.build_dt_message(
-                self._get_start_section(fx_type, fx_id),
-                f"{fx_type}{fx_id}",
-                "TYPE",
-                type_value,
-            )
+        address_value = self._construct_address_value(
+            self._get_start_section(fx_type, fx_id),
+            f"{fx_type}{fx_id}",
+            "TYPE",
+            type_value,
         )
+        self.send_message(self._codec.encode_dt1(self.device_id, address_value))
 
     def send_message(self, message, offset=None):
         with self.data_semaphore:
@@ -553,32 +540,11 @@ class GT1000:
             logger.debug(f"sending: {bytes_as_hex(message)}")
             self._transport.send(message)
 
-    def _build_message(self, header, address_value, override_checksum=None):
-        if override_checksum is not None:
-            checksum = override_checksum
-        else:
-            checksum = self.calculate_checksum(address_value)
-        # Substitute our negotiated device id for the broadcast address without
-        # mutating the shared module-level header constant.
-        header = header[:1] + [self.device_id] + header[2:]
-        return SYSEX_START + header + address_value + checksum + SYSEX_END
-
-    def build_dt_message(self, start_section, option, setting, param):
-        address_value = self._construct_address_value(
-            start_section, option, setting, param
-        )
-        return self._build_message(DT1_SYSEX_HEADER, address_value)
-
-    def build_rq_message(self, start_address, length):
-        address_value = start_address + length
-        return self._build_message(RQ1_SYSEX_HEADER, address_value)
-
-    def assemble_message(self, header, payload, override_checksum=None):
-        return self._build_message(header, payload, override_checksum)
-
     def get_patch_names(self):
         self.send_message(
-            self.build_rq_message(PATCH_NAMES_BEGIN_OFFSET, PATCH_NAMES_LEN)
+            self._codec.encode_rq1(
+                self.device_id, PATCH_NAMES_BEGIN_OFFSET, PATCH_NAMES_LEN
+            )
         )
 
     def wait_recv_data(self, offset=None):
@@ -590,52 +556,14 @@ class GT1000:
         return None
 
     def _msg_identity_reply(self, message):
-        # Byte Explanation
-        # F0H: System Exclusive Message status
-        # 7EH: ID Number (Universal Non-realtime Message)
-        # dev: Device ID (dev: 00H - 1FH)
-        # 06H: Sub ID # 1 (General Information)
-        # 02H: Sub ID # 2 (Identity Reply)
-        # 41H: Roland's manufacturer ID
-        # 4FH,03H: Device family code (GT-1000/GT-1000CORE)
-        # 00H,00H: Device family number code LSB, MSB
-        # nnH: Software revision level # 1 (GT-1000:00H,GT-1000L:01H,GT-1000CORE:02H)
-        # 00H: Software revision level # 2
-        # vvH: Software revision level # 3 (GT-1000:01H,GT-1000L:01H,GT-1000CORE:00H)
-        # 00H: Software revision level # 4
-        # F7H: EOX (End of Exclusive)
-        # 0xf0, 0x7e, 0x10, 0x6, 0x2, 0x41, 0x4f, 0x3, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0xf7
-        if len(message) != 15:
+        # Parse the identity reply via the codec; keep the device-id/model
+        # substitution here (an unknown model leaves self.model untouched).
+        reply = self._codec.parse_identity_reply(message)
+        if reply is None:
             return False
-        if (
-            message[0] == SYSEX_START[0]
-            and message[1] == NON_RT_MSG[0]
-            # message[2] is the identity
-            and message[3] == GEN_INFO[0]
-            and message[4] == IDENTITY_REPLY[0]
-            and message[5] == MANUFACTURER_ID[0]
-            and message[6] == GT1000_FAMILY[0]
-            and message[7] == GT1000_FAMILY[1]
-        ):
-            device_id = message[2]
-            software_rev_1 = message[10]
-            software_rev_2 = message[12]
-        else:
-            return False
-        if software_rev_1 == 0x00 and software_rev_2 == 0x01:
-            logger.info("GT-1000 detected")
-            self.model = "GT-1000"
-        elif software_rev_1 == 0x01 and software_rev_2 == 0x01:
-            logger.info("GT-1000L detected")
-            self.model = "GT-1000L"
-        elif software_rev_1 == 0x02 and software_rev_2 == 0x00:
-            logger.info("GT-1000CORE detected")
-            self.model = "GT-1000CORE"
-        else:
-            logger.warning(
-                f"Unknown model detected: [{hex(software_rev_1)}, {hex(software_rev_2)}]"
-            )
-        self.device_id = device_id
+        if reply.model is not None:
+            self.model = reply.model
+        self.device_id = reply.device_id
         return True
 
     def process_received_message(self, message):
@@ -645,23 +573,11 @@ class GT1000:
             if self.device_id == DEVICE_ID_BCAST and self._msg_identity_reply(message):
                 logger.debug("identity ok")
                 return
-            received_data_header = (
-                SYSEX_START
-                + MANUFACTURER_ID
-                + [self.device_id]
-                + MODEL_ID
-                + DT1_COMMAND_ID
-            )
-            # Make sure this message is coming from the unit
-            for i in range(len(received_data_header)):
-                if message[i] != received_data_header[i]:
-                    # logger.debug("Ignored received data")
-                    return
-            received_offset = message[
-                len(received_data_header) : len(received_data_header) + 4
-            ]
-            # The actual data is after the header and before the checksum + SYSEX_END
-            received_data = message[len(received_data_header) + 4 : -2]
+            parsed = self._codec.parse_data_reply(self.device_id, message)
+            if parsed is None:
+                # logger.debug("Ignored received data")
+                return
+            received_offset, received_data = parsed
             logger.debug(
                 f"data received: {bytes_as_hex(received_data)} for offset {bytes_as_hex(received_offset)}"
             )
@@ -750,8 +666,8 @@ class GT1000:
         for i in txt_chain:
             int_chain.append(self._address_map.chain_element_int(i))
 
-        set_chain = self._build_message(
-            DT1_SYSEX_HEADER, self._chain_byte_list() + int_chain
+        set_chain = self._codec.encode_dt1(
+            self.device_id, self._chain_byte_list() + int_chain
         )
         self.send_message(set_chain)
 
