@@ -12,9 +12,12 @@ interface:
 - ``start_section`` / ``fx_start_section`` — which patch/patch2/patch3 section a
   block lives in, expressed as data rather than control flow.
 
-The six registries (``tables``, ``first_two_bytes``, ``offset_in_patch_tables``,
-``last_byte_option``, ``fx_tables``, ``fx_types_count``) are attributes of this
-module; ``GT1000`` keeps backward-compatible accessors that delegate here.
+The six registries (``_tables``, ``_first_two_bytes``, ``_offset_in_patch_tables``,
+``_last_byte_option``, ``_fx_tables``, ``_fx_types_count``) are private to this
+module. External readers go through narrow, intent-revealing accessors:
+``fx_block_count`` / ``set_fx_block_count`` (block counts), ``fx_value_table`` /
+``fx_name_value_table`` (a block's value table), and ``chain_element_name`` /
+``chain_element_int`` (the ChainElement name<->int map).
 """
 
 import json
@@ -53,31 +56,31 @@ class AddressMap:
     def __init__(self, fx_types):
         self.fx_types = fx_types
         # Loaded spec tables keyed by file name (PatchFx, base-addresses, ...).
-        self.tables = {}
+        self._tables = {}
         # Map the 2 MSBs of an address to a section.
-        self.first_two_bytes = {}
+        self._first_two_bytes = {}
         # Map an offset to its patch table (PatchFX, PatchEq, ...), one entry
         # for each of the 3 Patch container tables.
-        self.offset_in_patch_tables = {}
+        self._offset_in_patch_tables = {}
         # Option entry for the last byte (ex: "SW"), one entry per Patch* table.
-        self.last_byte_option = {}
+        self._last_byte_option = {}
         # fx_type -> its value table name (PatchComp, ...).
-        self.fx_tables = {}
+        self._fx_tables = {}
         # fx_type -> number of blocks of that type.
-        self.fx_types_count = {}
+        self._fx_types_count = {}
         self._import_specs_tables()
 
     def _import_specs_tables(self):
         for i in self.fx_types:
-            self.fx_types_count[i] = 0
+            self._fx_types_count[i] = 0
         for i in (Path(__file__).parent / "specs").glob("*.json"):
             table_name = i.name.split(".")[0]
             table = json.loads(i.read_text())
             if table_name in ["Patch", "Patch2", "Patch3"]:
-                if table_name not in self.offset_in_patch_tables:
-                    self.offset_in_patch_tables[table_name] = {}
+                if table_name not in self._offset_in_patch_tables:
+                    self._offset_in_patch_tables[table_name] = {}
                 for key in table:
-                    self.offset_in_patch_tables[table_name][
+                    self._offset_in_patch_tables[table_name][
                         table[key]["address"][1]
                     ] = (key, table[key]["table"])
                     if key in ["preampA", "preampB"]:
@@ -86,23 +89,50 @@ class AddressMap:
                         fx_type = "".join(i for i in key if not i.isdigit())
                     if fx_type not in self.fx_types:
                         continue
-                    self.fx_types_count[fx_type] += 1
-                    self.fx_tables[fx_type] = table[key]["table"]
+                    self._fx_types_count[fx_type] += 1
+                    self._fx_tables[fx_type] = table[key]["table"]
             elif table_name == "base-addresses":
                 for section in table:
                     msbs = [table[section]["address"][0], table[section]["address"][1]]
-                    self.first_two_bytes[str(msbs)] = (section, table[section]["table"])
+                    self._first_two_bytes[str(msbs)] = (section, table[section]["table"])
             elif table_name.startswith("Patch"):
-                self.last_byte_option[table_name] = {}
+                self._last_byte_option[table_name] = {}
                 for option in table:
                     # Copy the whole entry so we can decide later if we only want
                     # the value or the name associated with the value.
-                    self.last_byte_option[table_name][table[option]["offset"][1]] = (
+                    self._last_byte_option[table_name][table[option]["offset"][1]] = (
                         option,
                         table[option],
                     )
 
-            self.tables[table_name] = table
+            self._tables[table_name] = table
+
+    # -- Narrow accessors (registries stay private) -------------------------
+
+    def fx_block_count(self, fx_type):
+        """Number of blocks of ``fx_type`` found at load time."""
+        return self._fx_types_count[fx_type]
+
+    def set_fx_block_count(self, fx_type, count):
+        """Override a block count (GT-1000CORE has 3 fx blocks, not 4)."""
+        self._fx_types_count[fx_type] = count
+
+    def fx_value_table(self, fx_type):
+        """The value table for a top-level block, keyed by its fx type."""
+        return self._tables[self._fx_tables[fx_type]]
+
+    def fx_name_value_table(self, table_suffix):
+        """The value table for a resolved fx sub-effect, keyed by the PatchFx
+        table suffix (ex: ``AGSim`` -> ``PatchFxAGSim``)."""
+        return self._tables[f"PatchFx{table_suffix}"]
+
+    def chain_element_name(self, int_value):
+        """Chain element name for a raw chain byte (ex: 0 -> ``COMPRESSOR``)."""
+        return self._tables["ChainElement"][str(int_value)]
+
+    def chain_element_int(self, name):
+        """Raw chain byte for a chain element name (ex: ``COMPRESSOR`` -> 0)."""
+        return int(self._tables["ChainElement"][name])
 
     def start_section(self, fx_type, fx_id):
         """Section for a top-level block. fx id 4 lives in patch3."""
@@ -125,24 +155,24 @@ class AddressMap:
         With ``value`` left as ``None`` only the address is returned; otherwise
         the encoded value byte is appended.
         """
-        if section not in self.tables["base-addresses"]:
+        if section not in self._tables["base-addresses"]:
             logger.error(f"Entry {section} missing in base-addresses")
             return None
 
-        section_entry = self.tables["base-addresses"][section]
+        section_entry = self._tables["base-addresses"][section]
         address = bytes_to_int(section_entry["address"])
 
-        if option not in self.tables[section_entry["table"]]:
+        if option not in self._tables[section_entry["table"]]:
             logger.error(f"{option} not in section table")
             return None
-        option_entry = self.tables[section_entry["table"]][option]
+        option_entry = self._tables[section_entry["table"]][option]
         option_address_offset = bytes_to_int(option_entry["address"])
 
-        if setting not in self.tables[option_entry["table"]]:
+        if setting not in self._tables[option_entry["table"]]:
             logger.error(f"{setting} not in option_entry")
-            logger.debug(f"entries: {self.tables[option_entry['table']].keys()}")
+            logger.debug(f"entries: {self._tables[option_entry['table']].keys()}")
             return None
-        setting_entry = self.tables[option_entry["table"]][setting]
+        setting_entry = self._tables[option_entry["table"]][setting]
         setting_address_offset = bytes_to_int(setting_entry["offset"])
 
         address += option_address_offset + setting_address_offset
@@ -163,18 +193,18 @@ class AddressMap:
         return [byte for byte in byte_sequence]
 
     def value_range(self, section, option, setting):
-        if section not in self.tables["base-addresses"]:
+        if section not in self._tables["base-addresses"]:
             logger.error(f"Entry {section} missing in base-addresses")
             return None
 
-        section_entry = self.tables["base-addresses"][section]
+        section_entry = self._tables["base-addresses"][section]
 
-        if option not in self.tables[section_entry["table"]]:
+        if option not in self._tables[section_entry["table"]]:
             logger.error(f"Entry {option} not in section table")
             return None
-        option_entry = self.tables[section_entry["table"]][option]
+        option_entry = self._tables[section_entry["table"]][option]
 
-        setting_entry = self.tables[option_entry["table"]][setting]
+        setting_entry = self._tables[option_entry["table"]][setting]
         return setting_entry["value_range"]
 
     def decode(self, address, value):
@@ -192,20 +222,20 @@ class AddressMap:
             logger.error(f"value format must be int, received {value}")
             return None
         msbs = str([address[0], address[1]])
-        if msbs not in self.first_two_bytes:
+        if msbs not in self._first_two_bytes:
             logger.info(f"Data received for unknown address {bytes_as_hex(address)}")
             return None
-        section, table = self.first_two_bytes[msbs]
-        if table not in self.offset_in_patch_tables:
+        section, table = self._first_two_bytes[msbs]
+        if table not in self._offset_in_patch_tables:
             return None
-        if address[2] not in self.offset_in_patch_tables[table]:
+        if address[2] not in self._offset_in_patch_tables[table]:
             return None
-        name, patch_table = self.offset_in_patch_tables[table][address[2]]
-        if patch_table not in self.last_byte_option:
+        name, patch_table = self._offset_in_patch_tables[table][address[2]]
+        if patch_table not in self._last_byte_option:
             return None
-        if address[3] not in self.last_byte_option[patch_table]:
+        if address[3] not in self._last_byte_option[patch_table]:
             return None
-        value_name, value_entry = self.last_byte_option[patch_table][address[3]]
+        value_name, value_entry = self._last_byte_option[patch_table][address[3]]
         str_value = None
         for i in value_entry["values"]:
             if value_entry["values"][i] == value:
@@ -252,15 +282,15 @@ class AddressMap:
         if table_name is None:
             logger.error(f"{fx_type} not found in tables")
             return None
-        if prop not in self.tables[table_name]:
-            logger.error(f"{prop} not found in {self.tables[table_name].keys()}")
+        if prop not in self._tables[table_name]:
+            logger.error(f"{prop} not found in {self._tables[table_name].keys()}")
             return None
-        if "values" not in self.tables[table_name][prop]:
+        if "values" not in self._tables[table_name][prop]:
             logger.error("No 'values' field in table {table_name} {prop}")
             return None
-        for name in self.tables[table_name][prop]["values"]:
+        for name in self._tables[table_name][prop]["values"]:
             if name == value_name:
-                return self.tables[table_name][prop]["values"][name]
+                return self._tables[table_name][prop]["values"][name]
         return None
 
     def types_for(self, fx_type):
@@ -269,11 +299,11 @@ class AddressMap:
         if fx_type in ["ns", "delay"]:
             return []
         table_name = self.fx_type_table_name(fx_type)
-        if table_name not in self.tables:
+        if table_name not in self._tables:
             return None
         return [
             x
-            for x in self.tables[table_name]["TYPE"]["values"].keys()
+            for x in self._tables[table_name]["TYPE"]["values"].keys()
             if x
             not in ["DEFRETTER BASS", "OCTAVE BASS", "SLOW GEAR BASS", "TOUCH WAH BASS"]
         ]

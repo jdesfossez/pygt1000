@@ -67,7 +67,7 @@ def test_lookup_unknown_address_returns_none(gt):
 def test_encode_decode_roundtrip_switch(gt, fx_type, fx_id, option, setting):
     section = gt._get_start_section(fx_type, fx_id or "1")
     address = gt._construct_address_value(section, option, setting, None)
-    table = gt.tables[gt.fx_tables[fx_type]]
+    table = gt._address_map.fx_value_table(fx_type)
     for value_name, int_value in table[setting]["values"].items():
         decoded = gt.lookup(address, int_value)
         assert decoded is not None

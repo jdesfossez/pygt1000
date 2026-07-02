@@ -25,19 +25,32 @@ def amap():
 
 
 # --------------------------------------------------------------------------
-# Spec-table load: the six registries live on the module
+# Spec-table load, observed through the narrow interface (registries private)
 # --------------------------------------------------------------------------
 
-def test_owns_the_spec_registries(amap):
-    assert amap.fx_types_count == {
+def test_block_counts_per_fx_type(amap):
+    # Block counts derived from the Patch/Patch2/Patch3 tables at load time,
+    # read through the accessor rather than the raw registry.
+    expected = {
         "comp": 1, "dist": 2, "preamp": 2, "ns": 2, "eq": 4, "delay": 4,
         "mstDelay": 1, "chorus": 1, "fx": 4, "pedalFx": 1, "reverb": 1,
     }
-    assert amap.fx_tables["comp"] == "PatchComp"
-    assert set(amap.offset_in_patch_tables) == {"Patch", "Patch2", "Patch3"}
-    assert "PatchFx" in amap.last_byte_option
-    assert "Patch" not in amap.last_byte_option
-    assert amap.first_two_bytes
+    for fx_type, count in expected.items():
+        assert amap.fx_block_count(fx_type) == count
+
+
+def test_every_fx_type_resolves_to_a_value_table(amap):
+    # Each declared fx_type resolves to a loaded, non-empty value table.
+    for fx_type in amap.fx_types:
+        table = amap.fx_value_table(fx_type)
+        assert isinstance(table, dict) and table
+
+
+def test_set_fx_block_count_overrides_the_load(amap):
+    # The GT-1000CORE special case: fx has 3 blocks, not 4.
+    assert amap.fx_block_count("fx") == 4
+    amap.set_fx_block_count("fx", 3)
+    assert amap.fx_block_count("fx") == 3
 
 
 # --------------------------------------------------------------------------
@@ -157,7 +170,7 @@ def test_decode_unknown_address_returns_none(amap):
 def test_address_for_and_decode_roundtrip(amap, fx_type, fx_id, option, setting):
     section = amap.start_section(fx_type, fx_id or "1")
     address = amap.address_for(section, option, setting)
-    table = amap.tables[amap.fx_tables[fx_type]]
+    table = amap.fx_value_table(fx_type)
     for value_name, int_value in table[setting]["values"].items():
         decoded = amap.decode(address, int_value)
         assert decoded is not None
@@ -198,3 +211,26 @@ def test_types_for_empty_for_ns_and_delay(amap):
 )
 def test_fx_type_table_name(amap, fx_type, expected):
     assert amap.fx_type_table_name(fx_type) == expected
+
+
+# --------------------------------------------------------------------------
+# value-table / ChainElement accessors (replacing raw registry reads)
+# --------------------------------------------------------------------------
+
+def test_fx_value_table_returns_the_types_value_table(amap):
+    table = amap.fx_value_table("comp")
+    assert "SW" in table
+    assert table["SW"]["values"]["ON"] == 1
+
+
+def test_fx_name_value_table_keyed_by_table_suffix(amap):
+    # The resolved fx sub-effect table, addressed by its PatchFx* suffix.
+    table = amap.fx_name_value_table("AGSim")
+    assert "BODY" in table
+
+
+def test_chain_element_name_and_int_are_inverses(amap):
+    assert amap.chain_element_name(0) == "COMPRESSOR"
+    assert amap.chain_element_int("COMPRESSOR") == 0
+    assert amap.chain_element_name(48) == "MAINOUTR"
+    assert amap.chain_element_int("MAINOUTR") == 48

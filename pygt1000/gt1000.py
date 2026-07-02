@@ -168,34 +168,6 @@ class GT1000:
 
         logger.info(f"GT1000 instance created {self}")
 
-    # -- Address-map registries (delegated) ---------------------------------
-    # These six registries now live on the AddressMap module; the properties
-    # preserve the historical ``self.<registry>`` read access used across the
-    # class and the characterisation tests.
-    @property
-    def tables(self):
-        return self._address_map.tables
-
-    @property
-    def first_two_bytes(self):
-        return self._address_map.first_two_bytes
-
-    @property
-    def offset_in_patch_tables(self):
-        return self._address_map.offset_in_patch_tables
-
-    @property
-    def last_byte_option(self):
-        return self._address_map.last_byte_option
-
-    @property
-    def fx_tables(self):
-        return self._address_map.fx_tables
-
-    @property
-    def fx_types_count(self):
-        return self._address_map.fx_types_count
-
     def lookup(self, address, value):
         return self._address_map.decode(address, value)
 
@@ -300,7 +272,7 @@ class GT1000:
         if data is None:
             logger.warning(f"_get_one_fx_state no data for {fx_type}{fx_id}")
             return None
-        fx_table = self.tables[self.fx_tables[fx_type]]
+        fx_table = self._address_map.fx_value_table(fx_type)
         # If we just want the numerical value_range, not the text mapping
         if just_range is True:
             return data[0]
@@ -325,7 +297,7 @@ class GT1000:
         if data is None:
             logger.warning(f"_get_one_fx_value no data for {fx_type}{fx_id} {fx_name}")
             return None
-        fx_table = self.tables[f"PatchFx{FX_TO_TABLE_SUFFIX[fx_name]}"]
+        fx_table = self._address_map.fx_name_value_table(FX_TO_TABLE_SUFFIX[fx_name])
         for i in fx_table[value_entry]["values"]:
             if data[0] == fx_table[value_entry]["values"][i]:
                 return i
@@ -416,14 +388,14 @@ class GT1000:
     def get_all_fx_type_states(self, fx_type):
         logger.debug("get_all_fx_type_state")
         out = []
-        for i in range(self.fx_types_count[fx_type]):
+        for i in range(self._address_map.fx_block_count(fx_type)):
             fx_type, fx_id = self._normalize_fx_block(fx_type, i + 1)
             out.append(self._get_one_fx_state(fx_type, fx_id))
         return out
 
     def get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
         logger.debug("get_one_fx_state")
-        for i in range(self.fx_types_count[fx_type]):
+        for i in range(self._address_map.fx_block_count(fx_type)):
             fx_type, _fx_id = self._normalize_fx_block(fx_type, i + 1)
             if not fx_id:
                 return self._get_one_fx_state(fx_type, _fx_id, get_sliders)
@@ -468,7 +440,7 @@ class GT1000:
             return False
         if self.model == "GT-1000CORE":
             # Special case here, the others have 4 FX blocks
-            self.fx_types_count["fx"] = 3
+            self._address_map.set_fx_block_count("fx", 3)
 
         # The 2 fetch operations here may break if the value returned changes at some point.
         # Not sure what is the point of those, it looks like a simple check to make sure the
@@ -506,7 +478,7 @@ class GT1000:
         return self._address_map.fx_start_section(fx_id, FX_TO_TABLE_SUFFIX[fx_name])
 
     def _normalize_fx_block(self, fx_type, fx_id):
-        if self.fx_types_count[fx_type] == 1:
+        if self._address_map.fx_block_count(fx_type) == 1:
             fx_id = ""
         elif fx_type == "preamp" and fx_id == 1:
             fx_id = "A"
@@ -761,7 +733,7 @@ class GT1000:
         int_chain = self.fetch_mem(self._chain_byte_list(), ONE_BYTE)
         txt_chain = []
         for i in int_chain:
-            txt_chain.append(self.tables["ChainElement"][str(i)])
+            txt_chain.append(self._address_map.chain_element_name(i))
         return txt_chain
 
     def parse_chain(self, txt_chain):
@@ -776,7 +748,7 @@ class GT1000:
         # ex: ['PEDALFX', 'COMPRESSOR', 'EQUALIZER3', ...]
         int_chain = []
         for i in txt_chain:
-            int_chain.append(int(self.tables["ChainElement"][i]))
+            int_chain.append(self._address_map.chain_element_int(i))
 
         set_chain = self._build_message(
             DT1_SYSEX_HEADER, self._chain_byte_list() + int_chain

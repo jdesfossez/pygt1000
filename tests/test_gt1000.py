@@ -7,60 +7,15 @@ def test_create_object():
 
 
 def test_open_tables():
+    # The spec load populated the AddressMap interface: every fx type resolves
+    # to a value table, a representative sub-effect resolves to its PatchFx*
+    # table, and the ChainElement map is loaded. (Table names are an AddressMap
+    # internal now; this pins the observable result of the load instead.)
     gt = GT1000()
-    expected_tables = [
-        "PatchFxCVibe",
-        "PatchFx",
-        "PatchFxSBend",
-        "PatchFxTremolo",
-        "PatchFxPitchShift",
-        "PatchFxDefretter",
-        "PatchFxTWah",
-        "PatchChorus",
-        "PatchFxAWah",
-        "PatchFxOctaveBass",
-        "PatchFxPan",
-        "PatchFxOvertone",
-        "PatchFxAGSim",
-        "PatchFxRingMod",
-        "PatchReverb",
-        "PatchComp",
-        "PatchFxSitarSim",
-        "PatchFxHarmonist",
-        "Patch3",
-        "PatchFxFlanger",
-        "Patch2",
-        "PatchFxChorus",
-        "PatchFxChorusBass",
-        "PatchDelay",
-        "PatchDist",
-        "PatchMstDelay",
-        "PatchFxSlowGearBass",
-        "PatchFxSlowGear",
-        "PatchFxComp",
-        "PatchFxMasteringFx",
-        "PatchFxTWahBass",
-        "PatchFxFeedbacker",
-        "PatchPedalFx",
-        "PatchFxSlicer",
-        "PatchFxSoundHold",
-        "PatchNs",
-        "PatchFxDist",
-        "PatchFxOctave",
-        "PatchPreamp",
-        "PatchFxRotary",
-        "PatchFxFlangerBass",
-        "PatchFxVibrato",
-        "Patch",
-        "PatchFxHumanizer",
-        "PatchFxAcReso",
-        "PatchFxPhaser",
-        "base-addresses",
-        "PatchFxDefretterBass",
-        "PatchEq",
-    ]
-    for i in expected_tables:
-        assert i in gt.tables
+    for fx_type in gt.fx_types:
+        assert gt._address_map.fx_value_table(fx_type)
+    assert gt._address_map.fx_name_value_table("AGSim")
+    assert gt._address_map.chain_element_name(0) == "COMPRESSOR"
 
 
 def test_build_message():

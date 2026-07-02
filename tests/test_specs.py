@@ -1,13 +1,15 @@
-"""Characterise the spec-table load (``_import_specs_tables``).
+"""Characterise the spec-table load, observed through AddressMap's interface.
 
-These lock the shape of the six parallel registries the loader builds, so the
-planned collapse into a single Address Map module can be verified equivalent.
+These previously asserted on the six raw registries directly. Slice 6 made
+those private to ``AddressMap``; the same load facts are now pinned through the
+narrow accessors (block counts, value tables, chain lookup) and through the
+observable decode path, not raw dict access.
 """
 
 
 def test_all_fx_type_counts(gt):
     # Block counts derived from the Patch/Patch2/Patch3 tables at load time.
-    assert gt.fx_types_count == {
+    expected = {
         "comp": 1,
         "dist": 2,
         "preamp": 2,
@@ -20,38 +22,33 @@ def test_all_fx_type_counts(gt):
         "pedalFx": 1,
         "reverb": 1,
     }
+    for fx_type, count in expected.items():
+        assert gt._address_map.fx_block_count(fx_type) == count
 
 
-def test_fx_tables_map_every_type(gt):
-    assert gt.fx_tables == {
-        "fx": "PatchFx",
-        "comp": "PatchComp",
-        "dist": "PatchDist",
-        "preamp": "PatchPreamp",
-        "ns": "PatchNs",
-        "eq": "PatchEq",
-        "delay": "PatchDelay",
-        "mstDelay": "PatchMstDelay",
-        "chorus": "PatchChorus",
-        "reverb": "PatchReverb",
-        "pedalFx": "PatchPedalFx",
-    }
-    # Every declared fx_type resolves to a loaded table.
-    for fx_type, table_name in gt.fx_tables.items():
-        assert table_name in gt.tables
+def test_every_fx_type_resolves_to_a_value_table(gt):
+    # Every declared fx_type resolves to a loaded, populated value table.
+    for fx_type in gt.fx_types:
+        table = gt._address_map.fx_value_table(fx_type)
+        assert isinstance(table, dict) and table
 
 
-def test_registries_are_populated(gt):
-    # base-addresses -> first_two_bytes lookup for the reverse (decode) path.
-    assert gt.first_two_bytes
-    # The three Patch container tables each get an offset map.
-    assert set(gt.offset_in_patch_tables) == {"Patch", "Patch2", "Patch3"}
-    # last_byte_option holds one entry per Patch* table (never the containers).
-    assert gt.last_byte_option
-    assert "Patch" not in gt.last_byte_option
-    assert "PatchFx" in gt.last_byte_option
+def test_fx_sub_effect_tables_are_loaded(gt):
+    # A resolved fx sub-effect maps to its PatchFx* value table.
+    assert gt._address_map.fx_name_value_table("AGSim")
+    assert gt._address_map.fx_name_value_table("Chorus")
 
 
-def test_core_tables_present(gt):
-    for name in ["base-addresses", "Patch", "Patch2", "Patch3", "ChainElement", "PatchFx"]:
-        assert name in gt.tables
+def test_decode_path_is_wired(gt):
+    # first_two_bytes / offset_in_patch_tables / last_byte_option are all
+    # exercised by a successful decode of a known address.
+    decoded = gt.lookup([0x10, 0x0, 0x23, 0x0], 0x1)
+    assert decoded["name"] == "fx1"
+    assert decoded["value_name"] == "SW"
+    assert decoded["str_value"] == "ON"
+
+
+def test_chain_element_lookup_round_trips(gt):
+    # ChainElement is loaded as a bidirectional name<->int map.
+    assert gt._address_map.chain_element_int("COMPRESSOR") == 0
+    assert gt._address_map.chain_element_name(0) == "COMPRESSOR"
