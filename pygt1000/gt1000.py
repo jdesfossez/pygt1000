@@ -35,6 +35,7 @@ from .constants import (
 
 from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
+from .patch_state import PatchState
 from .transport import MIDI_PORT, RtMidiTransport
 
 SLEEP_WAIT_SEC = 0.1
@@ -130,13 +131,9 @@ class GT1000:
         # {type: "full"}: scan all the blocks
         # {type: "sliders", fx_type: <fx_type>, fx_id: <fx_id>}: just the sliders for
         # a specific fx type/id.
-        # Add/remove to the queue protected by the state_lock
+        # Add/remove to the queue protected by refresh_lock.
+        self.refresh_lock = threading.Semaphore(1)
         self.refresh_queue = []
-
-        # Protect current_state and prevent state changes while refreshing
-        self.state_lock = threading.Semaphore(1)
-        # The known state of the effects
-        self.current_state = {"last_sync_ts": {}}
 
         self.fx_types = [
             "comp",
@@ -155,6 +152,11 @@ class GT1000:
         # keeps backward-compatible accessors that delegate to it (see the
         # registry properties below).
         self._address_map = AddressMap(self.fx_types)
+
+        # The device state model lives behind PatchState: it owns the state
+        # dict, its lock, and last_sync_ts. GT1000 only translates decoded
+        # messages and local changes into calls on it.
+        self._state = PatchState(self.fx_types)
 
         # The transport is the seam to the MIDI wire. Production uses rtmidi;
         # tests inject a fake. Inbound raw messages are delivered back to the
@@ -213,21 +215,18 @@ class GT1000:
             if self.stop:
                 return
             now = datetime.now()
-            current_state = self.get_all_fx_type_states(fx_type)
-            with self.state_lock:
-                self.current_state[fx_type] = current_state
-                self.current_state["last_sync_ts"][fx_type] = now
+            states = self.get_all_fx_type_states(fx_type)
+            self._state.record_scan(fx_type, states, now)
 
     def get_state(self):
-        with self.state_lock:
-            return self.current_state
+        return self._state.snapshot()
 
     def refresh_state_thread(self):
         while not self.stop:
             time.sleep(REFRESH_STATE_POLL_RATE_SEC / 10)
             if self.refresh_event.is_set():
                 self.refresh_event.clear()
-                with self.state_lock:
+                with self.refresh_lock:
                     if len(self.refresh_queue) < 1:
                         logger.error("Refresh started, but refresh queue empty")
                         continue
@@ -241,12 +240,9 @@ class GT1000:
                     slider1, slider2 = self._get_sliders(
                         task["fx_type"], task["fx_id"], None
                     )
-                    with self.state_lock:
-                        for fx in self.current_state[task["fx_type"]]:
-                            if str(fx["fx_id"]) == str(task["fx_id"]):
-                                fx["slider1"] = slider1
-                                fx["slider2"] = slider2
-                                break
+                    self._state.set_sliders(
+                        task["fx_type"], task["fx_id"], slider1, slider2
+                    )
                 else:
                     logger.error("Unknown refresh task {task}")
 
@@ -521,21 +517,15 @@ class GT1000:
     def toggle_fx_state(self, fx_type, fx_id, state):
         fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         # Strip the number for blocks with only one instance
-        with self.state_lock:
-            self.send_message(
-                self.build_dt_message(
-                    self._get_start_section(fx_type, fx_id),
-                    f"{fx_type}{fx_id}",
-                    "SW",
-                    state,
-                )
+        self.send_message(
+            self.build_dt_message(
+                self._get_start_section(fx_type, fx_id),
+                f"{fx_type}{fx_id}",
+                "SW",
+                state,
             )
-            if len(self.current_state[fx_type]) == 1:
-                self.current_state[fx_type][0]["state"] = state
-            else:
-                for i in self.current_state[fx_type]:
-                    if str(i["fx_id"]) == str(fx_id):
-                        i["state"] = state
+        )
+        self._state.set_fx(fx_type, fx_id, "state", state)
 
     def set_fx_value(self, fx_type, fx_id, option, value):
         # the sliders can want to send float
@@ -723,65 +713,29 @@ class GT1000:
         if received_offset == PROGRAM_CHANGE_OFFSET:
             logger.info(f"Switching to program {bytes_as_hex(received_data)}")
             # Unblock the refresh thread
-            with self.state_lock:
-                self.refresh_queue.append({"type": "full"})
-            self.refresh_event.set()
+            self._queue_refresh({"type": "full"})
             return
         ret = self.lookup(received_offset, received_data[0])
         if ret is None:
             logger.debug("unknown data received by the unit, ignoring")
             return
 
-        now = datetime.now()
-        with self.state_lock:
-            # Make sure we finished the first state gathering before entering
-            # here.
-            if (len(self.current_state) - 1) != len(self.fx_types):
-                return
-            for fx in self.current_state[ret["fx_type"]]:
-                if str(fx["fx_id"]) != str(ret["fx_id"]):
-                    continue
-                matches = False
-                if ret["value_name"] == "SW":
-                    logger.info(
-                        f"{ret['fx_type']}{ret['fx_id']}: {fx['state']} -> {ret['str_value']}"
-                    )
-                    fx["state"] = ret["str_value"]
-                    matches = True
-                elif ret["value_name"] == "TYPE":
-                    logger.info(
-                        f"{ret['fx_type']}{ret['fx_id']}: {fx['name']} -> {ret['str_value']}"
-                    )
-                    fx["name"] = ret["str_value"]
-                    if ret["fx_type"] == "fx":
-                        self.current_fx_names[int(ret["fx_id"])] = fx["name"]
-                    if len(ret["fx_id"]) > 0:
-                        fx_id = int(ret["fx_id"])
-                    else:
-                        fx_id = ""
-                    self.refresh_queue.append(
-                        {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}
-                    )
-                    self.refresh_event.set()
-                    matches = True
-                else:
-                    if fx["slider1"] is not None:
-                        if fx["slider1"]["label"] == ret["value_name"]:
-                            logger.info(
-                                f"{ret['fx_type']}{ret['fx_id']} slider1 {ret['value_name']}: {fx['slider1']['value']} -> {ret['int_value']}"
-                            )
-                            fx["slider1"]["value"] = ret["int_value"]
-                            matches = True
-                    if fx["slider2"] is not None:
-                        if fx["slider2"]["label"] == ret["value_name"]:
-                            logger.info(
-                                f"{ret['fx_type']}{ret['fx_id']} slider2 {ret['value_name']}: {fx['slider2']['value']} -> {ret['int_value']}"
-                            )
-                            fx["slider2"]["value"] = ret["int_value"]
-                            matches = True
-                if matches:
-                    self.current_state["last_sync_ts"][ret["fx_type"]] = now
-                return
+        result = self._state.apply(ret)
+        # A TYPE change resolves a new effect name; refresh the cached fx name
+        # and schedule a slider re-read for that block.
+        if result.type_changed:
+            if ret["fx_type"] == "fx":
+                self.current_fx_names[int(ret["fx_id"])] = ret["str_value"]
+            fx_id = int(ret["fx_id"]) if len(ret["fx_id"]) > 0 else ""
+            self._queue_refresh(
+                {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}
+            )
+
+    def _queue_refresh(self, task):
+        """Append a refresh task and wake the refresh thread."""
+        with self.refresh_lock:
+            self.refresh_queue.append(task)
+        self.refresh_event.set()
 
     def _construct_address_value(self, start_section, option, setting, param):
         # param is the value we want to set, if None we just construct the base address

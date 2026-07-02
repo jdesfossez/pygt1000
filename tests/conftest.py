@@ -25,20 +25,28 @@ def gt():
 
 @pytest.fixture
 def gt_with_state(gt):
-    """A GT1000 with a fully-populated ``current_state`` for every fx type.
+    """A GT1000 whose ``PatchState`` is fully populated for every fx type.
 
-    ``_process_data_from_unit`` refuses to touch state until every fx type has an
-    entry (its ``len(current_state) - 1 == len(fx_types)`` guard), so tests that
-    exercise the received-message pipeline need this shape in place.
+    ``PatchState.apply`` refuses to touch state until every fx type has an entry
+    (``is_ready``), so tests that exercise the received-message pipeline need
+    this shape in place. State is seeded through the module's own ``record_scan``
+    rather than by reaching into the (now private) state dict.
     """
+    from datetime import datetime
+
     gt.device_id = 0x10
+    now = datetime.now()
     for fx_type in gt.fx_types:
-        gt.current_state[fx_type] = [
-            {"fx_id": "", "state": "OFF", "name": fx_type, "slider1": None, "slider2": None}
-        ]
+        gt._state.record_scan(
+            fx_type,
+            [{"fx_id": "", "state": "OFF", "name": fx_type, "slider1": None, "slider2": None}],
+            now,
+        )
     # The fx block is addressed by id and carries a resolved effect name.
-    gt.current_state["fx"] = [
-        {"fx_id": "1", "state": "OFF", "name": "CHORUS", "slider1": None, "slider2": None}
-    ]
+    gt._state.record_scan(
+        "fx",
+        [{"fx_id": "1", "state": "OFF", "name": "CHORUS", "slider1": None, "slider2": None}],
+        now,
+    )
     gt.current_fx_names = {1: "CHORUS"}
     return gt

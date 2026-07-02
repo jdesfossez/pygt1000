@@ -1,5 +1,5 @@
 """Characterise the reverse (decode) path: ``lookup`` plus the received-message
-pipeline that folds decoded values into ``current_state``.
+pipeline that folds decoded values into ``PatchState`` (read via ``get_state``).
 
 The roundtrip tests are the safety net for collapsing encode+decode into one
 Address Map module: encode an address, decode it back, expect the same setting.
@@ -92,24 +92,24 @@ def _unit_message(device_id, offset, data):
 def test_received_switch_updates_state(gt_with_state):
     gt = gt_with_state
     gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x0], [0x1]))
-    assert gt.current_state["fx"][0]["state"] == "ON"
+    assert gt.get_state()["fx"][0]["state"] == "ON"
 
 
 def test_received_type_change_updates_name_and_queues_slider_refresh(gt_with_state):
     gt = gt_with_state
     # fx1 TYPE -> CHORUS (value 3) lives at [0x10, 0x0, 0x23, 0x1].
     gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x1], [0x3]))
-    assert gt.current_state["fx"][0]["name"] == "CHORUS"
+    assert gt.get_state()["fx"][0]["name"] == "CHORUS"
     # A type change schedules a slider re-read for that block.
     assert any(t["type"] == "sliders" for t in gt.refresh_queue)
 
 
 def test_received_message_from_other_device_is_ignored(gt_with_state):
     gt = gt_with_state
-    before = gt.current_state["fx"][0]["state"]
+    before = gt.get_state()["fx"][0]["state"]
     # device id in the header does not match the negotiated id.
     gt._transport.receive(_unit_message(0x05, [0x10, 0x0, 0x23, 0x0], [0x1]))
-    assert gt.current_state["fx"][0]["state"] == before
+    assert gt.get_state()["fx"][0]["state"] == before
 
 
 def test_program_change_queues_full_refresh(gt_with_state):

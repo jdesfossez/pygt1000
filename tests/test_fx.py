@@ -151,10 +151,12 @@ def captured(gt):
 
 
 def test_toggle_fx_state_sends_and_updates(captured):
+    from datetime import datetime
+
     gt = captured
-    gt.current_state["comp"] = [{"fx_id": "", "state": "OFF"}]
+    gt._state.record_scan("comp", [{"fx_id": "", "state": "OFF"}], datetime.now())
     gt.toggle_fx_state("comp", 1, "ON")
-    assert gt.current_state["comp"][0]["state"] == "ON"
+    assert gt.get_state()["comp"][0]["state"] == "ON"
     # The built message is the fx1-style SW=ON DT1 message for the comp block.
     assert gt.sent[-1][0] == 0xF0 and gt.sent[-1][-1] == 0xF7
 
