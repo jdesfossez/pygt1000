@@ -21,11 +21,17 @@ import json
 import logging
 from pathlib import Path
 
+from .constants import TABLE_SUFFIX_TO_NAME
+
 logger = logging.getLogger(__name__)
 
 
 def bytes_to_int(value):
     return int.from_bytes(value, byteorder="big")
+
+
+def bytes_as_hex(data):
+    return "[{}]".format(", ".join(hex(x) for x in data))
 
 
 class AddressMap:
@@ -170,3 +176,119 @@ class AddressMap:
 
         setting_entry = self.tables[option_entry["table"]][setting]
         return setting_entry["value_range"]
+
+    def decode(self, address, value):
+        """Reverse of ``address_for``: an address + raw value -> semantic dict.
+
+        Returns ``None`` for a malformed address, a list value, or an address
+        that maps to no known section/table entry. When the block is an fx
+        sub-effect the fx table suffix is resolved to its display name.
+        """
+        ret = {}
+        if len(address) != 4:
+            logger.error(f"Unknown address format received {address}")
+            return None
+        if isinstance(value, list):
+            logger.error(f"value format must be int, received {value}")
+            return None
+        msbs = str([address[0], address[1]])
+        if msbs not in self.first_two_bytes:
+            logger.info(f"Data received for unknown address {bytes_as_hex(address)}")
+            return None
+        section, table = self.first_two_bytes[msbs]
+        if table not in self.offset_in_patch_tables:
+            return None
+        if address[2] not in self.offset_in_patch_tables[table]:
+            return None
+        name, patch_table = self.offset_in_patch_tables[table][address[2]]
+        if patch_table not in self.last_byte_option:
+            return None
+        if address[3] not in self.last_byte_option[patch_table]:
+            return None
+        value_name, value_entry = self.last_byte_option[patch_table][address[3]]
+        str_value = None
+        for i in value_entry["values"]:
+            if value_entry["values"][i] == value:
+                str_value = i
+        ret["section"] = section
+        ret["table"] = table
+        ret["name"] = name
+        ret["patch_table"] = patch_table
+        ret["value_name"] = value_name
+        ret["str_value"] = str_value
+        ret["int_value"] = value
+
+        # Now check if it's an fx_type and extract its fx_id
+        fx_type = None
+        fx_id = None
+        for i in self.fx_types:
+            if name.startswith(i):
+                fx_type = i
+                if name == i:
+                    fx_id = ""
+        if fx_type is None:
+            return ret
+        if fx_id is None:
+            if fx_type == "preamp" and name == "preampA":
+                fx_id = "1"
+            elif fx_type == "preamp" and name == "preampB":
+                fx_id = "2"
+            elif fx_type == "fx":
+                fx_id = name[2]
+            else:
+                fx_id = name.replace(fx_type, "")
+        if fx_type == "fx" and len(name) > 3:
+            fx_name = name[3:]
+            ret["fx_table_suffix"] = fx_name
+            if fx_name in TABLE_SUFFIX_TO_NAME:
+                ret["fx_name"] = TABLE_SUFFIX_TO_NAME[fx_name]
+        ret["fx_type"] = fx_type
+        ret["fx_id"] = fx_id
+        return ret
+
+    def value_for(self, fx_type, prop, value_name):
+        """The raw int for a named value under an fx type's ``prop`` table."""
+        table_name = self.fx_type_table_name(fx_type)
+        if table_name is None:
+            logger.error(f"{fx_type} not found in tables")
+            return None
+        if prop not in self.tables[table_name]:
+            logger.error(f"{prop} not found in {self.tables[table_name].keys()}")
+            return None
+        if "values" not in self.tables[table_name][prop]:
+            logger.error("No 'values' field in table {table_name} {prop}")
+            return None
+        for name in self.tables[table_name][prop]["values"]:
+            if name == value_name:
+                return self.tables[table_name][prop]["values"][name]
+        return None
+
+    def types_for(self, fx_type):
+        """The selectable TYPE names for an fx type, minus the four bass
+        variants that are excluded from the public list."""
+        if fx_type in ["ns", "delay"]:
+            return []
+        table_name = self.fx_type_table_name(fx_type)
+        if table_name not in self.tables:
+            return None
+        return [
+            x
+            for x in self.tables[table_name]["TYPE"]["values"].keys()
+            if x
+            not in ["DEFRETTER BASS", "OCTAVE BASS", "SLOW GEAR BASS", "TOUCH WAH BASS"]
+        ]
+
+    def _sliceindex(self, x):
+        i = 0
+        for c in x:
+            if c.isalpha():
+                i = i + 1
+                return i
+            i = i + 1
+
+    def _upperfirst(self, x):
+        i = self._sliceindex(x)
+        return x[:i].upper() + x[i:]
+
+    def fx_type_table_name(self, fx_type):
+        return f"Patch{self._upperfirst(fx_type)}"

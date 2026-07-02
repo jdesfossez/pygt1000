@@ -11,7 +11,6 @@ from rtmidi.midiutil import open_midiinput, open_midioutput
 from .constants import (
     SYSEX_END,
     ONE_BYTE,
-    TABLE_SUFFIX_TO_NAME,
     PROGRAM_CHANGE_OFFSET,
     MODEL_ID,
     PATCH_NAMES_LEN,
@@ -144,67 +143,7 @@ class GT1000:
         return self._address_map.fx_types_count
 
     def lookup(self, address, value):
-        ret = {}
-        if len(address) != 4:
-            logger.error(f"Unknown address format received {address}")
-            return None
-        if isinstance(value, list):
-            logger.error(f"value format must be int, received {value}")
-            return None
-        msbs = str([address[0], address[1]])
-        if msbs not in self.first_two_bytes:
-            logger.info(f"Data received for unknown address {bytes_as_hex(address)}")
-            return None
-        section, table = self.first_two_bytes[msbs]
-        if table not in self.offset_in_patch_tables:
-            return None
-        if address[2] not in self.offset_in_patch_tables[table]:
-            return None
-        name, patch_table = self.offset_in_patch_tables[table][address[2]]
-        if patch_table not in self.last_byte_option:
-            return None
-        if address[3] not in self.last_byte_option[patch_table]:
-            return None
-        value_name, value_entry = self.last_byte_option[patch_table][address[3]]
-        str_value = None
-        for i in value_entry["values"]:
-            if value_entry["values"][i] == value:
-                str_value = i
-        ret["section"] = section
-        ret["table"] = table
-        ret["name"] = name
-        ret["patch_table"] = patch_table
-        ret["value_name"] = value_name
-        ret["str_value"] = str_value
-        ret["int_value"] = value
-
-        # Now check if it's an fx_type and extract its fx_id
-        fx_type = None
-        fx_id = None
-        for i in self.fx_types:
-            if name.startswith(i):
-                fx_type = i
-                if name == i:
-                    fx_id = ""
-        if fx_type is None:
-            return ret
-        if fx_id is None:
-            if fx_type == "preamp" and name == "preampA":
-                fx_id = "1"
-            elif fx_type == "preamp" and name == "preampB":
-                fx_id = "2"
-            elif fx_type == "fx":
-                fx_id = name[2]
-            else:
-                fx_id = name.replace(fx_type, "")
-        if fx_type == "fx" and len(name) > 3:
-            fx_name = name[3:]
-            ret["fx_table_suffix"] = fx_name
-            if fx_name in TABLE_SUFFIX_TO_NAME:
-                ret["fx_name"] = TABLE_SUFFIX_TO_NAME[fx_name]
-        ret["fx_type"] = fx_type
-        ret["fx_id"] = fx_id
-        return ret
+        return self._address_map.decode(address, value)
 
     def start_refresh_thread(self):
         """Background thread to refresh the known device state"""
@@ -697,20 +636,7 @@ class GT1000:
             )
 
     def get_fx_value_from_value_name(self, fx_type, prop, value_name):
-        table_name = self.fx_type_table_name(fx_type)
-        if table_name is None:
-            logger.error(f"{fx_type} not found in tables")
-            return None
-        if prop not in self.tables[table_name]:
-            logger.error(f"{prop} not found in {self.tables[table_name].keys()}")
-            return None
-        if "values" not in self.tables[table_name][prop]:
-            logger.error("No 'values' field in table {table_name} {prop}")
-            return None
-        for name in self.tables[table_name][prop]["values"]:
-            if name == value_name:
-                return self.tables[table_name][prop]["values"][name]
-        return None
+        return self._address_map.value_for(fx_type, prop, value_name)
 
     def set_fx_type_type(self, fx_type, fx_id, new_type):
         type_value = self.get_fx_value_from_value_name(fx_type, "TYPE", new_type)
@@ -930,33 +856,11 @@ class GT1000:
     def _lookup_value_range(self, start_section, option, setting):
         return self._address_map.value_range(start_section, option, setting)
 
-    def _sliceindex(self, x):
-        i = 0
-        for c in x:
-            if c.isalpha():
-                i = i + 1
-                return i
-            i = i + 1
-
-    def _upperfirst(self, x):
-        i = self._sliceindex(x)
-        return x[:i].upper() + x[i:]
-
     def fx_type_table_name(self, fx_type):
-        return f"Patch{self._upperfirst(fx_type)}"
+        return self._address_map.fx_type_table_name(fx_type)
 
     def get_all_fx_types(self, fx_type):
-        if fx_type in ["ns", "delay"]:
-            return []
-        table_name = self.fx_type_table_name(fx_type)
-        if table_name not in self.tables:
-            return None
-        return [
-            x
-            for x in self.tables[table_name]["TYPE"]["values"].keys()
-            if x
-            not in ["DEFRETTER BASS", "OCTAVE BASS", "SLOW GEAR BASS", "TOUCH WAH BASS"]
-        ]
+        return self._address_map.types_for(fx_type)
 
     def _chain_byte_list(self):
         start_section = self._get_start_section("efct", "0")
