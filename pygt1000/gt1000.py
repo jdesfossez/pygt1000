@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import json
 import rtmidi
 import time
 import threading
@@ -8,7 +7,6 @@ import logging
 from time import sleep
 from datetime import datetime
 from rtmidi.midiutil import open_midiinput, open_midioutput
-from pathlib import Path
 
 from .constants import (
     SYSEX_END,
@@ -39,6 +37,7 @@ from .constants import (
 )
 
 from .chain import parse_chain, serialize_chain
+from .address_map import AddressMap
 
 MIDI_PORT = "GT-1000:GT-1000 MIDI 1"
 SLEEP_WAIT_SEC = 0.1
@@ -52,10 +51,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
-
-def bytes_to_int(value):
-    return int.from_bytes(value, byteorder="big")
 
 
 def bytes_as_hex(data):
@@ -78,7 +73,6 @@ class MidiInputHandler(object):
 
 class GT1000:
     def __init__(self):
-        self.tables = {}
         self.device_id = DEVICE_ID_BCAST
         self.current_state_message = None
         self.received_data = {}
@@ -86,14 +80,6 @@ class GT1000:
         self.stop = False
         # The current name for fx1-4
         self.current_fx_names = {}
-        # Map the 2 MSBs of an address to a section
-        self.first_two_bytes = {}
-        # Map an offset to its patch table (PatchFX, PatchEq, etc)
-        # One entry for each of the 3 Patch tables
-        self.offset_in_patch_tables = {}
-        # Option entry for the last byte (ex: "SW")
-        # One entry per table
-        self.last_byte_option = {}
 
         # Block the refresh thread until we detect a program change
         self.refresh_event = threading.Event()
@@ -122,48 +108,40 @@ class GT1000:
             "pedalFx",
             "reverb",
         ]
-        self.fx_tables = {}
-        self.fx_types_count = {}
-        self._import_specs_tables()
+        # The address map owns the spec-table load and the encode path; GT1000
+        # keeps backward-compatible accessors that delegate to it (see the
+        # registry properties below).
+        self._address_map = AddressMap(self.fx_types)
 
         logger.info(f"GT1000 instance created {self}")
 
-    def _import_specs_tables(self):
-        for i in self.fx_types:
-            self.fx_types_count[i] = 0
-        for i in (Path(__file__).parent / "specs").glob("*.json"):
-            table_name = i.name.split(".")[0]
-            table = json.loads(i.read_text())
-            if table_name in ["Patch", "Patch2", "Patch3"]:
-                if table_name not in self.offset_in_patch_tables:
-                    self.offset_in_patch_tables[table_name] = {}
-                for key in table:
-                    self.offset_in_patch_tables[table_name][
-                        table[key]["address"][1]
-                    ] = (key, table[key]["table"])
-                    if key in ["preampA", "preampB"]:
-                        fx_type = "preamp"
-                    else:
-                        fx_type = "".join(i for i in key if not i.isdigit())
-                    if fx_type not in self.fx_types:
-                        continue
-                    self.fx_types_count[fx_type] += 1
-                    self.fx_tables[fx_type] = table[key]["table"]
-            elif table_name == "base-addresses":
-                for section in table:
-                    msbs = [table[section]["address"][0], table[section]["address"][1]]
-                    self.first_two_bytes[str(msbs)] = (section, table[section]["table"])
-            elif table_name.startswith("Patch"):
-                self.last_byte_option[table_name] = {}
-                for option in table:
-                    # For this copy the whole entry so we can decide later if we only want
-                    # the value or the name associated with the value.
-                    self.last_byte_option[table_name][table[option]["offset"][1]] = (
-                        option,
-                        table[option],
-                    )
+    # -- Address-map registries (delegated) ---------------------------------
+    # These six registries now live on the AddressMap module; the properties
+    # preserve the historical ``self.<registry>`` read access used across the
+    # class and the characterisation tests.
+    @property
+    def tables(self):
+        return self._address_map.tables
 
-            self.tables[table_name] = table
+    @property
+    def first_two_bytes(self):
+        return self._address_map.first_two_bytes
+
+    @property
+    def offset_in_patch_tables(self):
+        return self._address_map.offset_in_patch_tables
+
+    @property
+    def last_byte_option(self):
+        return self._address_map.last_byte_option
+
+    @property
+    def fx_tables(self):
+        return self._address_map.fx_tables
+
+    @property
+    def fx_types_count(self):
+        return self._address_map.fx_types_count
 
     def lookup(self, address, value):
         ret = {}
@@ -654,37 +632,10 @@ class GT1000:
         return [128 - total]
 
     def _get_start_section(self, fx_type, fx_id):
-        if not isinstance(fx_id, str):
-            logger.error("fx_id should be a string")
-            fx_id = str(fx_id)
-        if fx_type == "fx" and fx_id == "4":
-            return "patch3 (temporary patch)"
-        return "patch (temporary patch)"
+        return self._address_map.start_section(fx_type, fx_id)
 
     def _get_fx_start_section(self, fx_id, fx_name):
-        table_suffix = FX_TO_TABLE_SUFFIX[fx_name]
-        full_name = f"fx{fx_id}{table_suffix}"
-        if full_name in [
-            "fx1ChorusBass",
-            "fx1FlangerBass",
-            "fx2ChorusBass",
-            "fx2FlangerBass",
-            "fx3ChorusBass",
-            "fx3FlangerBass",
-        ]:
-            return "patch2 (temporary patch)"
-        elif str(fx_id) == "4":
-            return "patch3 (temporary patch)"
-        elif full_name in [
-            "fx1Dist",
-            "fx1MasterFx",
-            "fx2Dist",
-            "fx2MasterFx",
-            "fx3Dist",
-            "fx3MasterFx",
-        ]:
-            return "patch3 (temporary patch)"
-        return "patch (temporary patch)"
+        return self._address_map.fx_start_section(fx_id, FX_TO_TABLE_SUFFIX[fx_name])
 
     def _normalize_fx_block(self, fx_type, fx_id):
         if self.fx_types_count[fx_type] == 1:
@@ -973,61 +924,11 @@ class GT1000:
                 return
 
     def _construct_address_value(self, start_section, option, setting, param):
-        # param is the setting we want to set, if None we just contruct the base address
-        if start_section not in self.tables["base-addresses"]:
-            logger.error(f"Entry {start_section} missing in base-addresses")
-            return None
-
-        section_entry = self.tables["base-addresses"][start_section]
-        address = bytes_to_int(section_entry["address"])
-
-        if option not in self.tables[section_entry["table"]]:
-            logger.error(f"{option} not in section table")
-            return None
-        option_entry = self.tables[section_entry["table"]][option]
-        option_address_offset = bytes_to_int(option_entry["address"])
-
-        if setting not in self.tables[option_entry["table"]]:
-            logger.error(f"{setting} not in option_entry")
-            logger.debug(f"entries: {self.tables[option_entry['table']].keys()}")
-            return None
-        setting_entry = self.tables[option_entry["table"]][setting]
-        setting_address_offset = bytes_to_int(setting_entry["offset"])
-
-        address += option_address_offset + setting_address_offset
-        if param is None:
-            num_bytes = (address.bit_length() + 7) // 8
-            byte_sequence = address.to_bytes(num_bytes, byteorder="big")
-            byte_list = [byte for byte in byte_sequence]
-            return byte_list
-
-        # If we set the raw value
-        if param not in setting_entry["values"]:
-            value = param.to_bytes(1, byteorder="big")
-        else:
-            param_entry = setting_entry["values"][param]
-            value = param_entry.to_bytes(1, byteorder="big")
-
-        num_bytes = (address.bit_length() + 7) // 8
-        byte_sequence = address.to_bytes(num_bytes, byteorder="big") + value
-        byte_list = [byte for byte in byte_sequence]
-        return byte_list
+        # param is the value we want to set, if None we just construct the base address
+        return self._address_map.address_for(start_section, option, setting, param)
 
     def _lookup_value_range(self, start_section, option, setting):
-        # param is the setting we want to set, if None we just contruct the base address
-        if start_section not in self.tables["base-addresses"]:
-            logger.error(f"Entry {start_section} missing in base-addresses")
-            return None
-
-        section_entry = self.tables["base-addresses"][start_section]
-
-        if option not in self.tables[section_entry["table"]]:
-            logger.error(f"Entry {option} not in section table")
-            return None
-        option_entry = self.tables[section_entry["table"]][option]
-
-        setting_entry = self.tables[option_entry["table"]][setting]
-        return setting_entry["value_range"]
+        return self._address_map.value_range(start_section, option, setting)
 
     def _sliceindex(self, x):
         i = 0
