@@ -13,6 +13,7 @@ from pygt1000.constants import (
     IDENTITY_REPLY,
     MANUFACTURER_ID,
     GT1000_FAMILY,
+    DEVICE_ID_BCAST,
 )
 
 
@@ -124,7 +125,12 @@ def test_header_carries_current_device_id(gt):
 
 
 # --------------------------------------------------------------------------
-# Identity-reply parsing (_msg_identity_reply)
+# Identity negotiation (fed through the transport, as the device would send it)
+#
+# DeviceLink recognises the identity reply, negotiates the device id, and hands
+# the parsed reply to GT1000, which substitutes the model. The reply is injected
+# via the fake transport's ``receive`` — the same path rtmidi drives — so no
+# threads are involved.
 # --------------------------------------------------------------------------
 
 def _identity_message(rev1, rev2, device_id=0x10):
@@ -144,16 +150,19 @@ def _identity_message(rev1, rev2, device_id=0x10):
     ],
 )
 def test_identity_reply_sets_model_and_device_id(gt, rev1, rev2, model):
-    assert gt._msg_identity_reply(_identity_message(rev1, rev2)) is True
+    gt._transport.receive(_identity_message(rev1, rev2))
     assert gt.model == model
     assert gt.device_id == 0x10
 
 
 def test_identity_reply_rejects_wrong_length(gt):
-    assert gt._msg_identity_reply([0xF0, 0x7E, 0x10]) is False
+    gt._transport.receive([0xF0, 0x7E, 0x10])
+    # Nothing negotiated: the device id stays at the broadcast default.
+    assert gt.device_id == DEVICE_ID_BCAST
 
 
 def test_identity_reply_rejects_wrong_manufacturer(gt):
     message = _identity_message(0x00, 0x01)
     message[5] = 0x42  # not Roland
-    assert gt._msg_identity_reply(message) is False
+    gt._transport.receive(message)
+    assert gt.device_id == DEVICE_ID_BCAST

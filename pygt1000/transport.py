@@ -56,16 +56,25 @@ class Transport:
 class FakeTransport(Transport):
     """Test double: records sent messages, injects canned device replies."""
 
-    def __init__(self):
+    def __init__(self, auto_reply=None):
         self.sent = []
         self.opened = False
         self._on_receive = None
+        # Optional ``callable(message) -> reply | None`` invoked on every send.
+        # Lets a test wire a canned device answer to an outgoing request so the
+        # request/response conversation completes synchronously, without a
+        # thread to inject the reply from.
+        self.auto_reply = auto_reply
 
     def set_on_receive(self, callback):
         self._on_receive = callback
 
     def send(self, message):
         self.sent.append(message)
+        if self.auto_reply is not None:
+            reply = self.auto_reply(message)
+            if reply is not None:
+                self.receive(reply)
 
     def receive(self, message):
         """Inject a raw inbound message as if the device had sent it."""

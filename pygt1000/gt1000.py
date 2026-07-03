@@ -26,11 +26,10 @@ from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
 from .patch_state import PatchState
 from .sysex_codec import SysExCodec
+from .device_link import RETRY_COUNT, SLEEP_WAIT_SEC, DeviceLink
 from .transport import MIDI_PORT, RtMidiTransport
 
-SLEEP_WAIT_SEC = 0.1
 REFRESH_STATE_POLL_RATE_SEC = 2
-RETRY_COUNT = 100
 
 logging.basicConfig(
     format="{asctime} - {levelname} - {message}",
@@ -107,10 +106,7 @@ FX_NAME_SLIDER_PARAMS = {
 
 class GT1000:
     def __init__(self, transport=None):
-        self.device_id = DEVICE_ID_BCAST
         self.current_state_message = None
-        self.received_data = {}
-        self.data_semaphore = threading.Semaphore(1)
         self.stop = False
         # The current name for fx1-4
         self.current_fx_names = {}
@@ -154,14 +150,31 @@ class GT1000:
         self._state = PatchState(self.fx_types)
 
         # The transport is the seam to the MIDI wire. Production uses rtmidi;
-        # tests inject a fake. Inbound raw messages are delivered back to the
-        # protocol via process_received_message; the request/response
-        # correlation (received_data + wait/retry) lives here on the protocol
-        # side, driven by that callback.
+        # tests inject a fake.
         self._transport = transport if transport is not None else RtMidiTransport()
-        self._transport.set_on_receive(self.process_received_message)
+
+        # The request/response conversation with the unit lives behind
+        # DeviceLink: it owns the offset-keyed correlation, the semaphore, and
+        # the wait/retry loop, installs its own inbound callback on the
+        # transport, and negotiates the device id from identity replies. GT1000
+        # asks it to request() reads, send() commands, and routes device-emitted
+        # frames back through _process_data_from_unit.
+        self._link = DeviceLink(self._transport, self._codec)
+        self._link.on_unsolicited(self._process_data_from_unit)
+        self._link.on_identity(self._apply_identity)
 
         logger.info(f"GT1000 instance created {self}")
+
+    @property
+    def device_id(self):
+        # The negotiated device id lives on the link (it needs it to frame
+        # requests and match replies); GT1000 reads/writes it through here so
+        # existing callers and the codec keep seeing gt.device_id.
+        return self._link.device_id
+
+    @device_id.setter
+    def device_id(self, value):
+        self._link.device_id = value
 
     def lookup(self, address, value):
         return self._address_map.decode(address, value)
@@ -217,7 +230,7 @@ class GT1000:
         # TODO: this should be a background thread so we update the ID if the
         # device comes online at some point
         for i in range(RETRY_COUNT):
-            self.send_message(IDENTITY_REQUEST_MSG)
+            self._link.send(IDENTITY_REQUEST_MSG)
             sleep(SLEEP_WAIT_SEC)
             if self.device_id != DEVICE_ID_BCAST:
                 logger.info(
@@ -399,20 +412,9 @@ class GT1000:
         return None
 
     def fetch_mem(self, offset, length, override_checksum=None):
-        self.send_message(
-            self._codec.encode_rq1(self.device_id, offset, length, override_checksum),
-            offset=offset,
-        )
-        data = self.wait_recv_data(offset)
-        if data is not None:
-            with self.data_semaphore:
-                del self.received_data[str(offset)]
-        return data
-
-    def set_byte(self, offset, data):
-        self.send_message(
-            self._codec.encode_dt1(self.device_id, offset + data), offset
-        )
+        # Read device memory: RQ1 out, block for the correlated reply. The
+        # correlation lives in DeviceLink now.
+        return self._link.request(offset, length, override_checksum)
 
     def fetch_patch_names(self):
         data = self.fetch_mem(PATCH_NAMES_BEGIN_OFFSET, PATCH_NAMES_LEN)
@@ -449,8 +451,9 @@ class GT1000:
         #    return False
         # logger.debug(f"command1 ok, received {data}")
 
-        self.set_byte(EDITOR_MODE_ADDRESS_SET2, EDITOR_MODE_ADDESS_VALUE2)
-        data = self.wait_recv_data(EDITOR_MODE_ADDRESS_SET2)
+        data = self._link.set_and_await(
+            EDITOR_MODE_ADDRESS_SET2, EDITOR_MODE_ADDESS_VALUE2
+        )
         if data != EDITOR_REPLY2:
             return False
         logger.debug("command2 ok")
@@ -486,7 +489,7 @@ class GT1000:
             "SW",
             state,
         )
-        self.send_message(self._codec.encode_dt1(self.device_id, address_value))
+        self._link.send(self._codec.encode_dt1(self.device_id, address_value))
         self._state.set_fx(fx_type, fx_id, "state", state)
 
     def set_fx_value(self, fx_type, fx_id, option, value):
@@ -507,7 +510,7 @@ class GT1000:
                 option,
                 value,
             )
-            self.send_message(self._codec.encode_dt1(self.device_id, address_value))
+            self._link.send(self._codec.encode_dt1(self.device_id, address_value))
         else:
             logger.info(f"Setting {fx_type}{fx_id} {option} to {value}")
             address_value = self._construct_address_value(
@@ -516,7 +519,7 @@ class GT1000:
                 option,
                 value,
             )
-            self.send_message(self._codec.encode_dt1(self.device_id, address_value))
+            self._link.send(self._codec.encode_dt1(self.device_id, address_value))
 
     def get_fx_value_from_value_name(self, fx_type, prop, value_name):
         return self._address_map.value_for(fx_type, prop, value_name)
@@ -532,69 +535,23 @@ class GT1000:
             "TYPE",
             type_value,
         )
-        self.send_message(self._codec.encode_dt1(self.device_id, address_value))
-
-    def send_message(self, message, offset=None):
-        with self.data_semaphore:
-            self.received_data[str(offset)] = None
-            logger.debug(f"sending: {bytes_as_hex(message)}")
-            self._transport.send(message)
+        self._link.send(self._codec.encode_dt1(self.device_id, address_value))
 
     def get_patch_names(self):
-        self.send_message(
+        # Fire-and-forget request for the patch-name block (the reply, if any,
+        # falls through DeviceLink to _process_data_from_unit).
+        self._link.send(
             self._codec.encode_rq1(
                 self.device_id, PATCH_NAMES_BEGIN_OFFSET, PATCH_NAMES_LEN
             )
         )
 
-    def wait_recv_data(self, offset=None):
-        for i in range(RETRY_COUNT):
-            with self.data_semaphore:
-                if self.received_data[str(offset)] is not None:
-                    return self.received_data[str(offset)]
-            sleep(SLEEP_WAIT_SEC)
-        return None
-
-    def _msg_identity_reply(self, message):
-        # Parse the identity reply via the codec; keep the device-id/model
-        # substitution here (an unknown model leaves self.model untouched).
-        reply = self._codec.parse_identity_reply(message)
-        if reply is None:
-            return False
+    def _apply_identity(self, reply):
+        # DeviceLink negotiated the device id and hands us the parsed reply; we
+        # keep the model substitution (an unknown model leaves self.model
+        # untouched).
         if reply.model is not None:
             self.model = reply.model
-        self.device_id = reply.device_id
-        return True
-
-    def process_received_message(self, message):
-        # Process the data received by the callback
-        try:
-            # logger.debug("receiving")
-            if self.device_id == DEVICE_ID_BCAST and self._msg_identity_reply(message):
-                logger.debug("identity ok")
-                return
-            parsed = self._codec.parse_data_reply(self.device_id, message)
-            if parsed is None:
-                # logger.debug("Ignored received data")
-                return
-            received_offset, received_data = parsed
-            logger.debug(
-                f"data received: {bytes_as_hex(received_data)} for offset {bytes_as_hex(received_offset)}"
-            )
-            with self.data_semaphore:
-                # If we are expecting that data, save it and return
-                if str(received_offset) in self.received_data:
-                    logger.debug("returning data")
-                    self.received_data[str(received_offset)] = received_data
-                    return
-            # If we are not waiting for that data, it's a message sent by the unit
-            # on its own we need to decode it and process the state change
-            logger.debug("data emitted by the unit")
-            self._process_data_from_unit(received_offset, received_data)
-        # Catch-all because otherwise nothing gets logged from the callback
-        # context and it is very confusing
-        except Exception:
-            logger.exception("process_received_message")
 
     def _process_data_from_unit(self, received_offset, received_data):
         # program change, we need to refresh the whole state
@@ -669,7 +626,7 @@ class GT1000:
         set_chain = self._codec.encode_dt1(
             self.device_id, self._chain_byte_list() + int_chain
         )
-        self.send_message(set_chain)
+        self._link.send(set_chain)
 
     def write_chain_from_obj(self, obj_chain):
         txt_chain = self.serialize_chain(obj_chain)

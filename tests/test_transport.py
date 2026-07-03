@@ -20,20 +20,20 @@ def test_fake_transport_is_a_transport():
     assert isinstance(RtMidiTransport(), Transport)
 
 
-def test_send_message_reaches_the_transport():
+def test_send_reaches_the_transport():
     t = FakeTransport()
     gt = GT1000(transport=t)
-    gt.send_message([0xF0, 0x01, 0xF7])
+    # GT1000 now drives the wire through DeviceLink.send.
+    gt._link.send([0xF0, 0x01, 0xF7])
     assert t.sent == [[0xF0, 0x01, 0xF7]]
 
 
 def test_receive_injects_an_inbound_message_into_the_protocol():
     t = FakeTransport()
-    gt = GT1000(transport=t)
     seen = []
-    gt.process_received_message = seen.append
-    # A freshly wired transport delivers inbound bytes to the protocol.
-    gt._transport.set_on_receive(gt.process_received_message)
+    # A freshly wired transport delivers inbound bytes to the registered
+    # callback (DeviceLink installs its own; here we assert the port primitive).
+    t.set_on_receive(seen.append)
     t.receive([0xF0, 0x7E, 0x10, 0xF7])
     assert seen == [[0xF0, 0x7E, 0x10, 0xF7]]
 
