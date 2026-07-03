@@ -101,7 +101,7 @@ def test_received_type_change_updates_name_and_queues_slider_refresh(gt_with_sta
     gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x1], [0x3]))
     assert gt.get_state()["fx"][0]["name"] == "CHORUS"
     # A type change schedules a slider re-read for that block.
-    assert any(t["type"] == "sliders" for t in gt.refresh_queue)
+    assert any(t["type"] == "sliders" for t in gt._refresh.pending())
 
 
 def test_received_message_from_other_device_is_ignored(gt_with_state):
@@ -115,4 +115,4 @@ def test_received_message_from_other_device_is_ignored(gt_with_state):
 def test_program_change_queues_full_refresh(gt_with_state):
     gt = gt_with_state
     gt._transport.receive(_unit_message(0x10, list(PROGRAM_CHANGE_OFFSET), [0x5]))
-    assert {"type": "full"} in gt.refresh_queue
+    assert {"type": "full"} in gt._refresh.pending()

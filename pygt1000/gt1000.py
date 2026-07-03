@@ -25,11 +25,10 @@ from .constants import (
 from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
 from .patch_state import PatchState
+from .refresh_scheduler import RefreshScheduler
 from .sysex_codec import SysExCodec
 from .device_link import RETRY_COUNT, SLEEP_WAIT_SEC, DeviceLink
 from .transport import MIDI_PORT, RtMidiTransport
-
-REFRESH_STATE_POLL_RATE_SEC = 2
 
 logging.basicConfig(
     format="{asctime} - {levelname} - {message}",
@@ -111,15 +110,15 @@ class GT1000:
         # The current name for fx1-4
         self.current_fx_names = {}
 
-        # Block the refresh thread until we detect a program change
-        self.refresh_event = threading.Event()
-        # What do we need to refresh when the refresh thread kicks off ?
+        # The background refresh coordination (queue + wakeup + worker) lives
+        # behind RefreshScheduler. GT1000 supplies the work as per-type
+        # handlers and calls submit() to enqueue:
         # {type: "full"}: scan all the blocks
-        # {type: "sliders", fx_type: <fx_type>, fx_id: <fx_id>}: just the sliders for
-        # a specific fx type/id.
-        # Add/remove to the queue protected by refresh_lock.
-        self.refresh_lock = threading.Semaphore(1)
-        self.refresh_queue = []
+        # {type: "sliders", fx_type: <fx_type>, fx_id: <fx_id>}: just the
+        # sliders for a specific fx type/id.
+        self._refresh = RefreshScheduler()
+        self._refresh.register("full", self._refresh_full)
+        self._refresh.register("sliders", self._refresh_sliders)
 
         self.fx_types = [
             "comp",
@@ -181,13 +180,13 @@ class GT1000:
 
     def start_refresh_thread(self):
         """Background thread to refresh the known device state"""
-        self.refresh_thread = threading.Thread(target=self.refresh_state_thread)
+        self._refresh.start()
         self.check_alive_thread = threading.Thread(target=self.check_alive_thread)
-        self.refresh_thread.start()
         self.check_alive_thread.start()
 
     def stop_refresh_thread(self):
         self.stop = True
+        self._refresh.stop()
 
     def refresh_state(self):
         for fx_type in self.fx_types:
@@ -201,30 +200,14 @@ class GT1000:
     def get_state(self):
         return self._state.snapshot()
 
-    def refresh_state_thread(self):
-        while not self.stop:
-            time.sleep(REFRESH_STATE_POLL_RATE_SEC / 10)
-            if self.refresh_event.is_set():
-                self.refresh_event.clear()
-                with self.refresh_lock:
-                    if len(self.refresh_queue) < 1:
-                        logger.error("Refresh started, but refresh queue empty")
-                        continue
-                    task = self.refresh_queue.pop(0)
-                    # If it was the last event, clear the refresh_event
-                    if len(self.refresh_queue) == 0:
-                        self.refresh_event.clear()
-                if task["type"] == "full":
-                    self.refresh_state()
-                elif task["type"] == "sliders":
-                    slider1, slider2 = self._get_sliders(
-                        task["fx_type"], task["fx_id"], None
-                    )
-                    self._state.set_sliders(
-                        task["fx_type"], task["fx_id"], slider1, slider2
-                    )
-                else:
-                    logger.error("Unknown refresh task {task}")
+    # Refresh handlers the scheduler dispatches to; the scheduler carries no
+    # MIDI or device knowledge, so the device work stays here.
+    def _refresh_full(self, task):
+        self.refresh_state()
+
+    def _refresh_sliders(self, task):
+        slider1, slider2 = self._get_sliders(task["fx_type"], task["fx_id"], None)
+        self._state.set_sliders(task["fx_type"], task["fx_id"], slider1, slider2)
 
     def request_identity(self):
         # TODO: this should be a background thread so we update the ID if the
@@ -557,8 +540,8 @@ class GT1000:
         # program change, we need to refresh the whole state
         if received_offset == PROGRAM_CHANGE_OFFSET:
             logger.info(f"Switching to program {bytes_as_hex(received_data)}")
-            # Unblock the refresh thread
-            self._queue_refresh({"type": "full"})
+            # Unblock the refresh worker
+            self._refresh.submit({"type": "full"})
             return
         ret = self.lookup(received_offset, received_data[0])
         if ret is None:
@@ -572,15 +555,9 @@ class GT1000:
             if ret["fx_type"] == "fx":
                 self.current_fx_names[int(ret["fx_id"])] = ret["str_value"]
             fx_id = int(ret["fx_id"]) if len(ret["fx_id"]) > 0 else ""
-            self._queue_refresh(
+            self._refresh.submit(
                 {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}
             )
-
-    def _queue_refresh(self, task):
-        """Append a refresh task and wake the refresh thread."""
-        with self.refresh_lock:
-            self.refresh_queue.append(task)
-        self.refresh_event.set()
 
     def _construct_address_value(self, start_section, option, setting, param):
         # param is the value we want to set, if None we just construct the base address
