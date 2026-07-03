@@ -204,8 +204,8 @@ class GT1000:
         self._transport.close()
 
     def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
-        offset = self._construct_address_value(
-            self._get_start_section(fx_type, str(fx_id)),
+        offset = self._address_map.address_for(
+            self._address_map.start_section(fx_type, str(fx_id)),
             f"{fx_type}{fx_id}",
             value_entry,
             None,
@@ -227,7 +227,7 @@ class GT1000:
     def _get_one_fx_value(self, fx_type, fx_id, value_entry):
         fx_name = self.current_fx_names[fx_id]
         logger.info(f"FX_VALUE for {fx_name} , {fx_type}{fx_id}, {value_entry}")
-        offset = self._construct_address_value(
+        offset = self._address_map.address_for(
             self._get_fx_start_section(fx_id, fx_name),
             f"{fx_type}{fx_id}{FX_TO_TABLE_SUFFIX[fx_name]}",
             value_entry,
@@ -356,9 +356,6 @@ class GT1000:
         logger.info("Device opened in editor mode")
         return True
 
-    def _get_start_section(self, fx_type, fx_id):
-        return self._address_map.start_section(fx_type, fx_id)
-
     def _get_fx_start_section(self, fx_id, fx_name):
         return self._address_map.fx_start_section(fx_id, FX_TO_TABLE_SUFFIX[fx_name])
 
@@ -374,8 +371,8 @@ class GT1000:
     def toggle_fx_state(self, fx_type, fx_id, state):
         fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         # Strip the number for blocks with only one instance
-        address_value = self._construct_address_value(
-            self._get_start_section(fx_type, fx_id),
+        address_value = self._address_map.address_for(
+            self._address_map.start_section(fx_type, fx_id),
             f"{fx_type}{fx_id}",
             "SW",
             state,
@@ -395,7 +392,7 @@ class GT1000:
             logger.info(
                 f"Setting {fx_type}{fx_id} {fx_name} ({full_name}) {option} to {value}"
             )
-            address_value = self._construct_address_value(
+            address_value = self._address_map.address_for(
                 self._get_fx_start_section(fx_id, fx_name),
                 full_name,
                 option,
@@ -404,8 +401,8 @@ class GT1000:
             self._link.send(self._codec.encode_dt1(self.device_id, address_value))
         else:
             logger.info(f"Setting {fx_type}{fx_id} {option} to {value}")
-            address_value = self._construct_address_value(
-                self._get_start_section(fx_type, fx_id),
+            address_value = self._address_map.address_for(
+                self._address_map.start_section(fx_type, fx_id),
                 f"{fx_type}{fx_id}",
                 option,
                 value,
@@ -420,8 +417,8 @@ class GT1000:
         if type_value is None:
             logger.error("Failed to set {fx_type}{fx_id} TYPE to {new_type}")
         fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
-        address_value = self._construct_address_value(
-            self._get_start_section(fx_type, fx_id),
+        address_value = self._address_map.address_for(
+            self._address_map.start_section(fx_type, fx_id),
             f"{fx_type}{fx_id}",
             "TYPE",
             type_value,
@@ -467,13 +464,6 @@ class GT1000:
                 {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}
             )
 
-    def _construct_address_value(self, start_section, option, setting, param):
-        # param is the value we want to set, if None we just construct the base address
-        return self._address_map.address_for(start_section, option, setting, param)
-
-    def _lookup_value_range(self, start_section, option, setting):
-        return self._address_map.value_range(start_section, option, setting)
-
     def fx_type_table_name(self, fx_type):
         return self._address_map.fx_type_table_name(fx_type)
 
@@ -481,10 +471,10 @@ class GT1000:
         return self._address_map.types_for(fx_type)
 
     def _chain_byte_list(self):
-        start_section = self._get_start_section("efct", "0")
+        start_section = self._address_map.start_section("efct", "0")
         option = "efct"
         setting = "CHAIN ELEMENT1"
-        return self._construct_address_value(start_section, option, setting, None)
+        return self._address_map.address_for(start_section, option, setting, None)
 
     def read_chain(self):
         # Return the chain as a list of words

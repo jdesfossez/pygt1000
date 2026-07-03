@@ -52,8 +52,8 @@ def test_build_message_does_not_mutate_shared_header():
     before = list(DT1_SYSEX_HEADER)
     gt = GT1000(transport=FakeTransport())
     gt.device_id = 0x10
-    section = gt._get_start_section("fx", "1")
-    address_value = gt._construct_address_value(section, "fx1", "SW", "ON")
+    section = gt._address_map.start_section("fx", "1")
+    address_value = gt._address_map.address_for(section, "fx1", "SW", "ON")
     gt._codec.encode_dt1(gt.device_id, address_value)
     assert DT1_SYSEX_HEADER == before
     # And the negotiated device id still lands in the message.

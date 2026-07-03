@@ -28,11 +28,11 @@ def test_normalize_fx_block(gt, fx_type, fx_id, expected):
 
 
 def test_get_start_section_defaults_to_patch(gt):
-    assert gt._get_start_section("fx", "1") == "patch (temporary patch)"
+    assert gt._address_map.start_section("fx", "1") == "patch (temporary patch)"
 
 
 def test_get_start_section_fx4_is_patch3(gt):
-    assert gt._get_start_section("fx", "4") == "patch3 (temporary patch)"
+    assert gt._address_map.start_section("fx", "4") == "patch3 (temporary patch)"
 
 
 @pytest.mark.parametrize(

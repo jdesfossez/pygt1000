@@ -21,22 +21,22 @@ def test_open_tables():
 def test_build_message():
     gt = GT1000()
 
-    start_section = gt._get_start_section("fx", "1")
+    start_section = gt._address_map.start_section("fx", "1")
     assert start_section == "patch (temporary patch)"
-    offset = gt._construct_address_value(start_section, "fx1", "TYPE", None)
+    offset = gt._address_map.address_for(start_section, "fx1", "TYPE", None)
     assert offset == [0x10, 0x0, 0x23, 0x1]
 
-    start_section = gt._get_start_section("fx", "4")
+    start_section = gt._address_map.start_section("fx", "4")
     assert start_section == "patch3 (temporary patch)"
-    offset = gt._construct_address_value(start_section, "fx4", "TYPE", None)
+    offset = gt._address_map.address_for(start_section, "fx4", "TYPE", None)
     assert offset == [0x10, 0x2, 0x1, 0x1]
 
 
 def test_set_value_message():
     gt = GT1000()
 
-    start_section = gt._get_start_section("fx", "1")
-    address_value = gt._construct_address_value(start_section, "fx1", "SW", "ON")
+    start_section = gt._address_map.start_section("fx", "1")
+    address_value = gt._address_map.address_for(start_section, "fx1", "SW", "ON")
     message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message == [
         0xF0,
@@ -56,8 +56,8 @@ def test_set_value_message():
         0xF7,
     ]
 
-    start_section = gt._get_start_section("fx", "4")
-    address_value = gt._construct_address_value(start_section, "fx4", "TYPE", "CHORUS")
+    start_section = gt._address_map.start_section("fx", "4")
+    address_value = gt._address_map.address_for(start_section, "fx4", "TYPE", "CHORUS")
     message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message == [
         0xF0,

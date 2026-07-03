@@ -1,10 +1,9 @@
 """The GT-1000 memory map and the forward (encode) path.
 
 Historically the map knowledge was smeared across six parallel dicts built by
-``GT1000._import_specs_tables`` and consumed by ``_construct_address_value`` /
-``_lookup_value_range`` plus the ``_get_start_section`` / ``_get_fx_start_section``
-``if`` chains. ``AddressMap`` owns that load and exposes a narrow encode
-interface:
+``GT1000._import_specs_tables`` and consumed by a fringe of one-line address
+forwarders and ``if`` chains on ``GT1000``. ``AddressMap`` owns that load and
+exposes a narrow encode interface:
 
 - ``address_for(section, option, setting, value=None)`` — build an address,
   optionally with a trailing value byte.

@@ -18,7 +18,7 @@ from pygt1000.constants import (
 
 
 # --------------------------------------------------------------------------
-# Address construction (_construct_address_value)
+# Address construction (AddressMap.address_for)
 # --------------------------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -34,30 +34,30 @@ from pygt1000.constants import (
     ],
 )
 def test_construct_address_base_offsets(gt, fx_type, fx_id, setting, expected):
-    section = gt._get_start_section(fx_type, fx_id or "1")
-    addr = gt._construct_address_value(section, f"{fx_type}{fx_id}", setting, None)
+    section = gt._address_map.start_section(fx_type, fx_id or "1")
+    addr = gt._address_map.address_for(section, f"{fx_type}{fx_id}", setting, None)
     assert addr == expected
 
 
 def test_construct_address_fx4_routes_to_patch3(gt):
-    section = gt._get_start_section("fx", "4")
+    section = gt._address_map.start_section("fx", "4")
     assert section == "patch3 (temporary patch)"
-    assert gt._construct_address_value(section, "fx4", "TYPE", None) == [0x10, 0x2, 0x1, 0x1]
+    assert gt._address_map.address_for(section, "fx4", "TYPE", None) == [0x10, 0x2, 0x1, 0x1]
 
 
 def test_construct_address_with_named_value_appends_byte(gt):
-    section = gt._get_start_section("fx", "1")
+    section = gt._address_map.start_section("fx", "1")
     # param=None gives address only; a named value appends the encoded byte.
-    addr = gt._construct_address_value(section, "fx1", "SW", None)
-    with_value = gt._construct_address_value(section, "fx1", "SW", "ON")
+    addr = gt._address_map.address_for(section, "fx1", "SW", None)
+    with_value = gt._address_map.address_for(section, "fx1", "SW", "ON")
     assert with_value == addr + [0x1]
 
 
 def test_construct_address_unknown_inputs_return_none(gt):
-    assert gt._construct_address_value("no-such-section", "fx1", "SW", None) is None
-    section = gt._get_start_section("fx", "1")
-    assert gt._construct_address_value(section, "nope", "SW", None) is None
-    assert gt._construct_address_value(section, "fx1", "NOPE", None) is None
+    assert gt._address_map.address_for("no-such-section", "fx1", "SW", None) is None
+    section = gt._address_map.start_section("fx", "1")
+    assert gt._address_map.address_for(section, "nope", "SW", None) is None
+    assert gt._address_map.address_for(section, "fx1", "NOPE", None) is None
 
 
 # --------------------------------------------------------------------------
@@ -88,8 +88,8 @@ def test_checksum_makes_payload_sum_multiple_of_128(gt):
 
 def test_build_dt_message_full_bytes(gt):
     # The encode path is address arithmetic (AddressMap) framed by the codec.
-    section = gt._get_start_section("fx", "1")
-    address_value = gt._construct_address_value(section, "fx1", "SW", "ON")
+    section = gt._address_map.start_section("fx", "1")
+    address_value = gt._address_map.address_for(section, "fx1", "SW", "ON")
     message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message == [
         0xF0, 0x41, 0x7F, 0x0, 0x0, 0x0, 0x4F, 0x12,
@@ -98,8 +98,8 @@ def test_build_dt_message_full_bytes(gt):
 
 
 def test_build_dt_message_is_wrapped_sysex(gt):
-    section = gt._get_start_section("comp", "1")
-    address_value = gt._construct_address_value(section, "comp", "SW", "ON")
+    section = gt._address_map.start_section("comp", "1")
+    address_value = gt._address_map.address_for(section, "comp", "SW", "ON")
     message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message[0] == 0xF0  # SYSEX start
     assert message[-1] == 0xF7  # SYSEX end
@@ -118,8 +118,8 @@ def test_build_rq_message_carries_length(gt):
 def test_header_carries_current_device_id(gt):
     # The broadcast id (0x7F) is replaced by the negotiated device id.
     gt.device_id = 0x10
-    section = gt._get_start_section("fx", "1")
-    address_value = gt._construct_address_value(section, "fx1", "SW", "ON")
+    section = gt._address_map.start_section("fx", "1")
+    address_value = gt._address_map.address_for(section, "fx1", "SW", "ON")
     message = gt._codec.encode_dt1(gt.device_id, address_value)
     assert message[2] == 0x10
 
