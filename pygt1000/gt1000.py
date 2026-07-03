@@ -24,6 +24,7 @@ from .constants import (
 
 from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
+from .slider import Slider
 from .patch_state import PatchState
 from .refresh_scheduler import RefreshScheduler
 from .sysex_codec import SysExCodec
@@ -41,66 +42,6 @@ logger.setLevel(logging.INFO)
 
 def bytes_as_hex(data):
     return "[{}]".format(", ".join(hex(x) for x in data))
-
-
-# Which two params are an effect's sliders (the policy). The mechanism —
-# fetching each param's value over MIDI — lives in _get_one_slider (non-fx
-# blocks) and _get_one_fx_slider (fx sub-effect tables). Either entry may be
-# None, meaning "no slider"; a block/effect absent from these maps also has no
-# sliders.
-#
-# Non-fx blocks, keyed by fx_type. ``eq`` is the one param-dependent case and
-# is handled directly in _get_sliders rather than as data.
-NON_FX_SLIDER_PARAMS = {
-    "comp": ("SUSTAIN", "LEVEL"),
-    "dist": ("DRIVE", "LEVEL"),
-    "preamp": ("GAIN", "LEVEL"),
-    "ns": ("THRESHOLD", "RELEASE"),
-    "delay": ("EFFECT LEVEL", "DIRECT LEVEL"),
-    "mstDelay": ("EFFECT LEVEL", "DIRECT LEVEL"),
-    "chorus": ("EFFECT LEVEL", "DIRECT LEVEL"),
-    "reverb": ("EFFECT LEVEL", "DIRECT LEVEL"),
-    "pedalFx": ("EFFECT LEVEL", "DIRECT MIX"),
-}
-
-# fx block, keyed by the resolved effect name. OCTAVE BASS and TOUCH WAH BASS
-# map to no sliders; any name not listed does too.
-FX_NAME_SLIDER_PARAMS = {
-    "AC GUITAR SIM": ("LEVEL", None),
-    "AC RESONANCE": ("LEVEL", None),
-    "AUTO WAH": ("EFFECT LEVEL", "DIRECT MIX"),
-    "CHORUS": ("EFFECT LEVEL", "DIRECT LEVEL"),
-    "CHORUS BASS": ("EFFECT LEVEL", "DEPTH"),
-    "CLASSIC-VIBE": ("EFFECT LEVEL", "DEPTH"),
-    "COMPRESSOR": ("LEVEL", "DIRECT MIX"),
-    "DEFRETTER": ("EFFECT LEVEL", "DEPTH"),
-    "DEFRETTER BASS": ("EFFECT LEVEL", "DIRECT MIX"),
-    "DISTORTION": ("DRIVE", "LEVEL"),
-    "FEEDBACKER": ("FEEDBACK", "OCT FEEDBACK"),
-    "FLANGER": ("EFFECT LEVEL", "DIRECT MIX"),
-    "FLANGER BASS": ("EFFECT LEVEL", "DIRECT MIX"),
-    "HARMONIST": ("HR1:LEVEL", "DIRECT LEVEL"),
-    "HUMANIZER": ("LEVEL", "DEPTH"),
-    "MASTERING FX": ("TONE", "NATURAL"),
-    "OCTAVE": ("OCTAVE LEVEL", "DIRECT LEVEL"),
-    "OCTAVE BASS": (None, None),
-    "OVERTONE": ("UPPER LEVEL", "DIRECT LEVEL"),
-    "PAN": ("EFFECT LEVEL", "DIRECT MIX"),
-    "PHASER": ("EFFECT LEVEL", "DIRECT MIX"),
-    "PITCH SHIFTER": ("PS1:LEVEL", "DIRECT LEVEL"),
-    "RING MOD": ("EFFECT LEVEL", "DIRECT MIX"),
-    "ROTARY": ("EFFECT LEVEL", "DIRECT MIX"),
-    "S-BEND": ("FALL TIME", "RISE TIME"),
-    "SITAR SIM": ("EFFECT LEVEL", "DIRECT MIX"),
-    "SLICER": ("EFFECT LEVEL", "DIRECT MIX"),
-    "SLOW GEAR": ("LEVEL", "SENS"),
-    "SLOW GEAR BASS": ("LEVEL", "SENS"),
-    "SOUND HOLD": ("EFFECT LEVEL", "RISE TIME"),
-    "TOUCH WAH": ("EFFECT LEVEL", "DIRECT MIX"),
-    "TOUCH WAH BASS": (None, None),
-    "TREMOLO": ("EFFECT LEVEL", "DIRECT MIX"),
-    "VIBRATO": ("EFFECT LEVEL", "DIRECT MIX"),
-}
 
 
 class GT1000:
@@ -147,6 +88,14 @@ class GT1000:
         # dict, its lock, and last_sync_ts. GT1000 only translates decoded
         # messages and local changes into calls on it.
         self._state = PatchState(self.fx_types)
+
+        # Slider resolution (which two params, the eq rule, and the range +
+        # value dict) lives behind Slider. The per-param value read over MIDI is
+        # injected as _read_slider_value so the module carries no device
+        # knowledge; the resolved fx name is read live via _current_fx_name.
+        self._slider = Slider(
+            self._address_map, self._current_fx_name, self._read_slider_value
+        )
 
         # The transport is the seam to the MIDI wire. Production uses rtmidi;
         # tests inject a fake.
@@ -206,7 +155,9 @@ class GT1000:
         self.refresh_state()
 
     def _refresh_sliders(self, task):
-        slider1, slider2 = self._get_sliders(task["fx_type"], task["fx_id"], None)
+        slider1, slider2 = self._slider.sliders_for(
+            task["fx_type"], task["fx_id"], None
+        )
         self._state.set_sliders(task["fx_type"], task["fx_id"], slider1, slider2)
 
     def request_identity(self):
@@ -295,61 +246,18 @@ class GT1000:
         # If there is no text mapping to the value, just return the value
         return data[0]
 
-    def _get_one_slider(self, fx_type, fx_id, option):
-        value_range = self._lookup_value_range(
-            self._get_start_section(fx_type, str(fx_id)), f"{fx_type}{fx_id}", option
-        )
-        value = self._get_one_fx_type_value(fx_type, fx_id, option, just_range=True)
-        return {
-            "value": value,
-            "label": option,
-            "min": value_range[0],
-            "max": value_range[1],
-        }
+    def _current_fx_name(self, fx_id):
+        """The resolved effect name for an fx block; injected into Slider so it
+        follows current_fx_names even if the attribute is reassigned."""
+        return self.current_fx_names[fx_id]
 
-    def _get_one_fx_slider(self, fx_type, fx_id, option):
-        fx_name = self.current_fx_names[fx_id]
-        value_range = self._lookup_value_range(
-            self._get_fx_start_section(fx_id, fx_name),
-            f"{fx_type}{fx_id}{FX_TO_TABLE_SUFFIX[fx_name]}",
-            option,
-        )
-        value = self._get_one_fx_value(fx_type, fx_id, option)
-        if value is None:
-            return None
-        return {
-            "value": value,
-            "label": option,
-            "min": value_range[0],
-            "max": value_range[1],
-        }
-
-    @staticmethod
-    def _fetch_slider(fetch, fx_type, fx_id, param):
-        """Fetch one slider via ``fetch``, or None when the param is None."""
-        if param is None:
-            return None
-        return fetch(fx_type, fx_id, param)
-
-    def _get_sliders(self, fx_type, fx_id, param_name):
-        # eq is the one param-dependent block; keep it out of the data table.
-        if fx_type == "eq":
-            param1 = "LEVEL1" if param_name == "PARAMETRIC" else "LEVEL"
-            return self._get_one_slider(fx_type, fx_id, param1), None
-
+    def _read_slider_value(self, fx_type, fx_id, option):
+        """The value-reader injected into Slider: read a param's current value
+        over MIDI. The fx block resolves through the sub-effect table (and text
+        mapping); every other block reads the raw byte."""
         if fx_type == "fx":
-            fetch = self._get_one_fx_slider
-            param1, param2 = FX_NAME_SLIDER_PARAMS.get(
-                self.current_fx_names[fx_id], (None, None)
-            )
-        else:
-            fetch = self._get_one_slider
-            param1, param2 = NON_FX_SLIDER_PARAMS.get(fx_type, (None, None))
-
-        return (
-            self._fetch_slider(fetch, fx_type, fx_id, param1),
-            self._fetch_slider(fetch, fx_type, fx_id, param2),
-        )
+            return self._get_one_fx_value(fx_type, fx_id, option)
+        return self._get_one_fx_type_value(fx_type, fx_id, option, just_range=True)
 
     def _get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
         state = self._get_one_fx_type_value(fx_type, fx_id, "SW")
@@ -361,7 +269,7 @@ class GT1000:
         if fx_type == "fx":
             self.current_fx_names[fx_id] = name
         if get_sliders is True:
-            slider1, slider2 = self._get_sliders(fx_type, fx_id, name)
+            slider1, slider2 = self._slider.sliders_for(fx_type, fx_id, name)
             return {
                 "fx_id": fx_id,
                 "state": state,

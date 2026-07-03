@@ -1,8 +1,9 @@
 """Characterise fx-block behaviour: normalization, section routing, the slider
 mapping, the set/toggle commands, and the value helpers.
 
-The slider-map test is the safety net for turning ``_get_sliders`` into data:
-it pins the exact (param1, param2) pair each effect resolves to today.
+The slider-map test is the safety net for the Slider module extraction: it
+pins, through ``gt._slider.sliders_for``, the exact (param1, param2) pair each
+effect resolves to today. The module itself is pinned in test_slider.py.
 """
 
 import pytest
@@ -50,7 +51,7 @@ def test_get_fx_start_section(gt, fx_id, fx_name, expected):
 
 
 # --------------------------------------------------------------------------
-# Slider mapping (_get_sliders) — full golden table
+# Slider mapping (gt._slider.sliders_for) — full golden table
 # --------------------------------------------------------------------------
 
 # fx_type -> (slider1_label, slider2_label). None means "no slider".
@@ -107,14 +108,12 @@ FX_NAME_SLIDERS = {
 
 @pytest.fixture
 def echo_slider_labels(gt):
-    """Replace the slider fetchers so ``_get_sliders`` reports the option it
-    would have read, decoupling the mapping from any MIDI I/O."""
-
-    def echo(fx_type, fx_id, option):
-        return {"label": option}
-
-    gt._get_one_slider = echo
-    gt._get_one_fx_slider = echo
+    """Decouple the mapping from MIDI I/O and range lookups: the injected value
+    reader and the range lookup are stubbed, so ``sliders_for`` reports just the
+    (label) policy each block resolves to. Range resolution is pinned separately
+    in test_slider.py."""
+    gt._slider._read_value = lambda fx_type, fx_id, option: 0
+    gt._slider._value_range = lambda fx_type, fx_id, option: (0, 0)
     return gt
 
 
@@ -124,18 +123,19 @@ def _labels(pair):
 
 @pytest.mark.parametrize("fx_type,expected", NON_FX_SLIDERS.items())
 def test_non_fx_slider_map(echo_slider_labels, fx_type, expected):
-    assert _labels(echo_slider_labels._get_sliders(fx_type, "1", None)) == expected
+    assert _labels(echo_slider_labels._slider.sliders_for(fx_type, "1", None)) == expected
 
 
 def test_eq_slider_map_depends_on_param(echo_slider_labels):
-    assert _labels(echo_slider_labels._get_sliders("eq", "1", "PARAMETRIC")) == ("LEVEL1", None)
-    assert _labels(echo_slider_labels._get_sliders("eq", "1", "GRAPHIC")) == ("LEVEL", None)
+    sliders_for = echo_slider_labels._slider.sliders_for
+    assert _labels(sliders_for("eq", "1", "PARAMETRIC")) == ("LEVEL1", None)
+    assert _labels(sliders_for("eq", "1", "GRAPHIC")) == ("LEVEL", None)
 
 
 @pytest.mark.parametrize("fx_name,expected", FX_NAME_SLIDERS.items())
 def test_fx_name_slider_map(echo_slider_labels, fx_name, expected):
     echo_slider_labels.current_fx_names = {"1": fx_name}
-    assert _labels(echo_slider_labels._get_sliders("fx", "1", None)) == expected
+    assert _labels(echo_slider_labels._slider.sliders_for("fx", "1", None)) == expected
 
 
 # --------------------------------------------------------------------------
