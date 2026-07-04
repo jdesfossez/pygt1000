@@ -270,10 +270,7 @@ class AddressMap:
         if address[3] not in self._last_byte_option[patch_table]:
             return None
         value_name, value_entry = self._last_byte_option[patch_table][address[3]]
-        str_value = None
-        for i in value_entry["values"]:
-            if value_entry["values"][i] == value:
-                str_value = i
+        str_value = self._label_for_raw(value_entry["values"], value)
         ret["section"] = section
         ret["table"] = table
         ret["name"] = name
@@ -309,6 +306,23 @@ class AddressMap:
         ret["fx_type"] = fx_type
         ret["fx_id"] = fx_id
         return ret
+
+    @staticmethod
+    def _label_for_raw(values, raw):
+        """Reverse a ``name -> byte`` value map: the name for ``raw``, or
+        ``None`` when the byte has no named mapping."""
+        for name in values:
+            if values[name] == raw:
+                return name
+        return None
+
+    def read_label(self, value_table, setting, raw):
+        """Decode a raw byte to the label ``value_table[setting]`` names it, or
+        the raw byte itself when unmapped. The read-side twin of the reverse
+        mapping ``decode`` applies to inbound frames — both go through
+        ``_label_for_raw``."""
+        label = self._label_for_raw(value_table[setting]["values"], raw)
+        return raw if label is None else label
 
     def value_for(self, fx_type, prop, value_name):
         """The raw int for a named value under an fx type's ``prop`` table."""

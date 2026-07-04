@@ -19,11 +19,11 @@ from .constants import (
     EDITOR_MODE_ADDRESS_FETCH3,
     EDITOR_MODE_ADDRESS_LEN3,
     IDENTITY_REQUEST_MSG,
-    FX_TO_TABLE_SUFFIX,
 )
 
 from .chain import parse_chain, serialize_chain
 from .address_map import AddressMap
+from .block_reader import BlockReader
 from .slider import Slider
 from .patch_state import PatchState
 from .refresh_scheduler import RefreshScheduler
@@ -89,12 +89,21 @@ class GT1000:
         # messages and local changes into calls on it.
         self._state = PatchState(self.fx_types)
 
+        # The read-side pipeline (address -> fetch -> decode for a block) lives
+        # behind BlockReader. The device read is injected as fetch_mem so the
+        # module carries no wire knowledge; the resolved fx name is read live via
+        # _current_fx_name.
+        self._block_reader = BlockReader(
+            self._address_map, self.fetch_mem, self._current_fx_name
+        )
+
         # Slider resolution (which two params, the eq rule, and the range +
         # value dict) lives behind Slider. The per-param value read over MIDI is
-        # injected as _read_slider_value so the module carries no device
-        # knowledge; the resolved fx name is read live via _current_fx_name.
+        # injected as the BlockReader's read_value so the module carries no
+        # device knowledge; the resolved fx name is read live via
+        # _current_fx_name.
         self._slider = Slider(
-            self._address_map, self._current_fx_name, self._read_slider_value
+            self._address_map, self._current_fx_name, self._block_reader.read_value
         )
 
         # The transport is the seam to the MIDI wire. Production uses rtmidi;
@@ -203,61 +212,19 @@ class GT1000:
     def close_ports(self):
         self._transport.close()
 
-    def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
-        offset = self._address_map.address_for_block(fx_type, fx_id, value_entry)
-        data = self.fetch_mem(offset, ONE_BYTE)
-        if data is None:
-            logger.warning(f"_get_one_fx_state no data for {fx_type}{fx_id}")
-            return None
-        fx_table = self._address_map.fx_value_table(fx_type)
-        # If we just want the numerical value_range, not the text mapping
-        if just_range is True:
-            return data[0]
-        for i in fx_table[value_entry]["values"]:
-            if data[0] == fx_table[value_entry]["values"][i]:
-                return i
-        # If there is not text mapping to the value, just return the value
-        return data[0]
-
-    def _get_one_fx_value(self, fx_type, fx_id, value_entry):
-        fx_name = self.current_fx_names[fx_id]
-        logger.info(f"FX_VALUE for {fx_name} , {fx_type}{fx_id}, {value_entry}")
-        offset = self._address_map.address_for_block(
-            fx_type, fx_id, value_entry, fx_name=fx_name
-        )
-        if offset is None:
-            return None
-        data = self.fetch_mem(offset, ONE_BYTE)
-        if data is None:
-            logger.warning(f"_get_one_fx_value no data for {fx_type}{fx_id} {fx_name}")
-            return None
-        fx_table = self._address_map.fx_name_value_table(FX_TO_TABLE_SUFFIX[fx_name])
-        for i in fx_table[value_entry]["values"]:
-            if data[0] == fx_table[value_entry]["values"][i]:
-                return i
-        # If there is no text mapping to the value, just return the value
-        return data[0]
-
     def _current_fx_name(self, fx_id):
-        """The resolved effect name for an fx block; injected into Slider so it
-        follows current_fx_names even if the attribute is reassigned."""
+        """The resolved effect name for an fx block; injected into Slider and
+        BlockReader so it follows current_fx_names even if the attribute is
+        reassigned."""
         return self.current_fx_names[fx_id]
 
-    def _read_slider_value(self, fx_type, fx_id, option):
-        """The value-reader injected into Slider: read a param's current value
-        over MIDI. The fx block resolves through the sub-effect table (and text
-        mapping); every other block reads the raw byte."""
-        if fx_type == "fx":
-            return self._get_one_fx_value(fx_type, fx_id, option)
-        return self._get_one_fx_type_value(fx_type, fx_id, option, just_range=True)
-
     def _get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
-        state = self._get_one_fx_type_value(fx_type, fx_id, "SW")
+        state = self._block_reader.read(fx_type, fx_id, "SW")
         # These don't have a TYPE field in the spec
         if fx_type in ["ns", "delay"]:
             name = f"{fx_type}{fx_id}"
         else:
-            name = self._get_one_fx_type_value(fx_type, fx_id, "TYPE")
+            name = self._block_reader.read(fx_type, fx_id, "TYPE")
         if fx_type == "fx":
             self.current_fx_names[fx_id] = name
         if get_sliders is True:
