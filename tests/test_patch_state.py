@@ -125,3 +125,29 @@ def test_set_sliders_updates_matching_block(ready_state):
     snap = ready_state.snapshot()
     assert snap["fx"][0]["slider1"] == s1
     assert snap["fx"][0]["slider2"] is None
+
+
+# -- resolved fx name (the single owner) ------------------------------------
+
+def test_fx_name_round_trips():
+    state = PatchState(FX_TYPES)
+    state.set_fx_name(1, "CHORUS")
+    assert state.fx_name(1) == "CHORUS"
+
+
+def test_fx_name_key_is_normalized_int_vs_str():
+    # A caller passing an int and one passing a str must resolve the same
+    # effect — the fragile str/int key mismatch that could silently pick the
+    # wrong slider layout.
+    state = PatchState(FX_TYPES)
+    state.set_fx_name(1, "CHORUS")
+    assert state.fx_name("1") == "CHORUS"
+    state.set_fx_name("2", "PHASER")
+    assert state.fx_name(2) == "PHASER"
+
+
+def test_apply_type_change_updates_resolved_fx_name(ready_state):
+    # The device-echo TYPE-change path writes the resolved name through the same
+    # owner, not a second hand-synced dict.
+    ready_state.apply(_decoded("fx", "1", "TYPE", "PHASER"))
+    assert ready_state.fx_name("1") == "PHASER"

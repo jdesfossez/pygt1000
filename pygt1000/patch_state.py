@@ -45,6 +45,12 @@ class PatchState:
         # Guards the state dict and prevents changes while a refresh is running.
         self._lock = threading.Semaphore(1)
         self._state = {"last_sync_ts": {}}
+        # The single owner of "which effect is loaded in fx block N". Keyed by a
+        # normalized (str) fx_id so a caller passing an int and one passing a str
+        # resolve the same effect. Written by the block scan (set_fx_name) and
+        # the device-echo TYPE-change path (folded into apply); read by Slider,
+        # BlockReader, and the fx write path.
+        self._fx_names = {}
 
     def is_ready(self):
         """True once every fx type has an entry (a full scan has completed)."""
@@ -81,6 +87,22 @@ class PatchState:
                 for entry in entries:
                     if str(entry["fx_id"]) == str(fx_id):
                         entry[field] = value
+
+    def set_fx_name(self, fx_id, name):
+        """Record the resolved effect name loaded in an fx block.
+
+        The key is normalized to ``str`` so int/str callers land on the same
+        block. This is the single write target for the block scan; the
+        device-echo TYPE-change path writes it through :meth:`apply`.
+        """
+        with self._lock:
+            self._fx_names[str(fx_id)] = name
+
+    def fx_name(self, fx_id):
+        """The resolved effect name loaded in an fx block (``KeyError`` if the
+        block has not been scanned yet). Key normalized to ``str``."""
+        with self._lock:
+            return self._fx_names[str(fx_id)]
 
     def set_sliders(self, fx_type, fx_id, slider1, slider2):
         """Record a re-read of an fx block's two sliders."""
@@ -121,6 +143,11 @@ class PatchState:
                         f"{fx['name']} -> {decoded['str_value']}"
                     )
                     fx["name"] = decoded["str_value"]
+                    # The fx block also feeds the resolved-effect-name owner, so
+                    # the echo path has one write target, not a second dict kept
+                    # in sync by the facade.
+                    if fx_type == "fx":
+                        self._fx_names[str(decoded["fx_id"])] = decoded["str_value"]
                     matched = True
                     type_changed = True
                 else:

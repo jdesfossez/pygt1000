@@ -100,6 +100,9 @@ def test_received_type_change_updates_name_and_queues_slider_refresh(gt_with_sta
     # fx1 TYPE -> CHORUS (value 3) lives at [0x10, 0x0, 0x23, 0x1].
     gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x1], [0x3]))
     assert gt.get_state()["fx"][0]["name"] == "CHORUS"
+    # The resolved-fx-name owner is updated through the same apply, not a
+    # loose facade-side dict.
+    assert gt._state.fx_name(1) == "CHORUS"
     # A type change schedules a slider re-read for that block.
     assert any(t["type"] == "sliders" for t in gt._refresh.pending())
 

@@ -137,7 +137,7 @@ def test_eq_slider_map_depends_on_param(echo_slider_labels):
 
 @pytest.mark.parametrize("fx_name,expected", FX_NAME_SLIDERS.items())
 def test_fx_name_slider_map(echo_slider_labels, fx_name, expected):
-    echo_slider_labels.current_fx_names = {"1": fx_name}
+    echo_slider_labels._state.set_fx_name("1", fx_name)
     assert _labels(echo_slider_labels._slider.sliders_for("fx", "1", None)) == expected
 
 
@@ -173,7 +173,7 @@ def test_set_fx_value_non_fx_sends_message(captured):
 
 def test_set_fx_value_fx_uses_resolved_name(captured):
     gt = captured
-    gt.current_fx_names = {1: "CHORUS"}
+    gt._state.set_fx_name(1, "CHORUS")
     gt.set_fx_value("fx", 1, "EFFECT LEVEL", 10)
     assert len(gt.sent) == 1
 

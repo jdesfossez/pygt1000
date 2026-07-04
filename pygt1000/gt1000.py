@@ -46,8 +46,6 @@ def bytes_as_hex(data):
 class GT1000:
     def __init__(self, transport=None):
         self.current_state_message = None
-        # The current name for fx1-4
-        self.current_fx_names = {}
 
         # The background refresh coordination (queue + wakeup + worker) lives
         # behind RefreshScheduler. GT1000 supplies the work as per-type
@@ -101,19 +99,19 @@ class GT1000:
 
         # The read-side pipeline (address -> fetch -> decode for a block) lives
         # behind BlockReader. The device read is injected as fetch_mem so the
-        # module carries no wire knowledge; the resolved fx name is read live via
-        # _current_fx_name.
+        # module carries no wire knowledge; the resolved fx name is read live
+        # through PatchState, the owner of that fact.
         self._block_reader = BlockReader(
-            self._address_map, self.fetch_mem, self._current_fx_name
+            self._address_map, self.fetch_mem, self._state.fx_name
         )
 
         # Slider resolution (which two params, the eq rule, and the range +
         # value dict) lives behind Slider. The per-param value read over MIDI is
         # injected as the BlockReader's read_value so the module carries no
-        # device knowledge; the resolved fx name is read live via
-        # _current_fx_name.
+        # device knowledge; the resolved fx name is read live through PatchState,
+        # the owner of that fact.
         self._slider = Slider(
-            self._address_map, self._current_fx_name, self._block_reader.read_value
+            self._address_map, self._state.fx_name, self._block_reader.read_value
         )
 
         # The transport is the seam to the MIDI wire. Production uses rtmidi;
@@ -214,12 +212,6 @@ class GT1000:
     def close_ports(self):
         self._transport.close()
 
-    def _current_fx_name(self, fx_id):
-        """The resolved effect name for an fx block; injected into Slider and
-        BlockReader so it follows current_fx_names even if the attribute is
-        reassigned."""
-        return self.current_fx_names[fx_id]
-
     def _get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
         state = self._block_reader.read(fx_type, fx_id, "SW")
         # These don't have a TYPE field in the spec
@@ -228,7 +220,7 @@ class GT1000:
         else:
             name = self._block_reader.read(fx_type, fx_id, "TYPE")
         if fx_type == "fx":
-            self.current_fx_names[fx_id] = name
+            self._state.set_fx_name(fx_id, name)
         if get_sliders is True:
             slider1, slider2 = self._slider.sliders_for(fx_type, fx_id, name)
             return {
@@ -328,7 +320,7 @@ class GT1000:
         # the sliders can want to send float
         value = int(value)
         if fx_type == "fx":
-            fx_name = self.current_fx_names[fx_id]
+            fx_name = self._state.fx_name(fx_id)
             logger.info(f"Setting {fx_type}{fx_id} {fx_name} {option} to {value}")
             address_value = self._address_map.address_for_block(
                 fx_type, fx_id, option, value, fx_name=fx_name
@@ -381,11 +373,10 @@ class GT1000:
             return
 
         result = self._state.apply(ret)
-        # A TYPE change resolves a new effect name; refresh the cached fx name
-        # and schedule a slider re-read for that block.
+        # A TYPE change resolves a new effect name; PatchState.apply already
+        # updated the resolved-fx-name owner, so we just schedule a slider
+        # re-read for that block.
         if result.type_changed:
-            if ret["fx_type"] == "fx":
-                self.current_fx_names[int(ret["fx_id"])] = ret["str_value"]
             fx_id = int(ret["fx_id"]) if len(ret["fx_id"]) > 0 else ""
             self._refresh.submit(
                 {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}

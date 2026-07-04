@@ -48,5 +48,5 @@ def gt_with_state(gt):
         [{"fx_id": "1", "state": "OFF", "name": "CHORUS", "slider1": None, "slider2": None}],
         now,
     )
-    gt.current_fx_names = {1: "CHORUS"}
+    gt._state.set_fx_name(1, "CHORUS")
     return gt
