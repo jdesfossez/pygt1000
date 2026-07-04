@@ -23,7 +23,7 @@ import json
 import logging
 from pathlib import Path
 
-from .constants import TABLE_SUFFIX_TO_NAME
+from .constants import FX_TO_TABLE_SUFFIX, TABLE_SUFFIX_TO_NAME
 
 logger = logging.getLogger(__name__)
 
@@ -147,6 +147,41 @@ class AddressMap:
         if str(fx_id) == "4":
             return self.PATCH3_SECTION
         return self._FX_SECTION_BY_SUFFIX.get(table_suffix, self.PATCH_SECTION)
+
+    def normalize_block(self, fx_type, fx_id):
+        """Normalize a block id into its address form.
+
+        Single-instance blocks drop the id (``comp1`` -> ``comp``); the two
+        preamp blocks are addressed ``A``/``B`` rather than ``1``/``2``. Any
+        other multi-instance id is returned unchanged. Idempotent: an
+        already-normalized id passes through untouched.
+        """
+        if self.fx_block_count(fx_type) == 1:
+            fx_id = ""
+        elif fx_type == "preamp" and fx_id == 1:
+            fx_id = "A"
+        elif fx_type == "preamp" and fx_id == 2:
+            fx_id = "B"
+        return fx_type, fx_id
+
+    def address_for_block(self, fx_type, fx_id, setting, value=None, fx_name=None):
+        """Build the address for a block's ``setting``, owning the whole rule.
+
+        Normalizes the block, resolves the section, and formats the option
+        string in one place: the plain ``f"{fx_type}{fx_id}"`` form, or — when
+        ``fx_name`` is given (the fx block's resolved effect) — the fx-suffix
+        form ``f"{fx_type}{fx_id}{suffix}"`` routed through ``fx_start_section``.
+        The trailing value byte is appended when ``value`` is not ``None``.
+        """
+        fx_type, fx_id = self.normalize_block(fx_type, fx_id)
+        if fx_name is not None:
+            suffix = FX_TO_TABLE_SUFFIX[fx_name]
+            section = self.fx_start_section(fx_id, suffix)
+            option = f"{fx_type}{fx_id}{suffix}"
+        else:
+            section = self.start_section(fx_type, fx_id)
+            option = f"{fx_type}{fx_id}"
+        return self.address_for(section, option, setting, value)
 
     def address_for(self, section, option, setting, value=None):
         """Build the address bytes for ``setting`` under ``section``/``option``.

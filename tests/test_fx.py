@@ -24,7 +24,7 @@ import pytest
     ],
 )
 def test_normalize_fx_block(gt, fx_type, fx_id, expected):
-    assert gt._normalize_fx_block(fx_type, fx_id) == expected
+    assert gt._address_map.normalize_block(fx_type, fx_id) == expected
 
 
 def test_get_start_section_defaults_to_patch(gt):
@@ -47,7 +47,10 @@ def test_get_start_section_fx4_is_patch3(gt):
     ],
 )
 def test_get_fx_start_section(gt, fx_id, fx_name, expected):
-    assert gt._get_fx_start_section(fx_id, fx_name) == expected
+    from pygt1000.constants import FX_TO_TABLE_SUFFIX
+
+    suffix = FX_TO_TABLE_SUFFIX[fx_name]
+    assert gt._address_map.fx_start_section(fx_id, suffix) == expected
 
 
 # --------------------------------------------------------------------------

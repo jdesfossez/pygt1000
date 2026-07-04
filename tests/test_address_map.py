@@ -94,6 +94,63 @@ def test_value_range_is_a_pair(amap):
 
 
 # --------------------------------------------------------------------------
+# normalize_block: the block-id -> address-form rule
+# --------------------------------------------------------------------------
+
+@pytest.mark.parametrize(
+    "fx_type,fx_id,expected",
+    [
+        ("preamp", 1, ("preamp", "A")),   # preamp 1/2 -> A/B
+        ("preamp", 2, ("preamp", "B")),
+        ("comp", 1, ("comp", "")),        # single-instance block strips the id
+        ("fx", 1, ("fx", 1)),             # multi-instance block keeps the id
+        ("dist", 2, ("dist", 2)),
+        ("preamp", "A", ("preamp", "A")),  # already-normalized: idempotent
+        ("comp", "", ("comp", "")),
+    ],
+)
+def test_normalize_block(amap, fx_type, fx_id, expected):
+    assert amap.normalize_block(fx_type, fx_id) == expected
+
+
+# --------------------------------------------------------------------------
+# address_for_block: normalize + section + option-string + fx-suffix in one
+# --------------------------------------------------------------------------
+
+def test_address_for_block_matches_hand_glued_non_fx(amap):
+    # The interface reproduces the four-step hand-gluing for the non-fx path:
+    # normalize -> start_section -> f"{fx_type}{fx_id}" -> address_for.
+    fx_type, fx_id = amap.normalize_block("comp", 1)
+    section = amap.start_section(fx_type, fx_id)
+    manual = amap.address_for(section, f"{fx_type}{fx_id}", "SUSTAIN")
+    assert amap.address_for_block("comp", 1, "SUSTAIN") == manual == [0x10, 0x0, 0x12, 0x2]
+
+
+def test_address_for_block_normalizes_preamp(amap):
+    # preamp 1 addresses the "A" block; the caller passes the raw id.
+    section = amap.start_section("preamp", "A")
+    manual = amap.address_for(section, "preampA", "GAIN")
+    assert amap.address_for_block("preamp", 1, "GAIN") == manual == [0x10, 0x0, 0x15, 0x2]
+
+
+def test_address_for_block_appends_value_byte(amap):
+    addr = amap.address_for_block("fx", 1, "SW")
+    assert amap.address_for_block("fx", 1, "SW", "ON") == addr + [0x1]
+
+
+def test_address_for_block_fx_suffix_path(amap):
+    # With fx_name given, the option gets the resolved fx-table suffix and the
+    # section routes through fx_start_section.
+    from pygt1000.constants import FX_TO_TABLE_SUFFIX
+
+    suffix = FX_TO_TABLE_SUFFIX["CHORUS"]
+    section = amap.fx_start_section("1", suffix)
+    manual = amap.address_for(section, f"fx1{suffix}", "EFFECT LEVEL")
+    assert manual is not None
+    assert amap.address_for_block("fx", 1, "EFFECT LEVEL", fx_name="CHORUS") == manual
+
+
+# --------------------------------------------------------------------------
 # Section routing expressed as data (not if-chains)
 # --------------------------------------------------------------------------
 

@@ -204,12 +204,7 @@ class GT1000:
         self._transport.close()
 
     def _get_one_fx_type_value(self, fx_type, fx_id, value_entry, just_range=False):
-        offset = self._address_map.address_for(
-            self._address_map.start_section(fx_type, str(fx_id)),
-            f"{fx_type}{fx_id}",
-            value_entry,
-            None,
-        )
+        offset = self._address_map.address_for_block(fx_type, fx_id, value_entry)
         data = self.fetch_mem(offset, ONE_BYTE)
         if data is None:
             logger.warning(f"_get_one_fx_state no data for {fx_type}{fx_id}")
@@ -227,11 +222,8 @@ class GT1000:
     def _get_one_fx_value(self, fx_type, fx_id, value_entry):
         fx_name = self.current_fx_names[fx_id]
         logger.info(f"FX_VALUE for {fx_name} , {fx_type}{fx_id}, {value_entry}")
-        offset = self._address_map.address_for(
-            self._get_fx_start_section(fx_id, fx_name),
-            f"{fx_type}{fx_id}{FX_TO_TABLE_SUFFIX[fx_name]}",
-            value_entry,
-            None,
+        offset = self._address_map.address_for_block(
+            fx_type, fx_id, value_entry, fx_name=fx_name
         )
         if offset is None:
             return None
@@ -288,14 +280,14 @@ class GT1000:
         logger.debug("get_all_fx_type_state")
         out = []
         for i in range(self._address_map.fx_block_count(fx_type)):
-            fx_type, fx_id = self._normalize_fx_block(fx_type, i + 1)
+            fx_type, fx_id = self._address_map.normalize_block(fx_type, i + 1)
             out.append(self._get_one_fx_state(fx_type, fx_id))
         return out
 
     def get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
         logger.debug("get_one_fx_state")
         for i in range(self._address_map.fx_block_count(fx_type)):
-            fx_type, _fx_id = self._normalize_fx_block(fx_type, i + 1)
+            fx_type, _fx_id = self._address_map.normalize_block(fx_type, i + 1)
             if not fx_id:
                 return self._get_one_fx_state(fx_type, _fx_id, get_sliders)
             elif fx_id == _fx_id:
@@ -356,58 +348,28 @@ class GT1000:
         logger.info("Device opened in editor mode")
         return True
 
-    def _get_fx_start_section(self, fx_id, fx_name):
-        return self._address_map.fx_start_section(fx_id, FX_TO_TABLE_SUFFIX[fx_name])
-
-    def _normalize_fx_block(self, fx_type, fx_id):
-        if self._address_map.fx_block_count(fx_type) == 1:
-            fx_id = ""
-        elif fx_type == "preamp" and fx_id == 1:
-            fx_id = "A"
-        elif fx_type == "preamp" and fx_id == 2:
-            fx_id = "B"
-        return fx_type, fx_id
-
     def toggle_fx_state(self, fx_type, fx_id, state):
-        fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
-        # Strip the number for blocks with only one instance
-        address_value = self._address_map.address_for(
-            self._address_map.start_section(fx_type, fx_id),
-            f"{fx_type}{fx_id}",
-            "SW",
-            state,
-        )
+        address_value = self._address_map.address_for_block(fx_type, fx_id, "SW", state)
         self._link.set(address_value)
+        # The state model matches blocks by their normalized id (preamp A/B).
+        fx_type, fx_id = self._address_map.normalize_block(fx_type, fx_id)
         self._state.set_fx(fx_type, fx_id, "state", state)
 
     def set_fx_value(self, fx_type, fx_id, option, value):
         # the sliders can want to send float
         value = int(value)
-        # Strip the number for blocks with only one instance
-        fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
         if fx_type == "fx":
             fx_name = self.current_fx_names[fx_id]
-            table_suffix = FX_TO_TABLE_SUFFIX[fx_name]
-            full_name = f"fx{fx_id}{table_suffix}"
-            logger.info(
-                f"Setting {fx_type}{fx_id} {fx_name} ({full_name}) {option} to {value}"
+            logger.info(f"Setting {fx_type}{fx_id} {fx_name} {option} to {value}")
+            address_value = self._address_map.address_for_block(
+                fx_type, fx_id, option, value, fx_name=fx_name
             )
-            address_value = self._address_map.address_for(
-                self._get_fx_start_section(fx_id, fx_name),
-                full_name,
-                option,
-                value,
-            )
-            self._link.set(address_value)
         else:
             logger.info(f"Setting {fx_type}{fx_id} {option} to {value}")
-            address_value = self._address_map.address_for(
-                self._address_map.start_section(fx_type, fx_id),
-                f"{fx_type}{fx_id}",
-                option,
-                value,
+            address_value = self._address_map.address_for_block(
+                fx_type, fx_id, option, value
             )
-            self._link.set(address_value)
+        self._link.set(address_value)
 
     def get_fx_value_from_value_name(self, fx_type, prop, value_name):
         return self._address_map.value_for(fx_type, prop, value_name)
@@ -416,12 +378,8 @@ class GT1000:
         type_value = self.get_fx_value_from_value_name(fx_type, "TYPE", new_type)
         if type_value is None:
             logger.error("Failed to set {fx_type}{fx_id} TYPE to {new_type}")
-        fx_type, fx_id = self._normalize_fx_block(fx_type, fx_id)
-        address_value = self._address_map.address_for(
-            self._address_map.start_section(fx_type, fx_id),
-            f"{fx_type}{fx_id}",
-            "TYPE",
-            type_value,
+        address_value = self._address_map.address_for_block(
+            fx_type, fx_id, "TYPE", type_value
         )
         self._link.set(address_value)
 
