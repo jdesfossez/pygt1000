@@ -93,6 +93,13 @@ class DeviceLink:
         logger.debug(f"sending: {bytes_as_hex(message)}")
         self._transport.send(message)
 
+    def set(self, address_value):
+        """Frame a DT1 that writes ``address_value`` (address bytes followed by
+        the value byte(s)) and put it on the wire; no reply is expected. Mirrors
+        how :meth:`request` frames RQ1 internally, so DT1 and RQ1 framing share
+        one home and callers never touch the codec on the write path."""
+        self.send(self._codec.encode_dt1(self.device_id, address_value))
+
     def request(self, address, length, override_checksum=None):
         """Send an RQ1 for ``address``/``length`` and block for the correlated
         reply. Returns the reply data, or ``None`` on timeout."""

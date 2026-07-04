@@ -377,7 +377,7 @@ class GT1000:
             "SW",
             state,
         )
-        self._link.send(self._codec.encode_dt1(self.device_id, address_value))
+        self._link.set(address_value)
         self._state.set_fx(fx_type, fx_id, "state", state)
 
     def set_fx_value(self, fx_type, fx_id, option, value):
@@ -398,7 +398,7 @@ class GT1000:
                 option,
                 value,
             )
-            self._link.send(self._codec.encode_dt1(self.device_id, address_value))
+            self._link.set(address_value)
         else:
             logger.info(f"Setting {fx_type}{fx_id} {option} to {value}")
             address_value = self._address_map.address_for(
@@ -407,7 +407,7 @@ class GT1000:
                 option,
                 value,
             )
-            self._link.send(self._codec.encode_dt1(self.device_id, address_value))
+            self._link.set(address_value)
 
     def get_fx_value_from_value_name(self, fx_type, prop, value_name):
         return self._address_map.value_for(fx_type, prop, value_name)
@@ -423,7 +423,7 @@ class GT1000:
             "TYPE",
             type_value,
         )
-        self._link.send(self._codec.encode_dt1(self.device_id, address_value))
+        self._link.set(address_value)
 
     def get_patch_names(self):
         # Fire-and-forget request for the patch-name block (the reply, if any,
@@ -498,10 +498,7 @@ class GT1000:
         for i in txt_chain:
             int_chain.append(self._address_map.chain_element_int(i))
 
-        set_chain = self._codec.encode_dt1(
-            self.device_id, self._chain_byte_list() + int_chain
-        )
-        self._link.send(set_chain)
+        self._link.set(self._chain_byte_list() + int_chain)
 
     def write_chain_from_obj(self, obj_chain):
         txt_chain = self.serialize_chain(obj_chain)

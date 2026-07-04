@@ -118,6 +118,29 @@ def test_send_puts_the_raw_message_on_the_wire_without_waiting():
 
 
 # --------------------------------------------------------------------------
+# set(address_value): DT1 framed internally, fire and forget
+# --------------------------------------------------------------------------
+
+def test_set_frames_a_dt1_and_puts_it_on_the_wire():
+    address_value = [0x10, 0x0, 0x23, 0x0, 0x1]
+    t = FakeTransport()
+    link = _link(t)
+
+    link.set(address_value)
+
+    # The bytes on the wire are exactly what the codec's DT1 framing produces
+    # for the negotiated device id — the write path no longer frames by hand.
+    assert t.sent == [SysExCodec().encode_dt1(DEVICE_ID, address_value)]
+
+
+def test_set_does_not_block_for_a_reply():
+    # No auto_reply is wired; set must return without waiting on the retry loop.
+    t = FakeTransport()
+    link = _link(t)
+    assert link.set([0x10, 0x0, 0x23, 0x0, 0x1]) is None
+
+
+# --------------------------------------------------------------------------
 # on_unsolicited: device-initiated frames
 # --------------------------------------------------------------------------
 
