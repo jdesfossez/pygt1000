@@ -1,4 +1,5 @@
 from pygt1000 import GT1000
+from pygt1000.transport import FakeTransport
 
 
 def test_create_object():
@@ -110,3 +111,47 @@ def test_get_value_from_value_name():
     gt = GT1000()
     value = gt.get_fx_value_from_value_name("fx", "TYPE", "CHORUS")
     assert value == 3
+
+
+# --------------------------------------------------------------------------
+# Keepalive wiring: one thread model, injected reopen policy
+# --------------------------------------------------------------------------
+
+def test_start_refresh_thread_runs_one_thread_model_that_stops_cleanly():
+    # The bespoke check_alive_thread is gone; the keepalive runs under the
+    # KeepAlive worker alongside the RefreshScheduler, and both stop together.
+    gt = GT1000(transport=FakeTransport())
+    assert not hasattr(gt, "check_alive_thread")
+
+    gt.start_refresh_thread()
+    gt.stop_refresh_thread()
+
+    assert gt._keepalive.join(timeout=2.0), "keepalive worker did not exit"
+    assert gt._refresh.join(timeout=2.0), "refresh worker did not exit"
+
+
+def test_reopen_ports_policy_closes_then_reopens():
+    # The reopen policy the keepalive signals is owned by GT1000: on an
+    # unresponsive device it closes the ports, then reopens them.
+    gt = GT1000(transport=FakeTransport())
+    order = []
+    gt.close_ports = lambda: order.append("close")
+    gt.open_ports = lambda: order.append("open") or True
+
+    gt._reopen_ports()
+
+    assert order == ["close", "open"]
+
+
+def test_refresh_state_bails_once_the_scheduler_is_stopped():
+    # refresh_state's cooperative cancellation no longer rides a loose self.stop
+    # flag on GT1000; it is sourced from the scheduler that owns the worker.
+    gt = GT1000(transport=FakeTransport())
+    scanned = []
+    gt.get_all_fx_type_states = lambda fx_type: scanned.append(fx_type) or []
+
+    gt._refresh.stop()
+    gt.refresh_state()
+
+    assert scanned == []
+    assert not hasattr(gt, "stop")

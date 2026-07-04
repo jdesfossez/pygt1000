@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import time
-import threading
 import logging
 from time import sleep
 from datetime import datetime
@@ -26,6 +24,7 @@ from .address_map import AddressMap
 from .block_reader import BlockReader
 from .slider import Slider
 from .patch_state import PatchState
+from .keepalive import KeepAlive
 from .refresh_scheduler import RefreshScheduler
 from .sysex_codec import SysExCodec
 from .device_link import RETRY_COUNT, SLEEP_WAIT_SEC, DeviceLink
@@ -47,7 +46,6 @@ def bytes_as_hex(data):
 class GT1000:
     def __init__(self, transport=None):
         self.current_state_message = None
-        self.stop = False
         # The current name for fx1-4
         self.current_fx_names = {}
 
@@ -60,6 +58,18 @@ class GT1000:
         self._refresh = RefreshScheduler()
         self._refresh.register("full", self._refresh_full)
         self._refresh.register("sliders", self._refresh_sliders)
+
+        # The periodic device-liveness poll lives behind KeepAlive (one thread
+        # model, no bespoke loop in the facade). The device probe is injected as
+        # a fetch, and the "device is unresponsive" action is the reopen policy
+        # below — KeepAlive itself carries no wire or port knowledge.
+        self._keepalive = KeepAlive(
+            poll=lambda: self.fetch_mem(
+                EDITOR_MODE_ADDRESS_FETCH3, EDITOR_MODE_ADDRESS_LEN3
+            ),
+            on_unresponsive=self._reopen_ports,
+            alive=EDITOR_REPLY3,
+        )
 
         self.fx_types = [
             "comp",
@@ -137,19 +147,19 @@ class GT1000:
         return self._address_map.decode(address, value)
 
     def start_refresh_thread(self):
-        """Background thread to refresh the known device state"""
+        """Background threads to refresh the known device state and keep the
+        connection alive — one worker each, both owned by their own module."""
         self._refresh.start()
-        self.check_alive_thread = threading.Thread(target=self.check_alive_thread)
-        self.check_alive_thread.start()
+        self._keepalive.start()
 
     def stop_refresh_thread(self):
-        self.stop = True
         self._refresh.stop()
+        self._keepalive.stop()
 
     def refresh_state(self):
         for fx_type in self.fx_types:
             logger.info(f"Refresh state for {fx_type}")
-            if self.stop:
+            if self._refresh.stopped:
                 return
             now = datetime.now()
             states = self.get_all_fx_type_states(fx_type)
@@ -185,24 +195,16 @@ class GT1000:
         )
         return False
 
-    def check_alive_thread(self):
-        while not self.stop:
-            for i in range(10):
-                if self.stop:
-                    return
-                time.sleep(10 / 10)
-            data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH3, EDITOR_MODE_ADDRESS_LEN3)
-            if data == EDITOR_REPLY3:
-                logger.info("Device still alive")
-                continue
-            else:
-                logger.warning("Device not responding, trying to reopen ports")
-                self.close_ports()
-                out = self.open_ports()
-                if out is True:
-                    logger.warning("Opening ports succeeded")
-                else:
-                    logger.warning("Opening ports failed")
+    def _reopen_ports(self):
+        """The reopen policy KeepAlive signals on an unresponsive device: close
+        the ports and open them again. KeepAlive owns the detection; the
+        close/open decision (and its wire knowledge) stays here."""
+        logger.warning("Device not responding, trying to reopen ports")
+        self.close_ports()
+        if self.open_ports() is True:
+            logger.warning("Opening ports succeeded")
+        else:
+            logger.warning("Opening ports failed")
 
     def open_ports(self, in_portname=MIDI_PORT, out_portname=MIDI_PORT):
         if not self._transport.open(in_portname, out_portname):

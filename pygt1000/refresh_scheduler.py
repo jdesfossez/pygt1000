@@ -105,6 +105,12 @@ class RefreshScheduler:
         self._stopped = True
         self._event.set()
 
+    @property
+    def stopped(self):
+        """Whether stop() has been signalled. A long-running handler reads this
+        to cooperatively cancel between units of work on shutdown."""
+        return self._stopped
+
     def join(self, timeout=None):
         """Wait for the worker to exit; returns True once it has."""
         if self._thread is None:

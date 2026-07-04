@@ -118,6 +118,15 @@ def test_unknown_task_type_is_skipped_and_does_not_block_the_queue():
 # The worker thread: start() drains submissions, stop() ends the loop
 # --------------------------------------------------------------------------
 
+def test_stopped_reflects_the_stop_signal():
+    # Handlers running under the worker read `stopped` to cooperatively cancel a
+    # long task (e.g. GT1000.refresh_state bails between fx types on shutdown).
+    sched = RefreshScheduler()
+    assert sched.stopped is False
+    sched.stop()
+    assert sched.stopped is True
+
+
 def test_started_worker_drains_a_submission_then_stops_cleanly():
     sched = RefreshScheduler(poll_sec=0.01)
     done = threading.Event()
