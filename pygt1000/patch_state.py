@@ -96,7 +96,14 @@ class PatchState:
         device-echo TYPE-change path writes it through :meth:`apply`.
         """
         with self._lock:
-            self._fx_names[str(fx_id)] = name
+            self._set_fx_name_locked(fx_id, name)
+
+    def _set_fx_name_locked(self, fx_id, name):
+        # The single internal write target for the resolved fx name. Caller must
+        # hold ``self._lock``. Both public write paths (``set_fx_name`` and the
+        # device-echo TYPE-change branch in ``apply``) route through here so the
+        # str-key normalization lives in exactly one place.
+        self._fx_names[str(fx_id)] = name
 
     def fx_name(self, fx_id):
         """The resolved effect name loaded in an fx block (``KeyError`` if the
@@ -147,7 +154,7 @@ class PatchState:
                     # the echo path has one write target, not a second dict kept
                     # in sync by the facade.
                     if fx_type == "fx":
-                        self._fx_names[str(decoded["fx_id"])] = decoded["str_value"]
+                        self._set_fx_name_locked(decoded["fx_id"], decoded["str_value"])
                     matched = True
                     type_changed = True
                 else:

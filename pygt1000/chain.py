@@ -44,7 +44,7 @@ def parse_chain(tokens, stop_tokens=None) -> List[Block]:
     if stop_tokens is None:
         stop_tokens = set()
 
-    chain = []
+    chain: List[Block] = []
     while tokens:
         # Peek at the next token without removing
         next_token = tokens[0]
