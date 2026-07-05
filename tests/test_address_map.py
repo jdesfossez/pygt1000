@@ -182,21 +182,21 @@ def test_fx_start_section_routes_by_suffix(amap, fx_id, suffix, expected):
 
 def test_decode_switch_field(amap):
     ret = amap.decode([0x10, 0x0, 0x23, 0x0], 0x1)
-    assert ret["name"] == "fx1"
-    assert ret["value_name"] == "SW"
-    assert ret["str_value"] == "ON"
-    assert ret["int_value"] == 0x1
-    assert ret["fx_type"] == "fx"
-    assert ret["fx_id"] == "1"
+    assert ret.name == "fx1"
+    assert ret.value_name == "SW"
+    assert ret.str_value == "ON"
+    assert ret.int_value == 0x1
+    assert ret.fx_type == "fx"
+    assert ret.fx_id == "1"
 
 
 def test_decode_resolves_fx_sub_effect(amap):
     ret = amap.decode([0x10, 0x0, 0x24, 0x0], 0x1)
-    assert ret["name"] == "fx1AGSim"
-    assert ret["value_name"] == "BODY"
-    assert ret["fx_table_suffix"] == "AGSim"
-    assert ret["patch_table"] == "PatchFxAGSim"
-    assert ret["fx_name"] == "AC GUITAR SIM"
+    assert ret.name == "fx1AGSim"
+    assert ret.value_name == "BODY"
+    assert ret.fx_table_suffix == "AGSim"
+    assert ret.patch_table == "PatchFxAGSim"
+    assert ret.fx_name == "AC GUITAR SIM"
 
 
 def test_decode_rejects_bad_address_length(amap):
@@ -231,9 +231,9 @@ def test_address_for_and_decode_roundtrip(amap, fx_type, fx_id, option, setting)
     for value_name, int_value in table[setting]["values"].items():
         decoded = amap.decode(address, int_value)
         assert decoded is not None
-        assert decoded["value_name"] == setting
-        assert decoded["str_value"] == value_name
-        assert decoded["int_value"] == int_value
+        assert decoded.value_name == setting
+        assert decoded.str_value == value_name
+        assert decoded.int_value == int_value
 
 
 # --------------------------------------------------------------------------

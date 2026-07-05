@@ -22,21 +22,21 @@ from pygt1000.constants import (
 
 def test_lookup_switch_field(gt):
     ret = gt.lookup([0x10, 0x0, 0x23, 0x0], 0x1)
-    assert ret["name"] == "fx1"
-    assert ret["value_name"] == "SW"
-    assert ret["str_value"] == "ON"
-    assert ret["int_value"] == 0x1
-    assert ret["fx_type"] == "fx"
-    assert ret["fx_id"] == "1"
+    assert ret.name == "fx1"
+    assert ret.value_name == "SW"
+    assert ret.str_value == "ON"
+    assert ret.int_value == 0x1
+    assert ret.fx_type == "fx"
+    assert ret.fx_id == "1"
 
 
 def test_lookup_resolves_fx_sub_effect(gt):
     ret = gt.lookup([0x10, 0x0, 0x24, 0x0], 0x1)
-    assert ret["name"] == "fx1AGSim"
-    assert ret["value_name"] == "BODY"
-    assert ret["fx_table_suffix"] == "AGSim"
-    assert ret["patch_table"] == "PatchFxAGSim"
-    assert ret["fx_name"] == "AC GUITAR SIM"
+    assert ret.name == "fx1AGSim"
+    assert ret.value_name == "BODY"
+    assert ret.fx_table_suffix == "AGSim"
+    assert ret.patch_table == "PatchFxAGSim"
+    assert ret.fx_name == "AC GUITAR SIM"
 
 
 def test_lookup_rejects_bad_address_length(gt):
@@ -71,9 +71,9 @@ def test_encode_decode_roundtrip_switch(gt, fx_type, fx_id, option, setting):
     for value_name, int_value in table[setting]["values"].items():
         decoded = gt.lookup(address, int_value)
         assert decoded is not None
-        assert decoded["value_name"] == setting
-        assert decoded["str_value"] == value_name
-        assert decoded["int_value"] == int_value
+        assert decoded.value_name == setting
+        assert decoded.str_value == value_name
+        assert decoded.int_value == int_value
 
 
 # --------------------------------------------------------------------------

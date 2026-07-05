@@ -43,9 +43,9 @@ def test_decode_path_is_wired(gt):
     # first_two_bytes / offset_in_patch_tables / last_byte_option are all
     # exercised by a successful decode of a known address.
     decoded = gt.lookup([0x10, 0x0, 0x23, 0x0], 0x1)
-    assert decoded["name"] == "fx1"
-    assert decoded["value_name"] == "SW"
-    assert decoded["str_value"] == "ON"
+    assert decoded.name == "fx1"
+    assert decoded.value_name == "SW"
+    assert decoded.str_value == "ON"
 
 
 def test_chain_element_lookup_round_trips(gt):

@@ -24,6 +24,8 @@ import threading
 from datetime import datetime
 from typing import NamedTuple
 
+from .address_map import DecodedValue
+
 logger = logging.getLogger(__name__)
 
 
@@ -120,7 +122,7 @@ class PatchState:
                     fx["slider2"] = slider2
                     break
 
-    def apply(self, decoded):
+    def apply(self, decoded: DecodedValue):
         """Fold a decoded inbound value into state.
 
         Refuses to touch state until the first full scan has completed
@@ -131,44 +133,44 @@ class PatchState:
         with self._lock:
             if not self._is_ready_locked():
                 return ApplyResult(matched=False, type_changed=False)
-            fx_type = decoded["fx_type"]
+            fx_type = decoded.fx_type
             for fx in self._state[fx_type]:
-                if str(fx["fx_id"]) != str(decoded["fx_id"]):
+                if str(fx["fx_id"]) != str(decoded.fx_id):
                     continue
                 matched = False
                 type_changed = False
-                if decoded["value_name"] == "SW":
+                if decoded.value_name == "SW":
                     logger.info(
-                        f"{fx_type}{decoded['fx_id']}: "
-                        f"{fx['state']} -> {decoded['str_value']}"
+                        f"{fx_type}{decoded.fx_id}: "
+                        f"{fx['state']} -> {decoded.str_value}"
                     )
-                    fx["state"] = decoded["str_value"]
+                    fx["state"] = decoded.str_value
                     matched = True
-                elif decoded["value_name"] == "TYPE":
+                elif decoded.value_name == "TYPE":
                     logger.info(
-                        f"{fx_type}{decoded['fx_id']}: "
-                        f"{fx['name']} -> {decoded['str_value']}"
+                        f"{fx_type}{decoded.fx_id}: "
+                        f"{fx['name']} -> {decoded.str_value}"
                     )
-                    fx["name"] = decoded["str_value"]
+                    fx["name"] = decoded.str_value
                     # The fx block also feeds the resolved-effect-name owner, so
                     # the echo path has one write target, not a second dict kept
                     # in sync by the facade.
                     if fx_type == "fx":
-                        self._set_fx_name_locked(decoded["fx_id"], decoded["str_value"])
+                        self._set_fx_name_locked(decoded.fx_id, decoded.str_value)
                     matched = True
                     type_changed = True
                 else:
                     if (
                         fx["slider1"] is not None
-                        and fx["slider1"]["label"] == decoded["value_name"]
+                        and fx["slider1"]["label"] == decoded.value_name
                     ):
-                        fx["slider1"]["value"] = decoded["int_value"]
+                        fx["slider1"]["value"] = decoded.int_value
                         matched = True
                     if (
                         fx["slider2"] is not None
-                        and fx["slider2"]["label"] == decoded["value_name"]
+                        and fx["slider2"]["label"] == decoded.value_name
                     ):
-                        fx["slider2"]["value"] = decoded["int_value"]
+                        fx["slider2"]["value"] = decoded.int_value
                         matched = True
                 if matched:
                     self._state["last_sync_ts"][fx_type] = now

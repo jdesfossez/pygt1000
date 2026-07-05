@@ -21,11 +21,41 @@ module. External readers go through narrow, intent-revealing accessors:
 
 import json
 import logging
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 from .constants import FX_TO_TABLE_SUFFIX, TABLE_SUFFIX_TO_NAME
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True)
+class DecodedValue:
+    """A decoded inbound value: the semantic reading of an address + raw byte.
+
+    The payload that crosses the decode -> state seam (``PatchState.apply``) and
+    the facade's ``_process_data_from_unit``. Typed so a wrong field is a type
+    error, not a silent ``KeyError`` — the ``ApplyResult`` precedent applied to
+    the read path.
+
+    ``fx_type`` / ``fx_id`` are set only when the address lands on a known fx
+    block (``None`` otherwise, where the old dict simply omitted the keys);
+    ``fx_table_suffix`` / ``fx_name`` only for a resolved fx sub-effect.
+    ``str_value`` is ``None`` when the raw byte has no named mapping.
+    """
+
+    section: str
+    table: str
+    name: str
+    patch_table: str
+    value_name: str
+    str_value: Optional[str]
+    int_value: int
+    fx_type: Optional[str] = None
+    fx_id: Optional[str] = None
+    fx_table_suffix: Optional[str] = None
+    fx_name: Optional[str] = None
 
 
 def bytes_to_int(value):
@@ -242,13 +272,12 @@ class AddressMap:
         return setting_entry["value_range"]
 
     def decode(self, address, value):
-        """Reverse of ``address_for``: an address + raw value -> semantic dict.
+        """Reverse of ``address_for``: an address + raw value -> ``DecodedValue``.
 
         Returns ``None`` for a malformed address, a list value, or an address
         that maps to no known section/table entry. When the block is an fx
         sub-effect the fx table suffix is resolved to its display name.
         """
-        ret = {}
         if len(address) != 4:
             logger.error(f"Unknown address format received {address}")
             return None
@@ -271,41 +300,45 @@ class AddressMap:
             return None
         value_name, value_entry = self._last_byte_option[patch_table][address[3]]
         str_value = self._label_for_raw(value_entry["values"], value)
-        ret["section"] = section
-        ret["table"] = table
-        ret["name"] = name
-        ret["patch_table"] = patch_table
-        ret["value_name"] = value_name
-        ret["str_value"] = str_value
-        ret["int_value"] = value
 
         # Now check if it's an fx_type and extract its fx_id
         fx_type = None
         fx_id = None
+        fx_table_suffix = None
+        fx_name = None
         for i in self.fx_types:
             if name.startswith(i):
                 fx_type = i
                 if name == i:
                     fx_id = ""
-        if fx_type is None:
-            return ret
-        if fx_id is None:
-            if fx_type == "preamp" and name == "preampA":
-                fx_id = "1"
-            elif fx_type == "preamp" and name == "preampB":
-                fx_id = "2"
-            elif fx_type == "fx":
-                fx_id = name[2]
-            else:
-                fx_id = name.replace(fx_type, "")
-        if fx_type == "fx" and len(name) > 3:
-            fx_name = name[3:]
-            ret["fx_table_suffix"] = fx_name
-            if fx_name in TABLE_SUFFIX_TO_NAME:
-                ret["fx_name"] = TABLE_SUFFIX_TO_NAME[fx_name]
-        ret["fx_type"] = fx_type
-        ret["fx_id"] = fx_id
-        return ret
+        if fx_type is not None:
+            if fx_id is None:
+                if fx_type == "preamp" and name == "preampA":
+                    fx_id = "1"
+                elif fx_type == "preamp" and name == "preampB":
+                    fx_id = "2"
+                elif fx_type == "fx":
+                    fx_id = name[2]
+                else:
+                    fx_id = name.replace(fx_type, "")
+            if fx_type == "fx" and len(name) > 3:
+                fx_table_suffix = name[3:]
+                if fx_table_suffix in TABLE_SUFFIX_TO_NAME:
+                    fx_name = TABLE_SUFFIX_TO_NAME[fx_table_suffix]
+
+        return DecodedValue(
+            section=section,
+            table=table,
+            name=name,
+            patch_table=patch_table,
+            value_name=value_name,
+            str_value=str_value,
+            int_value=value,
+            fx_type=fx_type,
+            fx_id=fx_id,
+            fx_table_suffix=fx_table_suffix,
+            fx_name=fx_name,
+        )
 
     @staticmethod
     def _label_for_raw(values, raw):

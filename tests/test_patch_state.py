@@ -9,6 +9,7 @@ from datetime import datetime
 
 import pytest
 
+from pygt1000.address_map import DecodedValue
 from pygt1000.patch_state import PatchState
 
 
@@ -55,13 +56,17 @@ def test_snapshot_is_a_copy(ready_state):
 # -- apply ------------------------------------------------------------------
 
 def _decoded(fx_type, fx_id, value_name, str_value="", int_value=0):
-    return {
-        "fx_type": fx_type,
-        "fx_id": fx_id,
-        "value_name": value_name,
-        "str_value": str_value,
-        "int_value": int_value,
-    }
+    return DecodedValue(
+        section="patch",
+        table="table",
+        name=fx_type,
+        patch_table="patch_table",
+        value_name=value_name,
+        str_value=str_value,
+        int_value=int_value,
+        fx_type=fx_type,
+        fx_id=fx_id,
+    )
 
 
 def test_apply_refuses_until_ready():

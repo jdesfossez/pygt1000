@@ -316,9 +316,9 @@ class GT1000:
         # updated the resolved-fx-name owner, so we just schedule a slider
         # re-read for that block.
         if result.type_changed:
-            fx_id = int(ret["fx_id"]) if len(ret["fx_id"]) > 0 else ""
+            fx_id = int(ret.fx_id) if len(ret.fx_id) > 0 else ""
             self._refresh.submit(
-                {"type": "sliders", "fx_type": ret["fx_type"], "fx_id": fx_id}
+                {"type": "sliders", "fx_type": ret.fx_type, "fx_id": fx_id}
             )
 
     def fx_type_table_name(self, fx_type):
