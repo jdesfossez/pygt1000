@@ -131,16 +131,29 @@ def test_start_refresh_thread_runs_one_thread_model_that_stops_cleanly():
 
 
 def test_reopen_ports_policy_closes_then_reopens():
-    # The reopen policy the keepalive signals is owned by GT1000: on an
-    # unresponsive device it closes the ports, then reopens them.
+    # The reopen policy the keepalive signals is owned by EditorSession: on an
+    # unresponsive device it closes the ports, then reopens them. KeepAlive's
+    # on_unresponsive is wired straight to the session's reopen.
     gt = GT1000(transport=FakeTransport())
     order = []
-    gt.close_ports = lambda: order.append("close")
-    gt.open_ports = lambda: order.append("open") or True
+    gt._editor_session.close = lambda: order.append("close")
+    gt._editor_session.open = lambda *a, **k: order.append("open") or True
 
-    gt._reopen_ports()
+    gt._editor_session.reopen()
 
     assert order == ["close", "open"]
+
+
+def test_keepalive_on_unresponsive_is_the_session_reopen():
+    # The keepalive's unresponsive action is the session's reopen, so detection
+    # and the reopen policy are no longer two facade methods kept in sync.
+    gt = GT1000(transport=FakeTransport())
+    called = []
+    gt._editor_session.reopen = lambda: called.append(True)
+
+    gt._keepalive._on_unresponsive()
+
+    assert called == [True]
 
 
 def test_refresh_state_bails_once_the_scheduler_is_stopped():

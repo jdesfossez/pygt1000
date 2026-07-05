@@ -155,6 +155,15 @@ def test_identity_reply_sets_model_and_device_id(gt, rev1, rev2, model):
     assert gt.device_id == 0x10
 
 
+def test_identity_reply_applies_the_core_fx_block_count_tweak(gt):
+    # The GT-1000CORE has 3 fx blocks, not 4. The facade applies that tweak from
+    # the negotiated identity (folded into _apply_identity), not from a step in
+    # the open sequence — so it fires as the reply lands.
+    assert gt._address_map.fx_block_count("fx") == 4
+    gt._transport.receive(_identity_message(0x02, 0x00))  # GT-1000CORE
+    assert gt._address_map.fx_block_count("fx") == 3
+
+
 def test_identity_reply_rejects_wrong_length(gt):
     gt._transport.receive([0xF0, 0x7E, 0x10])
     # Nothing negotiated: the device id stays at the broadcast default.

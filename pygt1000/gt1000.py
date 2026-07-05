@@ -1,21 +1,15 @@
 #!/usr/bin/env python3
 
 import logging
-from time import sleep
 from datetime import datetime
 
 from .constants import (
     PROGRAM_CHANGE_OFFSET,
     PATCH_NAMES_LEN,
-    EDITOR_REPLY2,
     EDITOR_REPLY3,
-    DEVICE_ID_BCAST,
     PATCH_NAMES_BEGIN_OFFSET,
-    EDITOR_MODE_ADDRESS_SET2,
-    EDITOR_MODE_ADDESS_VALUE2,
     EDITOR_MODE_ADDRESS_FETCH3,
     EDITOR_MODE_ADDRESS_LEN3,
-    IDENTITY_REQUEST_MSG,
 )
 
 from .chain import parse_chain, serialize_chain, ChainCodec
@@ -26,8 +20,9 @@ from .patch_state import PatchState
 from .keepalive import KeepAlive
 from .refresh_scheduler import RefreshScheduler
 from .sysex_codec import SysExCodec
-from .device_link import RETRY_COUNT, SLEEP_WAIT_SEC, DeviceLink
-from .transport import MIDI_PORT, RtMidiTransport
+from .device_link import DeviceLink
+from .editor_session import EditorSession
+from .transport import RtMidiTransport
 
 logging.basicConfig(
     format="{asctime} - {levelname} - {message}",
@@ -58,13 +53,14 @@ class GT1000:
 
         # The periodic device-liveness poll lives behind KeepAlive (one thread
         # model, no bespoke loop in the facade). The device probe is injected as
-        # a fetch, and the "device is unresponsive" action is the reopen policy
-        # below — KeepAlive itself carries no wire or port knowledge.
+        # a fetch, and the "device is unresponsive" action is the EditorSession's
+        # reopen (built below) — KeepAlive itself carries no wire or port
+        # knowledge, and the reopen path is the same one open() runs.
         self._keepalive = KeepAlive(
             poll=lambda: self.fetch_mem(
                 EDITOR_MODE_ADDRESS_FETCH3, EDITOR_MODE_ADDRESS_LEN3
             ),
-            on_unresponsive=self._reopen_ports,
+            on_unresponsive=lambda: self._editor_session.reopen(),
             alive=EDITOR_REPLY3,
         )
 
@@ -127,6 +123,14 @@ class GT1000:
         self._link.on_unsolicited(self._process_data_from_unit)
         self._link.on_identity(self._apply_identity)
 
+        # The device bring-up *sequence* (identity retry, editor-mode set,
+        # liveness check) and the reopen policy live behind EditorSession. It
+        # owns the Transport lifecycle (open/close) and drives DeviceLink; the
+        # facade's open_ports/close_ports are thin delegates, and KeepAlive's
+        # on_unresponsive is the session's reopen. The model-specific tweak stays
+        # here, applied from the negotiated identity in _apply_identity.
+        self._editor_session = EditorSession(self._transport, self._link)
+
         # The effect chain's whole device round trip (byte-list address,
         # int<->name conversion, and parse/serialize) lives behind ChainCodec.
         # The device dependency is injected — fetch_mem to read, _link.set to
@@ -184,40 +188,13 @@ class GT1000:
         )
         self._state.set_sliders(task["fx_type"], task["fx_id"], slider1, slider2)
 
-    def request_identity(self):
-        # TODO: this should be a background thread so we update the ID if the
-        # device comes online at some point
-        for i in range(RETRY_COUNT):
-            self._link.send(IDENTITY_REQUEST_MSG)
-            sleep(SLEEP_WAIT_SEC)
-            if self.device_id != DEVICE_ID_BCAST:
-                logger.info(
-                    f"Identity received: {self.device_id} ({hex(self.device_id)})"
-                )
-                return True
-        logger.warning(
-            f"Identity not received, using broadcast {self.device_id} ({hex(self.device_id)})"
-        )
-        return False
-
-    def _reopen_ports(self):
-        """The reopen policy KeepAlive signals on an unresponsive device: close
-        the ports and open them again. KeepAlive owns the detection; the
-        close/open decision (and its wire knowledge) stays here."""
-        logger.warning("Device not responding, trying to reopen ports")
-        self.close_ports()
-        if self.open_ports() is True:
-            logger.warning("Opening ports succeeded")
-        else:
-            logger.warning("Opening ports failed")
-
-    def open_ports(self, in_portname=MIDI_PORT, out_portname=MIDI_PORT):
-        if not self._transport.open(in_portname, out_portname):
-            return False
-        return self.open_editor_mode()
+    def open_ports(self, *args, **kwargs):
+        # Thin delegate: the bring-up sequence lives on EditorSession.
+        return self._editor_session.open(*args, **kwargs)
 
     def close_ports(self):
-        self._transport.close()
+        # Thin delegate: the transport lifecycle lives on EditorSession.
+        self._editor_session.close()
 
     def _get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
         state = self._block_reader.read(fx_type, fx_id, "SW")
@@ -281,41 +258,6 @@ class GT1000:
             names.append(name)
         return name
 
-    def open_editor_mode(self):
-        logger.info("Opening device in editor mode")
-        # Device identification
-        if not self.request_identity():
-            return False
-        if self.model == "GT-1000CORE":
-            # Special case here, the others have 4 FX blocks
-            self._address_map.set_fx_block_count("fx", 3)
-
-        # The 2 fetch operations here may break if the value returned changes at some point.
-        # Not sure what is the point of those, it looks like a simple check to make sure the
-        # device is responsive.
-
-        # FIXME we don't compute the right checksum here for some reason, but the others are good
-        # Disabled this fetch, it doesn't seem to respond the first time, so we timeout and retry
-        # also it's not clear what that does, everything works fine without it.
-        # data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH1, EDITOR_MODE_ADDRESS_LEN1, [0])
-        # if data is None:
-        #    return False
-        # logger.debug(f"command1 ok, received {data}")
-
-        data = self._link.set_and_await(
-            EDITOR_MODE_ADDRESS_SET2, EDITOR_MODE_ADDESS_VALUE2
-        )
-        if data != EDITOR_REPLY2:
-            return False
-        logger.debug("command2 ok")
-
-        data = self.fetch_mem(EDITOR_MODE_ADDRESS_FETCH3, EDITOR_MODE_ADDRESS_LEN3)
-        if data != EDITOR_REPLY3:
-            return False
-        logger.debug("command3 ok")
-        logger.info("Device opened in editor mode")
-        return True
-
     def toggle_fx_state(self, fx_type, fx_id, state):
         address_value = self._address_map.address_for_block(fx_type, fx_id, "SW", state)
         self._link.set(address_value)
@@ -363,9 +305,16 @@ class GT1000:
     def _apply_identity(self, reply):
         # DeviceLink negotiated the device id and hands us the parsed reply; we
         # keep the model substitution (an unknown model leaves self.model
-        # untouched).
+        # untouched) and apply the model-specific fx-block-count tweak from it.
+        # This is the facade's job — EditorSession surfaces the identity but does
+        # not know the block layout. It runs as the reply lands during the open
+        # sequence's request_identity, before the editor-mode set, exactly where
+        # the old open_editor_mode applied it.
         if reply.model is not None:
             self.model = reply.model
+        if reply.model == "GT-1000CORE":
+            # Special case here, the others have 4 FX blocks.
+            self._address_map.set_fx_block_count("fx", 3)
 
     def _process_data_from_unit(self, received_offset, received_data):
         # program change, we need to refresh the whole state
