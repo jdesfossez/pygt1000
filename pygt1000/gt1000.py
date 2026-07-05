@@ -5,7 +5,6 @@ from time import sleep
 from datetime import datetime
 
 from .constants import (
-    ONE_BYTE,
     PROGRAM_CHANGE_OFFSET,
     PATCH_NAMES_LEN,
     EDITOR_REPLY2,
@@ -19,7 +18,7 @@ from .constants import (
     IDENTITY_REQUEST_MSG,
 )
 
-from .chain import parse_chain, serialize_chain
+from .chain import parse_chain, serialize_chain, ChainCodec
 from .address_map import AddressMap
 from .block_reader import BlockReader
 from .slider import Slider
@@ -127,6 +126,14 @@ class GT1000:
         self._link = DeviceLink(self._transport, self._codec)
         self._link.on_unsolicited(self._process_data_from_unit)
         self._link.on_identity(self._apply_identity)
+
+        # The effect chain's whole device round trip (byte-list address,
+        # int<->name conversion, and parse/serialize) lives behind ChainCodec.
+        # The device dependency is injected — fetch_mem to read, _link.set to
+        # write — so the facade's chain methods are thin delegates.
+        self._chain_codec = ChainCodec(
+            self._address_map, self.fetch_mem, self._link.set
+        )
 
         logger.info(f"GT1000 instance created {self}")
 
@@ -388,19 +395,9 @@ class GT1000:
     def get_all_fx_types(self, fx_type):
         return self._address_map.types_for(fx_type)
 
-    def _chain_byte_list(self):
-        start_section = self._address_map.start_section("efct", "0")
-        option = "efct"
-        setting = "CHAIN ELEMENT1"
-        return self._address_map.address_for(start_section, option, setting, None)
-
     def read_chain(self):
         # Return the chain as a list of words
-        int_chain = self.fetch_mem(self._chain_byte_list(), ONE_BYTE)
-        txt_chain = []
-        for i in int_chain:
-            txt_chain.append(self._address_map.chain_element_name(i))
-        return txt_chain
+        return self._chain_codec.read_names()
 
     def parse_chain(self, txt_chain):
         # Return the chain as an object list
@@ -412,12 +409,7 @@ class GT1000:
     def write_chain_from_txt(self, txt_chain):
         # Send the chain to the unit from a text list.
         # ex: ['PEDALFX', 'COMPRESSOR', 'EQUALIZER3', ...]
-        int_chain = []
-        for i in txt_chain:
-            int_chain.append(self._address_map.chain_element_int(i))
-
-        self._link.set(self._chain_byte_list() + int_chain)
+        self._chain_codec.write_names(txt_chain)
 
     def write_chain_from_obj(self, obj_chain):
-        txt_chain = self.serialize_chain(obj_chain)
-        self.write_chain_from_txt(txt_chain)
+        self._chain_codec.write(obj_chain)

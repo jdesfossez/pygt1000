@@ -1,5 +1,7 @@
 from typing import List, Union
 
+from .constants import ONE_BYTE
+
 Block = Union["EffectBlock", "DividerBlock"]  # For type hints
 
 
@@ -139,3 +141,53 @@ def serialize_chain(blocks: List[Block]) -> List[str]:
             # Finally, the mixer for this divider
             output.append(block.mixer_name)
     return output
+
+
+class ChainCodec:
+    """The effect chain's device round trip, in one place.
+
+    "How is a chain read from / written to the unit?" used to touch three files:
+    the pure ``parse_chain`` / ``serialize_chain`` here, the element name<->int
+    map on ``AddressMap``, and the byte-list address + int<->name loops on the
+    facade. This gathers the whole trip next to the parser that already
+    understands chain structure: the byte-list address and the int<->name
+    conversion (through ``AddressMap``'s element map) live here, and the pure
+    parse/serialize become internals of ``read`` / ``write``.
+
+    The device dependency is injected — ``fetch(offset, length)`` reads device
+    memory and ``set(address_value)`` writes it — so the round trip resolves
+    against a fake reader/writer with no wire, the same pattern ``BlockReader``
+    uses for its ``fetch``.
+    """
+
+    def __init__(self, address_map, fetch, set):
+        self._address_map = address_map
+        self._fetch = fetch
+        self._set = set
+
+    def _byte_list(self):
+        """The address of the first chain element; the chain reads/writes as a
+        contiguous run of bytes starting here."""
+        start_section = self._address_map.start_section("efct", "0")
+        return self._address_map.address_for(
+            start_section, "efct", "CHAIN ELEMENT1", None
+        )
+
+    def read_names(self) -> List[str]:
+        """The chain as a flat token list read from the unit (ex:
+        ``['PEDALFX', 'COMPRESSOR', ...]``)."""
+        int_chain = self._fetch(self._byte_list(), ONE_BYTE)
+        return [self._address_map.chain_element_name(i) for i in int_chain]
+
+    def read(self) -> List[Block]:
+        """The chain as a block tree read from the unit."""
+        return parse_chain(self.read_names())
+
+    def write_names(self, txt_chain: List[str]) -> None:
+        """Send the chain to the unit from a flat token list."""
+        int_chain = [self._address_map.chain_element_int(name) for name in txt_chain]
+        self._set(self._byte_list() + int_chain)
+
+    def write(self, blocks: List[Block]) -> None:
+        """Send the chain to the unit from a block tree."""
+        self.write_names(serialize_chain(blocks))
