@@ -12,6 +12,7 @@ import pytest
 
 from pygt1000.address_map import AddressMap
 from pygt1000.block_snapshot import BlockSnapshot
+from pygt1000.patch_state import FxBlock
 
 FX_TYPES = [
     "comp",
@@ -78,13 +79,13 @@ def test_snapshot_assembles_state_name_and_sliders(address_map):
         address_map, {"SW": "ON", "TYPE": "BOSS COMP"}
     )
     result = snap.snapshot("comp", "1")
-    assert result == {
-        "fx_id": "1",
-        "state": "ON",
-        "name": "BOSS COMP",
-        "slider1": "S1",
-        "slider2": "S2",
-    }
+    assert result == FxBlock(
+        fx_id="1",
+        state="ON",
+        name="BOSS COMP",
+        slider1="S1",
+        slider2="S2",
+    )
     # It read SW for state and TYPE for the name, and resolved sliders against
     # the TYPE-derived name.
     assert ("comp", "1", "SW") in reader.reads
@@ -99,7 +100,7 @@ def test_snapshot_synthesizes_name_for_ns_and_delay(address_map):
         snap, reader, slider, _ = make_snapshot(address_map, {"SW": "ON"})
         result = snap.snapshot(fx_type, "2")
         # ns/delay have no TYPE field: the name is synthesized, TYPE unread.
-        assert result["name"] == f"{fx_type}2"
+        assert result.name == f"{fx_type}2"
         assert (fx_type, "2", "TYPE") not in reader.reads
         assert slider.calls == [(fx_type, "2", f"{fx_type}2")]
 
@@ -120,7 +121,8 @@ def test_snapshot_without_sliders_omits_slider_keys(address_map):
         address_map, {"SW": "OFF", "TYPE": "BOSS COMP"}
     )
     result = snap.snapshot("comp", "1", get_sliders=False)
-    assert result == {"fx_id": "1", "state": "OFF", "name": "BOSS COMP"}
+    # get_sliders=False leaves the two slider fields at their default None.
+    assert result == FxBlock(fx_id="1", state="OFF", name="BOSS COMP")
     # Sliders are not resolved when they were not asked for.
     assert slider.calls == []
 
@@ -142,9 +144,9 @@ def test_snapshot_one_finds_a_block_by_id(address_map):
     # caller-supplied id matches directly.
     snap, _, _, _ = make_snapshot(address_map, {"SW": "ON", "TYPE": "CHORUS"})
     # A specific id resolves that block.
-    assert snap.snapshot_one("fx", 2)["fx_id"] == 2
+    assert snap.snapshot_one("fx", 2).fx_id == 2
     # A falsy id takes the first block.
-    assert snap.snapshot_one("fx", None)["fx_id"] == 1
+    assert snap.snapshot_one("fx", None).fx_id == 1
 
 
 def test_snapshot_one_returns_none_when_no_block_matches(address_map):

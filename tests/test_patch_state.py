@@ -10,20 +10,21 @@ from datetime import datetime
 import pytest
 
 from pygt1000.address_map import DecodedValue
-from pygt1000.patch_state import PatchState
+from pygt1000.patch_state import FxBlock, PatchState
+from pygt1000.slider import SliderValue
 
 
 FX_TYPES = ["comp", "fx"]
 
 
 def _fx(fx_id="", state="OFF", name="comp", slider1=None, slider2=None):
-    return {
-        "fx_id": fx_id,
-        "state": state,
-        "name": name,
-        "slider1": slider1,
-        "slider2": slider2,
-    }
+    return FxBlock(
+        fx_id=fx_id,
+        state=state,
+        name=name,
+        slider1=slider1,
+        slider2=slider2,
+    )
 
 
 @pytest.fixture
@@ -49,8 +50,8 @@ def test_not_ready_until_every_fx_type_scanned():
 
 def test_snapshot_is_a_copy(ready_state):
     snap = ready_state.snapshot()
-    snap["comp"][0]["state"] = "MUTATED"
-    assert ready_state.snapshot()["comp"][0]["state"] == "OFF"
+    snap["comp"][0].state = "MUTATED"
+    assert ready_state.snapshot()["comp"][0].state == "OFF"
 
 
 # -- apply ------------------------------------------------------------------
@@ -78,13 +79,13 @@ def test_apply_refuses_until_ready():
 def test_apply_switch(ready_state):
     result = ready_state.apply(_decoded("comp", "", "SW", "ON"))
     assert result.matched and not result.type_changed
-    assert ready_state.snapshot()["comp"][0]["state"] == "ON"
+    assert ready_state.snapshot()["comp"][0].state == "ON"
 
 
 def test_apply_type_change_flags_type_changed(ready_state):
     result = ready_state.apply(_decoded("fx", "1", "TYPE", "PHASER"))
     assert result.matched and result.type_changed
-    assert ready_state.snapshot()["fx"][0]["name"] == "PHASER"
+    assert ready_state.snapshot()["fx"][0].name == "PHASER"
 
 
 def test_apply_unknown_fx_id_does_not_match(ready_state):
@@ -95,19 +96,19 @@ def test_apply_unknown_fx_id_does_not_match(ready_state):
 def test_apply_slider_value(ready_state):
     ready_state.record_scan(
         "comp",
-        [_fx(slider1={"label": "LEVEL", "value": 0})],
+        [_fx(slider1=SliderValue(value=0, label="LEVEL", min=0, max=100))],
         datetime.now(),
     )
     result = ready_state.apply(_decoded("comp", "", "LEVEL", int_value=42))
     assert result.matched
-    assert ready_state.snapshot()["comp"][0]["slider1"]["value"] == 42
+    assert ready_state.snapshot()["comp"][0].slider1.value == 42
 
 
 # -- set_fx -----------------------------------------------------------------
 
 def test_set_fx_single_instance_by_index(ready_state):
     ready_state.set_fx("comp", 1, "state", "ON")
-    assert ready_state.snapshot()["comp"][0]["state"] == "ON"
+    assert ready_state.snapshot()["comp"][0].state == "ON"
 
 
 def test_set_fx_multi_instance_by_id(ready_state):
@@ -118,18 +119,18 @@ def test_set_fx_multi_instance_by_id(ready_state):
     )
     ready_state.set_fx("fx", "2", "state", "ON")
     snap = ready_state.snapshot()
-    assert snap["fx"][0]["state"] == "OFF"
-    assert snap["fx"][1]["state"] == "ON"
+    assert snap["fx"][0].state == "OFF"
+    assert snap["fx"][1].state == "ON"
 
 
 # -- set_sliders ------------------------------------------------------------
 
 def test_set_sliders_updates_matching_block(ready_state):
-    s1 = {"label": "LEVEL", "value": 7}
+    s1 = SliderValue(value=7, label="LEVEL", min=0, max=100)
     ready_state.set_sliders("fx", "1", s1, None)
     snap = ready_state.snapshot()
-    assert snap["fx"][0]["slider1"] == s1
-    assert snap["fx"][0]["slider2"] is None
+    assert snap["fx"][0].slider1 == s1
+    assert snap["fx"][0].slider2 is None
 
 
 # -- resolved fx name (the single owner) ------------------------------------

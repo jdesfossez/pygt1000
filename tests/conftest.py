@@ -11,6 +11,7 @@ import logging
 import pytest
 
 from pygt1000 import GT1000
+from pygt1000.patch_state import FxBlock
 from pygt1000.transport import FakeTransport
 
 
@@ -39,13 +40,13 @@ def gt_with_state(gt):
     for fx_type in gt.fx_types:
         gt._state.record_scan(
             fx_type,
-            [{"fx_id": "", "state": "OFF", "name": fx_type, "slider1": None, "slider2": None}],
+            [FxBlock(fx_id="", state="OFF", name=fx_type)],
             now,
         )
     # The fx block is addressed by id and carries a resolved effect name.
     gt._state.record_scan(
         "fx",
-        [{"fx_id": "1", "state": "OFF", "name": "CHORUS", "slider1": None, "slider2": None}],
+        [FxBlock(fx_id="1", state="OFF", name="CHORUS")],
         now,
     )
     gt._state.set_fx_name(1, "CHORUS")

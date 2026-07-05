@@ -8,7 +8,25 @@ param's current value — is injected as a value-reader, so the module resolves
 sliders against a fake reader in tests without a device.
 """
 
+from dataclasses import dataclass
+from typing import Optional
+
 from .constants import FX_TO_TABLE_SUFFIX
+
+
+@dataclass
+class SliderValue:
+    """One resolved slider: its current ``value`` (``None`` if the read
+    failed / was skipped), the ``label`` naming the param it controls, and the
+    param's ``min``/``max`` range from the AddressMap. Produced here by
+    :meth:`Slider._resolve`; carried on an fx block's ``slider1``/``slider2`` and
+    mutated in place by :meth:`pygt1000.patch_state.PatchState.apply` when the
+    device echoes a new value. Mutable for that in-place update."""
+
+    value: Optional[int]
+    label: str
+    min: int
+    max: int
 
 
 class Slider:
@@ -79,8 +97,8 @@ class Slider:
         self._read_value = read_value
 
     def sliders_for(self, fx_type, fx_id, param_name):
-        """Resolve a block's two sliders as ``(slider1, slider2)``; each is the
-        value/label/min/max dict or None."""
+        """Resolve a block's two sliders as ``(slider1, slider2)``; each is a
+        :class:`SliderValue` or None."""
         # eq is the one param-dependent block; kept out of the data tables.
         if fx_type == "eq":
             param1 = "LEVEL1" if param_name == "PARAMETRIC" else "LEVEL"
@@ -99,21 +117,22 @@ class Slider:
         )
 
     def _resolve(self, fx_type, fx_id, option):
-        """One slider: its range (from the map) + current value (from the
-        reader), or None when the param is None. On the fx path a missing read
-        collapses the whole slider to None; elsewhere the dict is kept."""
+        """One slider as a :class:`SliderValue`: its range (from the map) +
+        current value (from the reader), or None when the param is None. On the
+        fx path a missing read collapses the whole slider to None; elsewhere the
+        SliderValue is kept."""
         if option is None:
             return None
         value_range = self._value_range(fx_type, fx_id, option)
         value = self._read_value(fx_type, fx_id, option)
         if fx_type == "fx" and value is None:
             return None
-        return {
-            "value": value,
-            "label": option,
-            "min": value_range[0],
-            "max": value_range[1],
-        }
+        return SliderValue(
+            value=value,
+            label=option,
+            min=value_range[0],
+            max=value_range[1],
+        )
 
     def _value_range(self, fx_type, fx_id, option):
         if fx_type == "fx":

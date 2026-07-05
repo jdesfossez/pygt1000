@@ -15,18 +15,43 @@ internal invariants, reached only through a narrow interface:
 - ``is_ready()`` replaces the ``len(...) - 1`` idiom with an explicit check.
 
 The state shape is ``{"last_sync_ts": {fx_type: datetime}, fx_type: [fx, ...]}``
-where each ``fx`` is ``{"fx_id", "state", "name", "slider1", "slider2"}``.
+where each ``fx`` is an :class:`FxBlock` (its ``slider1``/``slider2`` are
+:class:`pygt1000.slider.SliderValue` or None). Boundary contract: ``snapshot()``
+returns a deep copy of that structure *with the typed records intact* — callers
+read ``fx.state`` / ``fx.slider1.value``, not string keys — so a wrong field is
+a type error rather than a silent ``KeyError``.
 """
 
 import copy
 import logging
 import threading
+from dataclasses import dataclass
 from datetime import datetime
-from typing import NamedTuple
+from typing import NamedTuple, Optional, Union
 
 from .address_map import DecodedValue
+from .slider import SliderValue
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class FxBlock:
+    """One fx block's presented state. Assembled by
+    :meth:`pygt1000.block_snapshot.BlockSnapshot.snapshot`, stored in
+    ``PatchState``'s state, mutated in place by ``set_fx`` / ``set_sliders`` /
+    ``apply``, and handed back (deep-copied) by ``snapshot()``. Mutable for those
+    in-place updates.
+
+    ``fx_id`` is a str for id-addressed blocks and may be an int on the fx path
+    (it passes through ``normalize_block`` unchanged); it is compared via
+    ``str(...)``. ``slider1``/``slider2`` are :class:`SliderValue` or None."""
+
+    fx_id: Union[str, int]
+    state: Optional[str] = None
+    name: Optional[str] = None
+    slider1: Optional[SliderValue] = None
+    slider2: Optional[SliderValue] = None
 
 
 class ApplyResult(NamedTuple):
@@ -84,11 +109,11 @@ class PatchState:
         with self._lock:
             entries = self._state[fx_type]
             if len(entries) == 1:
-                entries[0][field] = value
+                setattr(entries[0], field, value)
             else:
                 for entry in entries:
-                    if str(entry["fx_id"]) == str(fx_id):
-                        entry[field] = value
+                    if str(entry.fx_id) == str(fx_id):
+                        setattr(entry, field, value)
 
     def set_fx_name(self, fx_id, name):
         """Record the resolved effect name loaded in an fx block.
@@ -117,9 +142,9 @@ class PatchState:
         """Record a re-read of an fx block's two sliders."""
         with self._lock:
             for fx in self._state[fx_type]:
-                if str(fx["fx_id"]) == str(fx_id):
-                    fx["slider1"] = slider1
-                    fx["slider2"] = slider2
+                if str(fx.fx_id) == str(fx_id):
+                    fx.slider1 = slider1
+                    fx.slider2 = slider2
                     break
 
     def apply(self, decoded: DecodedValue):
@@ -135,23 +160,23 @@ class PatchState:
                 return ApplyResult(matched=False, type_changed=False)
             fx_type = decoded.fx_type
             for fx in self._state[fx_type]:
-                if str(fx["fx_id"]) != str(decoded.fx_id):
+                if str(fx.fx_id) != str(decoded.fx_id):
                     continue
                 matched = False
                 type_changed = False
                 if decoded.value_name == "SW":
                     logger.info(
                         f"{fx_type}{decoded.fx_id}: "
-                        f"{fx['state']} -> {decoded.str_value}"
+                        f"{fx.state} -> {decoded.str_value}"
                     )
-                    fx["state"] = decoded.str_value
+                    fx.state = decoded.str_value
                     matched = True
                 elif decoded.value_name == "TYPE":
                     logger.info(
                         f"{fx_type}{decoded.fx_id}: "
-                        f"{fx['name']} -> {decoded.str_value}"
+                        f"{fx.name} -> {decoded.str_value}"
                     )
-                    fx["name"] = decoded.str_value
+                    fx.name = decoded.str_value
                     # The fx block also feeds the resolved-effect-name owner, so
                     # the echo path has one write target, not a second dict kept
                     # in sync by the facade.
@@ -161,16 +186,16 @@ class PatchState:
                     type_changed = True
                 else:
                     if (
-                        fx["slider1"] is not None
-                        and fx["slider1"]["label"] == decoded.value_name
+                        fx.slider1 is not None
+                        and fx.slider1.label == decoded.value_name
                     ):
-                        fx["slider1"]["value"] = decoded.int_value
+                        fx.slider1.value = decoded.int_value
                         matched = True
                     if (
-                        fx["slider2"] is not None
-                        and fx["slider2"]["label"] == decoded.value_name
+                        fx.slider2 is not None
+                        and fx.slider2.label == decoded.value_name
                     ):
-                        fx["slider2"]["value"] = decoded.int_value
+                        fx.slider2.value = decoded.int_value
                         matched = True
                 if matched:
                     self._state["last_sync_ts"][fx_type] = now

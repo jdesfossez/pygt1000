@@ -92,14 +92,14 @@ def _unit_message(device_id, offset, data):
 def test_received_switch_updates_state(gt_with_state):
     gt = gt_with_state
     gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x0], [0x1]))
-    assert gt.get_state()["fx"][0]["state"] == "ON"
+    assert gt.get_state()["fx"][0].state == "ON"
 
 
 def test_received_type_change_updates_name_and_queues_slider_refresh(gt_with_state):
     gt = gt_with_state
     # fx1 TYPE -> CHORUS (value 3) lives at [0x10, 0x0, 0x23, 0x1].
     gt._transport.receive(_unit_message(0x10, [0x10, 0x0, 0x23, 0x1], [0x3]))
-    assert gt.get_state()["fx"][0]["name"] == "CHORUS"
+    assert gt.get_state()["fx"][0].name == "CHORUS"
     # The resolved-fx-name owner is updated through the same apply, not a
     # loose facade-side dict.
     assert gt._state.fx_name(1) == "CHORUS"
@@ -109,10 +109,10 @@ def test_received_type_change_updates_name_and_queues_slider_refresh(gt_with_sta
 
 def test_received_message_from_other_device_is_ignored(gt_with_state):
     gt = gt_with_state
-    before = gt.get_state()["fx"][0]["state"]
+    before = gt.get_state()["fx"][0].state
     # device id in the header does not match the negotiated id.
     gt._transport.receive(_unit_message(0x05, [0x10, 0x0, 0x23, 0x0], [0x1]))
-    assert gt.get_state()["fx"][0]["state"] == before
+    assert gt.get_state()["fx"][0].state == before
 
 
 def test_program_change_queues_full_refresh(gt_with_state):

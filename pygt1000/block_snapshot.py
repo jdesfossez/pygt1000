@@ -20,6 +20,8 @@ into ``BlockReader`` would make that dependency circular.
 
 import logging
 
+from .patch_state import FxBlock
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,11 +33,13 @@ class BlockSnapshot:
         self._set_fx_name = set_fx_name
 
     def snapshot(self, fx_type, fx_id, get_sliders=True):
-        """The full presented state of one block: ``state`` (SW), ``name``, and —
-        with ``get_sliders`` — both sliders. The ns/delay blocks have no TYPE
-        field, so their name is synthesized; the fx block's resolved effect name
-        is recorded through its owner so slider layout and later reads resolve
-        it."""
+        """The full presented state of one block as an :class:`FxBlock`:
+        ``state`` (SW), ``name``, and — with ``get_sliders`` — both sliders. The
+        ns/delay blocks have no TYPE field, so their name is synthesized; the fx
+        block's resolved effect name is recorded through its owner so slider
+        layout and later reads resolve it. With ``get_sliders=False`` the two
+        slider fields are left at their default None (they were simply absent
+        from the old dict shape)."""
         state = self._reader.read(fx_type, fx_id, "SW")
         # These don't have a TYPE field in the spec.
         if fx_type in ("ns", "delay"):
@@ -46,18 +50,14 @@ class BlockSnapshot:
             self._set_fx_name(fx_id, name)
         if get_sliders:
             slider1, slider2 = self._slider.sliders_for(fx_type, fx_id, name)
-            return {
-                "fx_id": fx_id,
-                "state": state,
-                "name": name,
-                "slider1": slider1,
-                "slider2": slider2,
-            }
-        return {
-            "fx_id": fx_id,
-            "state": state,
-            "name": name,
-        }
+            return FxBlock(
+                fx_id=fx_id,
+                state=state,
+                name=name,
+                slider1=slider1,
+                slider2=slider2,
+            )
+        return FxBlock(fx_id=fx_id, state=state, name=name)
 
     def snapshot_all(self, fx_type):
         """Snapshot every block of ``fx_type`` in address order."""

@@ -39,7 +39,7 @@ def make_slider(address_map, fx_names=None, reader=None):
 
 
 def _labels(pair):
-    return tuple(None if s is None else s["label"] for s in pair)
+    return tuple(None if s is None else s.label for s in pair)
 
 
 # --------------------------------------------------------------------------
@@ -49,8 +49,8 @@ def _labels(pair):
 def test_non_fx_block_resolves_two_labelled_sliders(address_map):
     # comp is a single-instance block; the caller passes the stripped id "".
     s1, s2 = make_slider(address_map).sliders_for("comp", "", None)
-    assert s1["label"] == "SUSTAIN"
-    assert s2["label"] == "LEVEL"
+    assert s1.label == "SUSTAIN"
+    assert s2.label == "LEVEL"
 
 
 def test_unknown_non_fx_block_has_no_sliders(address_map):
@@ -98,8 +98,8 @@ def test_value_comes_from_reader_and_range_from_map(address_map):
         return 7
 
     s1, _ = make_slider(address_map, reader=reader).sliders_for("comp", "", None)
-    assert s1["value"] == 7
-    assert s1["min"] is not None and s1["max"] is not None
+    assert s1.value == 7
+    assert s1.min is not None and s1.max is not None
     assert ("comp", "", "SUSTAIN") in reads
 
 
@@ -111,7 +111,7 @@ def test_none_param_is_not_read(address_map):
 
     slider = make_slider(address_map, fx_names={"1": "AC GUITAR SIM"}, reader=reader)
     s1, s2 = slider.sliders_for("fx", "1", None)
-    assert s1["label"] == "LEVEL"
+    assert s1.label == "LEVEL"
     assert s2 is None
 
 
@@ -131,5 +131,5 @@ def test_fx_slider_collapses_to_none_when_read_fails(address_map):
 def test_non_fx_slider_keeps_dict_when_read_returns_none(address_map):
     slider = make_slider(address_map, reader=lambda fx_type, fx_id, option: None)
     s1, s2 = slider.sliders_for("comp", "", None)
-    assert s1 is not None and s1["value"] is None
-    assert s1["label"] == "SUSTAIN"
+    assert s1 is not None and s1.value is None
+    assert s1.label == "SUSTAIN"
