@@ -15,6 +15,7 @@ from .constants import (
 from .chain import parse_chain, serialize_chain, ChainCodec
 from .address_map import AddressMap
 from .block_reader import BlockReader
+from .block_snapshot import BlockSnapshot
 from .slider import Slider
 from .patch_state import PatchState
 from .keepalive import KeepAlive
@@ -109,6 +110,20 @@ class GT1000:
             self._address_map, self._state.fx_name, self._block_reader.read_value
         )
 
+        # "Read a whole block" — assemble state + name + both sliders, plus the
+        # ns/delay no-TYPE special case and the block iteration over an fx type —
+        # lives behind BlockSnapshot: it reads settings through BlockReader,
+        # resolves sliders through Slider, and records the fx block's resolved
+        # name through PatchState, the owner of that fact. A separate module
+        # because Slider already depends on BlockReader.read_value, so the
+        # assembly cannot fold back into BlockReader without a cycle.
+        self._block_snapshot = BlockSnapshot(
+            self._address_map,
+            self._block_reader,
+            self._slider,
+            self._state.set_fx_name,
+        )
+
         # The transport is the seam to the MIDI wire. Production uses rtmidi;
         # tests inject a fake.
         self._transport = transport if transport is not None else RtMidiTransport()
@@ -196,48 +211,16 @@ class GT1000:
         # Thin delegate: the transport lifecycle lives on EditorSession.
         self._editor_session.close()
 
-    def _get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
-        state = self._block_reader.read(fx_type, fx_id, "SW")
-        # These don't have a TYPE field in the spec
-        if fx_type in ["ns", "delay"]:
-            name = f"{fx_type}{fx_id}"
-        else:
-            name = self._block_reader.read(fx_type, fx_id, "TYPE")
-        if fx_type == "fx":
-            self._state.set_fx_name(fx_id, name)
-        if get_sliders is True:
-            slider1, slider2 = self._slider.sliders_for(fx_type, fx_id, name)
-            return {
-                "fx_id": fx_id,
-                "state": state,
-                "name": name,
-                "slider1": slider1,
-                "slider2": slider2,
-            }
-        else:
-            return {
-                    "fx_id": fx_id,
-                    "state": state,
-                    "name": name,
-                    }
-
     def get_all_fx_type_states(self, fx_type):
+        # Thin delegate: the whole-block assembly + iteration live on
+        # BlockSnapshot.
         logger.debug("get_all_fx_type_state")
-        out = []
-        for i in range(self._address_map.fx_block_count(fx_type)):
-            fx_type, fx_id = self._address_map.normalize_block(fx_type, i + 1)
-            out.append(self._get_one_fx_state(fx_type, fx_id))
-        return out
+        return self._block_snapshot.snapshot_all(fx_type)
 
     def get_one_fx_state(self, fx_type, fx_id, get_sliders=True):
+        # Thin delegate: the whole-block assembly + lookup live on BlockSnapshot.
         logger.debug("get_one_fx_state")
-        for i in range(self._address_map.fx_block_count(fx_type)):
-            fx_type, _fx_id = self._address_map.normalize_block(fx_type, i + 1)
-            if not fx_id:
-                return self._get_one_fx_state(fx_type, _fx_id, get_sliders)
-            elif fx_id == _fx_id:
-                return self._get_one_fx_state(fx_type, _fx_id, get_sliders)
-        return None
+        return self._block_snapshot.snapshot_one(fx_type, fx_id, get_sliders)
 
     def fetch_mem(self, offset, length, override_checksum=None):
         # Read device memory: RQ1 out, block for the correlated reply. The
