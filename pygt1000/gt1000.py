@@ -39,24 +39,23 @@ def bytes_as_hex(data):
 
 
 class GT1000:
+    # The constructor is the wiring point: it builds each seam and injects
+    # earlier seams' methods as the device dependency of later ones. The order
+    # matters (later seams are handed methods of earlier ones), and the
+    # dependency directions have reasons. That whole narrative — plus what each
+    # seam owns — lives in docs/architecture.md; the comments below are just
+    # pointers.
     def __init__(self, transport=None):
         self.current_state_message = None
 
-        # The background refresh coordination (queue + wakeup + worker) lives
-        # behind RefreshScheduler. GT1000 supplies the work as per-type
-        # handlers and calls submit() to enqueue:
-        # {type: "full"}: scan all the blocks
-        # {type: "sliders", fx_type: <fx_type>, fx_id: <fx_id>}: just the
-        # sliders for a specific fx type/id.
+        # RefreshScheduler: background refresh coordination. GT1000 supplies the
+        # work as two per-type handlers ("full" / "sliders") and calls submit().
         self._refresh = RefreshScheduler()
         self._refresh.register("full", self._refresh_full)
         self._refresh.register("sliders", self._refresh_sliders)
 
-        # The periodic device-liveness poll lives behind KeepAlive (one thread
-        # model, no bespoke loop in the facade). The device probe is injected as
-        # a fetch, and the "device is unresponsive" action is the EditorSession's
-        # reopen (built below) — KeepAlive itself carries no wire or port
-        # knowledge, and the reopen path is the same one open() runs.
+        # KeepAlive: periodic liveness poll. The probe is injected as a fetch;
+        # the unresponsive action is EditorSession.reopen (built below).
         self._keepalive = KeepAlive(
             poll=lambda: self.fetch_mem(
                 EDITOR_MODE_ADDRESS_FETCH3, EDITOR_MODE_ADDRESS_LEN3
@@ -78,45 +77,34 @@ class GT1000:
             "pedalFx",
             "reverb",
         ]
-        # The address map owns the spec-table load and the encode path; GT1000
-        # keeps backward-compatible accessors that delegate to it (see the
-        # registry properties below).
+        # AddressMap: owns the spec-table load and the encode path. GT1000 keeps
+        # backward-compatible accessors that delegate to it.
         self._address_map = AddressMap(self.fx_types)
 
-        # The SysEx wire format (DT1/RQ1 framing, checksum, reply parsing) lives
-        # behind the codec; GT1000 supplies the negotiated device_id and calls
-        # it instead of hand-rolling frames.
+        # SysExCodec: the SysEx wire format (DT1/RQ1, checksum, reply parsing).
+        # Stateless; GT1000 supplies the negotiated device_id per call.
         self._codec = SysExCodec()
 
-        # The device state model lives behind PatchState: it owns the state
-        # dict, its lock, and last_sync_ts. GT1000 only translates decoded
-        # messages and local changes into calls on it.
+        # PatchState: the single owner of the known device state.
         self._state = PatchState(self.fx_types)
 
-        # The read-side pipeline (address -> fetch -> decode for a block) lives
-        # behind BlockReader. The device read is injected as fetch_mem so the
-        # module carries no wire knowledge; the resolved fx name is read live
-        # through PatchState, the owner of that fact.
+        # BlockReader: read one setting (address -> fetch -> decode). fetch_mem
+        # is injected as the device read; fx_name is read through PatchState.
         self._block_reader = BlockReader(
             self._address_map, self.fetch_mem, self._state.fx_name
         )
 
-        # Slider resolution (which two params, the eq rule, and the range +
-        # value dict) lives behind Slider. The per-param value read over MIDI is
-        # injected as the BlockReader's read_value so the module carries no
-        # device knowledge; the resolved fx name is read live through PatchState,
-        # the owner of that fact.
+        # Slider: slider policy + resolution. The per-param read is injected as
+        # BlockReader.read_value (so Slider depends on BlockReader, not vice
+        # versa — this is what forces the BlockSnapshot split below).
         self._slider = Slider(
             self._address_map, self._state.fx_name, self._block_reader.read_value
         )
 
-        # "Read a whole block" — assemble state + name + both sliders, plus the
-        # ns/delay no-TYPE special case and the block iteration over an fx type —
-        # lives behind BlockSnapshot: it reads settings through BlockReader,
-        # resolves sliders through Slider, and records the fx block's resolved
-        # name through PatchState, the owner of that fact. A separate module
-        # because Slider already depends on BlockReader.read_value, so the
-        # assembly cannot fold back into BlockReader without a cycle.
+        # BlockSnapshot: read a whole block (state + name + both sliders, the
+        # ns/delay no-TYPE case, block iteration). A separate module because
+        # Slider already depends on BlockReader.read_value, so this assembly
+        # cannot fold into BlockReader without a cycle. See docs/architecture.md.
         self._block_snapshot = BlockSnapshot(
             self._address_map,
             self._block_reader,
@@ -124,32 +112,24 @@ class GT1000:
             self._state.set_fx_name,
         )
 
-        # The transport is the seam to the MIDI wire. Production uses rtmidi;
-        # tests inject a fake.
+        # Transport: the seam to the MIDI wire. Production uses rtmidi; tests
+        # inject a fake.
         self._transport = transport if transport is not None else RtMidiTransport()
 
-        # The request/response conversation with the unit lives behind
-        # DeviceLink: it owns the offset-keyed correlation, the semaphore, and
-        # the wait/retry loop, installs its own inbound callback on the
-        # transport, and negotiates the device id from identity replies. GT1000
-        # asks it to request() reads, send() commands, and routes device-emitted
-        # frames back through _process_data_from_unit.
+        # DeviceLink: the request/response conversation on top of Transport.
+        # GT1000 wires the two inbound callbacks and routes device frames back.
         self._link = DeviceLink(self._transport, self._codec)
         self._link.on_unsolicited(self._process_data_from_unit)
         self._link.on_identity(self._apply_identity)
 
-        # The device bring-up *sequence* (identity retry, editor-mode set,
-        # liveness check) and the reopen policy live behind EditorSession. It
-        # owns the Transport lifecycle (open/close) and drives DeviceLink; the
-        # facade's open_ports/close_ports are thin delegates, and KeepAlive's
-        # on_unresponsive is the session's reopen. The model-specific tweak stays
-        # here, applied from the negotiated identity in _apply_identity.
+        # EditorSession: the device bring-up sequence + reopen policy; owns the
+        # Transport lifecycle. The model-specific tweak stays on the facade, in
+        # _apply_identity (see docs/architecture.md).
         self._editor_session = EditorSession(self._transport, self._link)
 
-        # The effect chain's whole device round trip (byte-list address,
-        # int<->name conversion, and parse/serialize) lives behind ChainCodec.
-        # The device dependency is injected — fetch_mem to read, _link.set to
-        # write — so the facade's chain methods are thin delegates.
+        # ChainCodec: the effect chain's device round trip. The device
+        # dependency is injected both ways — fetch_mem to read, _link.set to
+        # write.
         self._chain_codec = ChainCodec(
             self._address_map, self.fetch_mem, self._link.set
         )
