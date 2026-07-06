@@ -25,3 +25,9 @@ pytest = "^8.3.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+# Import pygt1000 straight from the source tree so the suite runs without
+# installing the package (the compiled python-rtmidi dependency is stubbed in
+# tests/conftest.py, so the wire binding need not be built to run tests).
+pythonpath = ["."]
