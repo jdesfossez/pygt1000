@@ -16,7 +16,7 @@ internal invariants, reached only through a narrow interface:
 
 The state shape is ``{"last_sync_ts": {fx_type: datetime}, fx_type: [fx, ...]}``
 where each ``fx`` is an :class:`FxBlock` (its ``slider1``/``slider2`` are
-:class:`pygt1000.slider.SliderValue` or None). Boundary contract: ``snapshot()``
+:class:`SliderValue` or None). Boundary contract: ``snapshot()``
 returns a deep copy of that structure *with the typed records intact* — callers
 read ``fx.state`` / ``fx.slider1.value``, not string keys — so a wrong field is
 a type error rather than a silent ``KeyError``.
@@ -30,9 +30,27 @@ from datetime import datetime
 from typing import NamedTuple, Optional, Union
 
 from .address_map import DecodedValue
-from .slider import SliderValue
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class SliderValue:
+    """One resolved slider: its current ``value`` (``None`` if the read
+    failed / was skipped), the ``label`` naming the param it controls, and the
+    param's ``min``/``max`` range from the AddressMap. Produced by
+    :meth:`pygt1000.block_snapshot.BlockSnapshot._resolve`; carried on an fx
+    block's ``slider1``/``slider2`` (below) and mutated in place by
+    :meth:`PatchState.apply` when the device echoes a new value. Mutable for that
+    in-place update. It lives here — with :class:`FxBlock`, its storage owner —
+    rather than next to its producer, because ``BlockSnapshot`` already imports
+    ``FxBlock`` from this module and defining it there would make the import
+    circular."""
+
+    value: Optional[int]
+    label: str
+    min: int
+    max: int
 
 
 @dataclass

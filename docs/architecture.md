@@ -35,7 +35,7 @@ injected device dependency.
    `on_unresponsive = lambda: self._editor_session.reopen()`. KeepAlive itself
    carries no wire or port knowledge, and the reopen it triggers is the *same*
    path `open()` runs — the reopen policy and the open policy are one method, not
-   two kept in sync. (The `EditorSession` it reopens is built in step 11; the
+   two kept in sync. (The `EditorSession` it reopens is built in step 10; the
    lambda defers the reference until call time.)
 
 3. **`AddressMap`** (`self._address_map`) — owns the spec-table load and the
@@ -56,35 +56,33 @@ injected device dependency.
    is read live through `self._state.fx_name` — `PatchState` is the owner of that
    fact.
 
-7. **`Slider`** (`self._slider`) — slider policy (which two params a block
-   exposes, the eq special case) plus resolution (range from `AddressMap`,
-   current value read over MIDI). The per-param value read is injected as
-   `self._block_reader.read_value` so `Slider` carries no device knowledge; the
-   resolved fx name is again read live through `self._state.fx_name`.
+7. **`BlockSnapshot`** (`self._block_snapshot`) — "read a whole block": slider
+   *policy* (which two params a block exposes, the eq and fx-name rules), slider
+   *resolution* (range from `AddressMap`, current value read over MIDI), the
+   whole-block *assembly* (state + name + both sliders, the ns/delay no-TYPE
+   special case), and the block iteration over an fx type. Its reads go through
+   `BlockReader` — settings via `read`, param values via `read_value` — so it
+   carries no wire knowledge; the resolved fx name is read live through
+   `self._state.fx_name` and recorded through `self._state.set_fx_name`
+   (`PatchState`, the owner of that fact).
 
-   > **Why `Slider` depends on `BlockReader` (not the reverse):** `Slider` needs
-   > to read a param's current value, and `BlockReader` already owns "read one
-   > setting." So `Slider` is constructed *after* `BlockReader` and is handed its
-   > `read_value`. This direction is what forces the `BlockSnapshot` split below.
+   > **Why two modules (mechanism vs. block-read), not one or three:**
+   > `BlockSnapshot` is constructed *after* `BlockReader` and handed its `read` /
+   > `read_value`, so the dependency points one way — `BlockReader` (mechanism)
+   > below, `BlockSnapshot` (policy + resolution + assembly) above — and never
+   > cycles. Policy/resolution and assembly used to be two modules (`Slider` and
+   > a separate `BlockSnapshot`) held apart only because folding the assembly
+   > into `BlockReader` would have cycled with `Slider`'s dependency on
+   > `read_value`; that split existed solely to break the cycle, so the two halves
+   > of one read now live together here. The mechanism stays its own module
+   > because it is a genuine seam (address → fetch → decode), not a cycle artifact.
 
-8. **`BlockSnapshot`** (`self._block_snapshot`) — "read a whole block": assemble
-   state + name + both sliders, handle the ns/delay no-TYPE special case, and
-   iterate the blocks of an fx type. It reads settings through `BlockReader`,
-   resolves sliders through `Slider`, and records the block's resolved fx name
-   through `self._state.set_fx_name` (`PatchState`, the owner of that fact).
-
-   > **Why this is a separate module and not a method on `BlockReader`:**
-   > `Slider` is constructed with `BlockReader.read_value` (step 7), so
-   > `BlockReader` must not depend on `Slider`. Folding the whole-block assembly
-   > (which needs `Slider`) back into `BlockReader` would make that dependency
-   > circular. A third module built *after* both is the clean seam.
-
-9. **`Transport`** (`self._transport`) — the seam to the MIDI wire. Production
+8. **`Transport`** (`self._transport`) — the seam to the MIDI wire. Production
    uses `RtMidiTransport`; tests inject a `FakeTransport`. This is the only
    layer that imports `rtmidi`, and it is imported lazily inside
    `RtMidiTransport` so tests never load the compiled binding.
 
-10. **`DeviceLink`** (`self._link`) — the request/response conversation on top of
+9. **`DeviceLink`** (`self._link`) — the request/response conversation on top of
     `Transport`: offset-keyed correlation, the semaphore, and the wait/retry
     loop. It installs its own inbound callback on the transport and negotiates
     the device id from identity replies. `GT1000` wires two callbacks into it:
@@ -95,7 +93,7 @@ injected device dependency.
     property that reads/writes it there so existing callers and the codec keep
     seeing `gt.device_id`.
 
-11. **`EditorSession`** (`self._editor_session`) — the device bring-up *sequence*
+10. **`EditorSession`** (`self._editor_session`) — the device bring-up *sequence*
     (identity retry, editor-mode set, liveness check) and the reopen policy. It
     owns the `Transport` lifecycle (open/close) and drives `DeviceLink`. The
     facade's `open_ports` / `close_ports` are thin delegates, and it is the
@@ -109,7 +107,7 @@ injected device dependency.
     > the block layout, so the layout knowledge stays here rather than leaking
     > into the session.
 
-12. **`ChainCodec`** (`self._chain_codec`) — the effect chain's whole device
+11. **`ChainCodec`** (`self._chain_codec`) — the effect chain's whole device
     round trip (byte-list address, int↔name conversion, parse/serialize). The
     device dependency is injected on both sides — `self.fetch_mem` to read,
     `self._link.set` to write — so the facade's chain methods are thin delegates.
@@ -120,7 +118,7 @@ After wiring, `GT1000` keeps only the translation logic that genuinely spans
 seams:
 
 - `_apply_identity` — the model substitution and the CORE fx-block-count tweak
-  (see step 11).
+  (see step 10).
 - `_process_data_from_unit` — route a device frame: a program-change offset
   submits a `full` refresh; otherwise `decode` → `PatchState.apply`, and on a
   TYPE change submit a `sliders` re-read for that block.

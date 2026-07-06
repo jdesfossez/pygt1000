@@ -15,8 +15,8 @@ always go through `poetry run`.
 ```bash
 poetry install                       # set up the dev environment
 poetry run pytest -q                 # full test suite (~217 tests, fast)
-poetry run pytest tests/test_slider.py                       # one file
-poetry run pytest tests/test_slider.py::test_name            # one test
+poetry run pytest tests/test_block_snapshot.py               # one file
+poetry run pytest tests/test_block_snapshot.py::test_name    # one test
 poetry run pytest -k substring                               # by name match
 poetry run ruff check pygt1000 tests # lint (keep clean)
 poetry run mypy pygt1000             # type check — see note below
@@ -59,10 +59,14 @@ why) lives in [`docs/architecture.md`](docs/architecture.md). The collaborators:
 - **`PatchState`** (`patch_state.py`) — the single owner of known device state
   (the dict, its lock, `last_sync_ts`). Mutated only via `apply` / `set_fx` /
   `record_scan` / `set_sliders`; read via `snapshot`.
-- **`Slider`** (`slider.py`) — slider *policy* (which two params a block exposes,
-  the eq special case) + *resolution* (range from `AddressMap`, current value via
-  an injected reader). The device read is injected so it resolves against a fake
-  reader without a wire.
+- **`BlockReader`** (`block_reader.py`) — the read *mechanism*: read one setting
+  (address → fetch → decode to its label). The device read is injected so it
+  resolves against a fake reader without a wire.
+- **`BlockSnapshot`** (`block_snapshot.py`) — "read a whole block", built on
+  `BlockReader`: slider *policy* (which two params a block exposes, the eq
+  special case) + *resolution* (range from `AddressMap`, current value) + the
+  whole-block *assembly* (state + name + both sliders) and the block iteration.
+  Reads go through the injected `BlockReader`, so it too resolves without a wire.
 - **`RefreshScheduler`** (`refresh_scheduler.py`) — the background refresh
   worker: a task queue + wakeup event + lock as one invariant. `GT1000` registers
   `full` / `sliders` handlers and calls `submit(task)`; the scheduler carries no

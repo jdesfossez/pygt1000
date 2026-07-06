@@ -10,8 +10,7 @@ from datetime import datetime
 import pytest
 
 from pygt1000.address_map import DecodedValue
-from pygt1000.patch_state import FxBlock, PatchState
-from pygt1000.slider import SliderValue
+from pygt1000.patch_state import FxBlock, PatchState, SliderValue
 
 
 FX_TYPES = ["comp", "fx"]

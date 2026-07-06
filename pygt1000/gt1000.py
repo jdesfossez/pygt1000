@@ -16,7 +16,6 @@ from .chain import parse_chain, serialize_chain, ChainCodec
 from .address_map import AddressMap
 from .block_reader import BlockReader
 from .block_snapshot import BlockSnapshot
-from .slider import Slider
 from .patch_state import PatchState
 from .keepalive import KeepAlive
 from .refresh_scheduler import RefreshScheduler
@@ -88,27 +87,22 @@ class GT1000:
         # PatchState: the single owner of the known device state.
         self._state = PatchState(self.fx_types)
 
-        # BlockReader: read one setting (address -> fetch -> decode). fetch_mem
-        # is injected as the device read; fx_name is read through PatchState.
+        # BlockReader: the read mechanism — read one setting (address -> fetch
+        # -> decode). fetch_mem is injected as the device read; fx_name is read
+        # through PatchState.
         self._block_reader = BlockReader(
             self._address_map, self.fetch_mem, self._state.fx_name
         )
 
-        # Slider: slider policy + resolution. The per-param read is injected as
-        # BlockReader.read_value (so Slider depends on BlockReader, not vice
-        # versa — this is what forces the BlockSnapshot split below).
-        self._slider = Slider(
-            self._address_map, self._state.fx_name, self._block_reader.read_value
-        )
-
-        # BlockSnapshot: read a whole block (state + name + both sliders, the
-        # ns/delay no-TYPE case, block iteration). A separate module because
-        # Slider already depends on BlockReader.read_value, so this assembly
-        # cannot fold into BlockReader without a cycle. See docs/architecture.md.
+        # BlockSnapshot: read a whole block above that mechanism — slider policy
+        # + resolution (the per-param reads go through BlockReader) and the
+        # assembly (state + name + both sliders, the ns/delay no-TYPE case, block
+        # iteration). fx names are read live (PatchState.fx_name) and the
+        # resolved name recorded through its owner (set_fx_name).
         self._block_snapshot = BlockSnapshot(
             self._address_map,
             self._block_reader,
-            self._slider,
+            self._state.fx_name,
             self._state.set_fx_name,
         )
 
@@ -178,7 +172,7 @@ class GT1000:
         self.refresh_state()
 
     def _refresh_sliders(self, task):
-        slider1, slider2 = self._slider.sliders_for(
+        slider1, slider2 = self._block_snapshot.sliders_for(
             task["fx_type"], task["fx_id"], None
         )
         self._state.set_sliders(task["fx_type"], task["fx_id"], slider1, slider2)
