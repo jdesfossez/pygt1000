@@ -280,7 +280,9 @@ class GT1000:
             # Unblock the refresh worker
             self._refresh.submit({"type": "full"})
             return
-        ret = self.lookup(received_offset, received_data[0])
+        # Pass the whole data list: decode reassembles a multi-byte param from
+        # its leading nibbles and reads a normal param's single byte.
+        ret = self.lookup(received_offset, received_data)
         if ret is None:
             logger.debug("unknown data received by the unit, ignoring")
             return

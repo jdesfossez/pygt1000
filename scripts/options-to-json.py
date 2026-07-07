@@ -11,6 +11,11 @@ def parse_value_range(value_range_str):
     return value_range
 
 
+def offset_to_int(offset_bytes):
+    # Offsets in the option tables are two big-endian bytes.
+    return int.from_bytes(bytes(offset_bytes), byteorder="big")
+
+
 # FIXME: delay ranges are weird: you get a range and then names:
 # 1ms - 2000ms, 32ndNote, Triplet16thNote, [...]
 # so we need to expand to:
@@ -34,14 +39,24 @@ def process_data(lines):
     current_value_range = None
     offset = 0
     conflict_count = {}
+    # A "|# AA BB |" line marks the first address of a multi-byte (nibblised)
+    # field: each consecutive address carries one 4-bit nibble (0000 xxxx),
+    # big-endian, and the field is named on its LAST address. We stash the start
+    # here and, when the named row lands, record that param's offset as the start
+    # address with a "bytes" width = (last - start + 1). Single-byte params leave
+    # this None and get no "bytes" key (width 1 is the default).
+    pending_start = None
 
     for line in lines:
         # Remove leading and trailing whitespace
         line = line.strip()
 
         print(line)
-        # FIXME: these are offsets that span multiple bytes, need to find a solution
+        # Multi-byte field start marker: remember the first (most significant)
+        # nibble's address; the named row below closes the field.
         if line.startswith("|# "):
+            start_txt = line.split("|")[1].strip().lstrip("#").strip()
+            pending_start = [int(x, 16) for x in start_txt.split(" ")]
             continue
         if line.startswith("| : | | |"):
             continue
@@ -102,12 +117,26 @@ def process_data(lines):
                     f"WARNING: conflicting name {name}, storing as {name}{conflict_count[name]}"
                 )
                 name = f"{name}{conflict_count[name]}"
+            # A multi-byte field is addressed at its first nibble; the named row
+            # sits on the last. Record the start offset + the byte width so the
+            # encoder writes / the decoder reads all N nibbles.
+            if pending_start is not None:
+                width = offset_to_int(offset_bytes) - offset_to_int(pending_start) + 1
+                entry = {
+                    "offset": pending_start,
+                    "value_range": value_range,
+                    "bytes": width,
+                    "values": {},
+                }
+                pending_start = None
+            else:
+                entry = {
+                    "offset": offset_bytes,
+                    "value_range": value_range,
+                    "values": {},
+                }
             # Prepare a dictionary for this name
-            result[name] = {
-                "offset": offset_bytes,
-                "value_range": value_range,
-                "values": {},
-            }
+            result[name] = entry
             current_name = name
             current_value_range = value_range
             offset = 0

@@ -43,8 +43,12 @@ def test_lookup_rejects_bad_address_length(gt):
     assert gt.lookup([0x10, 0x0, 0x23], 0x1) is None
 
 
-def test_lookup_rejects_list_value(gt):
-    assert gt.lookup([0x10, 0x0, 0x23, 0x0], [0x1]) is None
+def test_lookup_accepts_list_value(gt):
+    # Reply payloads are lists; a 1-element list decodes like the bare int
+    # (multi-byte params made list values first-class).
+    decoded = gt.lookup([0x10, 0x0, 0x23, 0x0], [0x1])
+    assert decoded is not None
+    assert decoded.int_value == 0x1
 
 
 def test_lookup_unknown_address_returns_none(gt):

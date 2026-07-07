@@ -84,45 +84,49 @@
     "PEDAL MIN": {
         "offset": [
             0,
-            9
+            6
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {}
     },
     "PEDAL MAX": {
         "offset": [
             0,
-            13
+            10
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {}
     },
     "WAH:PEDAL POSITION": {
         "offset": [
             0,
-            17
+            14
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {}
     },
     "PEDAL BEND:PEDAL POSITION": {
         "offset": [
             0,
-            21
+            18
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {}
     },
     "PITCH MIN": {

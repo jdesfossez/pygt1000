@@ -112,12 +112,13 @@
     "HR1:PRE-DELAY": {
         "offset": [
             0,
-            7
+            4
         ],
         "value_range": [
             0,
             318
         ],
+        "bytes": 4,
         "values": {
             "0ms - 300ms": 0,
             "32ndNote": 1,
@@ -176,12 +177,13 @@
     "HR2:PRE-DELAY": {
         "offset": [
             0,
-            14
+            11
         ],
         "value_range": [
             0,
             318
         ],
+        "bytes": 4,
         "values": {
             "0ms - 300ms": 0,
             "32ndNote": 1,

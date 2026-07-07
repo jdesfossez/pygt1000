@@ -16,12 +16,13 @@
     "TIME": {
         "offset": [
             0,
-            4
+            1
         ],
         "value_range": [
             1,
             2018
         ],
+        "bytes": 4,
         "values": {
             "1ms - 2000ms": 1,
             "32ndNote": 2,

@@ -2,12 +2,13 @@
     "FOOT VOLUME:VOLUME MIN": {
         "offset": [
             0,
-            3
+            0
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {
             "0.0 - 100.0": 0
         }
@@ -15,12 +16,13 @@
     "FOOT VOLUME:VOLUME MAX": {
         "offset": [
             0,
-            7
+            4
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {
             "0.0 - 100.0": 0
         }
@@ -28,12 +30,13 @@
     "FOOT VOLUME:PEDAL POSITION": {
         "offset": [
             0,
-            11
+            8
         ],
         "value_range": [
             0,
             1000
         ],
+        "bytes": 4,
         "values": {
             "0.0 - 100.0": 0
         }
@@ -724,23 +727,25 @@
     "SEND/RETURN 1:SEND LEVEL": {
         "offset": [
             0,
-            56
+            55
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "SEND/RETURN 1:RETURN LEVEL": {
         "offset": [
             0,
-            58
+            57
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "SEND/RETURN 1:ADJUST": {
@@ -786,23 +791,25 @@
     "SEND/RETURN 2:SEND LEVEL": {
         "offset": [
             0,
-            63
+            62
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "SEND/RETURN 2:RETURN LEVEL": {
         "offset": [
             0,
-            65
+            64
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "SEND/RETURN 2:ADJUST": {
@@ -1264,23 +1271,25 @@
     "MASTER:PATCH LEVEL": {
         "offset": [
             0,
-            96
+            95
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "MASTER:BPM": {
         "offset": [
             0,
-            100
+            97
         ],
         "value_range": [
             400,
             2500
         ],
+        "bytes": 4,
         "values": {}
     },
     "MASTER:KEY": {

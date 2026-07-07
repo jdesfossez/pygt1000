@@ -17,7 +17,8 @@ builds on ``AddressMap.address_for_block`` rather than re-deriving addresses.
 
 import logging
 
-from .constants import ONE_BYTE, FX_TO_TABLE_SUFFIX
+from .address_map import unpack_nibbles
+from .constants import FX_TO_TABLE_SUFFIX
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,8 @@ class BlockReader:
         ``just_range`` — the raw byte (used when only the numeric value is
         wanted). ``None`` when the device does not answer."""
         offset = self._address_map.address_for_block(fx_type, fx_id, setting)
-        raw = self._fetch_byte(offset)
+        width = self._address_map.block_setting_bytes(fx_type, fx_id, setting)
+        raw = self._fetch_value(offset, width)
         if raw is None:
             logger.warning(f"no data for {fx_type}{fx_id} {setting}")
             return None
@@ -57,7 +59,10 @@ class BlockReader:
         )
         if offset is None:
             return None
-        raw = self._fetch_byte(offset)
+        width = self._address_map.block_setting_bytes(
+            fx_type, fx_id, setting, fx_name=fx_name
+        )
+        raw = self._fetch_value(offset, width)
         if raw is None:
             logger.warning(f"no data for {fx_type}{fx_id} {fx_name} {setting}")
             return None
@@ -71,8 +76,13 @@ class BlockReader:
             return self.read_fx(fx_type, fx_id, option)
         return self.read(fx_type, fx_id, option, just_range=True)
 
-    def _fetch_byte(self, offset):
-        data = self._fetch(offset, ONE_BYTE)
+    def _fetch_value(self, offset, width):
+        """Fetch a setting's raw numeric value, reassembling a multi-byte
+        (nibblised) param from its ``width`` reply bytes; a normal param is the
+        single leading byte."""
+        data = self._fetch(offset, [0, 0, 0, width])
         if data is None:
             return None
+        if width > 1:
+            return unpack_nibbles(data[:width])
         return data[0]

@@ -577,12 +577,13 @@
     "PRE-DELAY": {
         "offset": [
             0,
-            15
+            14
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "LOW CUT": {
@@ -962,12 +963,13 @@
     "PRE-DELAY 1": {
         "offset": [
             0,
-            26
+            25
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "LOW CUT 1": {
@@ -1347,12 +1349,13 @@
     "PRE-DELAY 2": {
         "offset": [
             0,
-            37
+            36
         ],
         "value_range": [
             0,
             200
         ],
+        "bytes": 2,
         "values": {}
     },
     "LOW CUT 2": {

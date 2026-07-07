@@ -171,12 +171,13 @@
     "LOW DAMP": {
         "offset": [
             0,
-            11
+            10
         ],
         "value_range": [
             28,
             128
         ],
+        "bytes": 2,
         "values": {
             "-100 - 0": 28
         }
@@ -184,12 +185,13 @@
     "HIGH DAMP": {
         "offset": [
             0,
-            13
+            12
         ],
         "value_range": [
             28,
             128
         ],
+        "bytes": 2,
         "values": {
             "-100 - 0": 28
         }

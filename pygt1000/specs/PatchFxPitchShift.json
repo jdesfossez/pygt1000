@@ -183,12 +183,13 @@
     "PS1:PRE-DELAY": {
         "offset": [
             0,
-            9
+            6
         ],
         "value_range": [
             0,
             318
         ],
+        "bytes": 4,
         "values": {
             "0ms - 300ms": 0,
             "32ndNote": 1,
@@ -365,12 +366,13 @@
     "PS2:PRE-DELAY": {
         "offset": [
             0,
-            17
+            14
         ],
         "value_range": [
             0,
             318
         ],
+        "bytes": 4,
         "values": {
             "0ms - 300ms": 0,
             "32ndNote": 1,

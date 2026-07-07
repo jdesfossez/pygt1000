@@ -66,6 +66,23 @@ def bytes_as_hex(data):
     return "[{}]".format(", ".join(hex(x) for x in data))
 
 
+def pack_nibbles(value, width):
+    """Split ``value`` into ``width`` 4-bit nibbles, big-endian (most
+    significant first), one per consecutive address — the GT's packing for a
+    value too wide for a single 7-bit data byte (delay TIME, send/return LEVEL,
+    ...). Inverse of :func:`unpack_nibbles`."""
+    return [(value >> (4 * (width - 1 - i))) & 0x0F for i in range(width)]
+
+
+def unpack_nibbles(data):
+    """Reassemble consecutive 4-bit nibbles (big-endian, most significant
+    first) into an int. Inverse of :func:`pack_nibbles`."""
+    value = 0
+    for byte in data:
+        value = (value << 4) | (byte & 0x0F)
+    return value
+
+
 class AddressMap:
     # The three temporary-patch sections a block can be routed to.
     PATCH_SECTION = "patch (temporary patch)"
@@ -203,6 +220,14 @@ class AddressMap:
         form ``f"{fx_type}{fx_id}{suffix}"`` routed through ``fx_start_section``.
         The trailing value byte is appended when ``value`` is not ``None``.
         """
+        section, option = self._block_section_option(fx_type, fx_id, fx_name)
+        return self.address_for(section, option, setting, value)
+
+    def _block_section_option(self, fx_type, fx_id, fx_name=None):
+        """Resolve a block to its ``(section, option)`` pair — the plain
+        ``f"{fx_type}{fx_id}"`` form, or the fx-suffix form routed through
+        ``fx_start_section`` when ``fx_name`` is given. Shared by
+        ``address_for_block`` and ``block_setting_bytes``."""
         fx_type, fx_id = self.normalize_block(fx_type, fx_id)
         if fx_name is not None:
             suffix = FX_TO_TABLE_SUFFIX[fx_name]
@@ -211,7 +236,27 @@ class AddressMap:
         else:
             section = self.start_section(fx_type, fx_id)
             option = f"{fx_type}{fx_id}"
-        return self.address_for(section, option, setting, value)
+        return section, option
+
+    def block_setting_bytes(self, fx_type, fx_id, setting, fx_name=None):
+        """Byte width of a block's ``setting`` (1 for a normal 7-bit param, N
+        for a nibblised multi-byte one). The read-side counterpart the reader
+        uses to size the RQ1 and reassemble the reply."""
+        section, option = self._block_section_option(fx_type, fx_id, fx_name)
+        entry = self._setting_entry(section, option, setting)
+        return entry.get("bytes", 1) if entry else 1
+
+    def _setting_entry(self, section, option, setting):
+        """The raw spec entry for ``setting`` under ``section``/``option``, or
+        ``None`` if any hop is unknown. The single lookup ``address_for`` and
+        ``block_setting_bytes`` share."""
+        if section not in self._tables["base-addresses"]:
+            return None
+        section_entry = self._tables["base-addresses"][section]
+        if option not in self._tables[section_entry["table"]]:
+            return None
+        option_entry = self._tables[section_entry["table"]][option]
+        return self._tables[option_entry["table"]].get(setting)
 
     def address_for(self, section, option, setting, value=None):
         """Build the address bytes for ``setting`` under ``section``/``option``.
@@ -245,16 +290,23 @@ class AddressMap:
             byte_sequence = address.to_bytes(num_bytes, byteorder="big")
             return [byte for byte in byte_sequence]
 
-        # If we set the raw value
-        if value not in setting_entry["values"]:
-            value_byte = value.to_bytes(1, byteorder="big")
+        # Resolve a named value ("ON") to its raw int; a bare int passes through.
+        if value in setting_entry["values"]:
+            raw = setting_entry["values"][value]
         else:
-            param_entry = setting_entry["values"][value]
-            value_byte = param_entry.to_bytes(1, byteorder="big")
+            raw = value
+
+        # A multi-byte param spreads its value over ``bytes`` consecutive
+        # addresses, 4 bits each (big-endian); a normal param is one 7-bit byte.
+        width = setting_entry.get("bytes", 1)
+        if width > 1:
+            value_bytes = pack_nibbles(raw, width)
+        else:
+            value_bytes = list(raw.to_bytes(1, byteorder="big"))
 
         num_bytes = (address.bit_length() + 7) // 8
-        byte_sequence = address.to_bytes(num_bytes, byteorder="big") + value_byte
-        return [byte for byte in byte_sequence]
+        byte_sequence = list(address.to_bytes(num_bytes, byteorder="big"))
+        return byte_sequence + value_bytes
 
     def value_range(self, section, option, setting):
         if section not in self._tables["base-addresses"]:
@@ -274,15 +326,15 @@ class AddressMap:
     def decode(self, address, value):
         """Reverse of ``address_for``: an address + raw value -> ``DecodedValue``.
 
-        Returns ``None`` for a malformed address, a list value, or an address
-        that maps to no known section/table entry. When the block is an fx
-        sub-effect the fx table suffix is resolved to its display name.
+        ``value`` is a single raw byte (int) for a normal param, or the reply's
+        data list for a multi-byte param — its leading ``bytes`` nibbles are
+        reassembled once the setting (and thus its width) is resolved. Returns
+        ``None`` for a malformed address or one that maps to no known
+        section/table entry. When the block is an fx sub-effect the fx table
+        suffix is resolved to its display name.
         """
         if len(address) != 4:
             logger.error(f"Unknown address format received {address}")
-            return None
-        if isinstance(value, list):
-            logger.error(f"value format must be int, received {value}")
             return None
         msbs = str([address[0], address[1]])
         if msbs not in self._first_two_bytes:
@@ -299,7 +351,14 @@ class AddressMap:
         if address[3] not in self._last_byte_option[patch_table]:
             return None
         value_name, value_entry = self._last_byte_option[patch_table][address[3]]
-        str_value = self._label_for_raw(value_entry["values"], value)
+        # Reassemble a multi-byte (nibblised) value from the reply's data list;
+        # a normal param arrives as a single int (or a 1-element list).
+        width = value_entry.get("bytes", 1)
+        if isinstance(value, list):
+            int_value = unpack_nibbles(value[:width]) if width > 1 else value[0]
+        else:
+            int_value = value
+        str_value = self._label_for_raw(value_entry["values"], int_value)
 
         # Now check if it's an fx_type and extract its fx_id
         fx_type = None
@@ -333,7 +392,7 @@ class AddressMap:
             patch_table=patch_table,
             value_name=value_name,
             str_value=str_value,
-            int_value=value,
+            int_value=int_value,
             fx_type=fx_type,
             fx_id=fx_id,
             fx_table_suffix=fx_table_suffix,

@@ -9,7 +9,7 @@ known-good literals used by ``test_encoding.py``.
 
 import pytest
 
-from pygt1000.address_map import AddressMap
+from pygt1000.address_map import AddressMap, pack_nibbles, unpack_nibbles
 
 
 # The fx_types list the map is built around (mirrors GT1000.fx_types).
@@ -203,8 +203,41 @@ def test_decode_rejects_bad_address_length(amap):
     assert amap.decode([0x10, 0x0, 0x23], 0x1) is None
 
 
-def test_decode_rejects_list_value(amap):
-    assert amap.decode([0x10, 0x0, 0x23, 0x0], [0x1]) is None
+def test_decode_accepts_single_byte_list_value(amap):
+    # A data reply's payload arrives as a list; a 1-element list must decode
+    # exactly like the bare int (multi-byte support made lists first-class).
+    scalar = amap.decode([0x10, 0x0, 0x23, 0x0], 0x1)
+    listed = amap.decode([0x10, 0x0, 0x23, 0x0], [0x1])
+    assert listed is not None
+    assert listed.int_value == scalar.int_value == 0x1
+
+
+def test_pack_unpack_nibbles_roundtrip():
+    for value, width in [(0, 1), (1, 4), (500, 4), (2018, 4), (200, 3), (0x7F, 2)]:
+        nibbles = pack_nibbles(value, width)
+        assert len(nibbles) == width
+        assert all(0 <= n <= 0x0F for n in nibbles)
+        assert unpack_nibbles(nibbles) == value
+
+
+def test_address_for_multibyte_value_appends_nibbles(amap):
+    # delay1 TIME spans 4 nibblised addresses starting at 10 00 1D 01;
+    # 500 = 0x1F4 -> big-endian nibbles 0 1 F 4.
+    section = amap.start_section("delay", "1")
+    addr = amap.address_for(section, "delay1", "TIME")
+    assert addr == [0x10, 0x0, 0x1D, 0x01]
+    assert amap.address_for(section, "delay1", "TIME", 500) == addr + [0x0, 0x1, 0xF, 0x4]
+
+
+def test_block_setting_bytes_widths(amap):
+    assert amap.block_setting_bytes("delay", "1", "TIME") == 4
+    assert amap.block_setting_bytes("delay", "1", "FEEDBACK") == 1
+
+
+def test_decode_multibyte_reassembles(amap):
+    decoded = amap.decode([0x10, 0x0, 0x1D, 0x01], [0x0, 0x1, 0xF, 0x4])
+    assert decoded is not None
+    assert decoded.int_value == 500
 
 
 def test_decode_unknown_address_returns_none(amap):

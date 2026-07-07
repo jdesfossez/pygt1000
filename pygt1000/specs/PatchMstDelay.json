@@ -48,12 +48,13 @@
     "TIME": {
         "offset": [
             0,
-            5
+            2
         ],
         "value_range": [
             1,
             4018
         ],
+        "bytes": 4,
         "values": {
             "1ms - 4000ms": 1,
             "32ndNote": 2,
@@ -277,12 +278,13 @@
     "D1 TIME": {
         "offset": [
             0,
-            23
+            20
         ],
         "value_range": [
             1,
             2018
         ],
+        "bytes": 4,
         "values": {
             "1ms - 2000ms": 1,
             "32ndNote": 2,
@@ -390,12 +392,13 @@
     "D2 TIME": {
         "offset": [
             0,
-            31
+            28
         ],
         "value_range": [
             1,
             2018
         ],
+        "bytes": 4,
         "values": {
             "1ms - 2000ms": 1,
             "32ndNote": 2,
