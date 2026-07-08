@@ -1,0 +1,90 @@
+|# 00 00 | 0000 aaaa | |
+| 00 01 | 0000 bbbb | |
+| 00 02 | 0000 cccc | |
+| 00 03 | 0000 dddd | Patch Number (0 - 499) |
+| | U01-1, U50-5, P01-1 - P50-5 |
+| 00 04 | 0000 000a | TUNER MODE (0 - 1) |
+| | | NORMAL, STREAM |
+| 00 05 | 0000 00aa | Tuner Type (0 - 2) |
+| | | MONO/POLY, MONO, POLY |
+| 00 06 | 0000 000a | BANK CHANGE MODE (0 - 1) |
+| | | WAIT, IMMED |
+| 00 07 | 0aaa aaaa | BANK EXTENT MIN (0 - 99) |
+| | | U01 - U50, P01 - P50 |
+| 00 08 | 0aaa aaaa | BANK EXTENT MAX (0 - 99) |
+| | | U01 - U50, P01 - P50 |
+| | | |
+| | | "BANK EXTENT MIN" and "BANK EXTENT MAX" are pair |
+| | | parameters. |
+| | | The DT1 to each parameter is temporarily |
+| | | suspended, and the DT1 to the pair parameter final |
+| | | address automatically checks the pending |
+| | | parameters, and if there is no problem, the value |
+| | | is set. If the value is incomplete it will not be |
+| | | set. |
+| | | Parameters before set are read out for the RQ1 to |
+| | | pending parameters. Pending values can not be |
+| | | read. |
+| | | |
+|# 00 09 | 0000 aaaa | |
+| 00 0A | 0000 bbbb | |
+| 00 0B | 0000 cccc | |
+| 00 0C | 0000 dddd | METRONOME BPM (200 - 2500) |
+| | | 20.0 - 250.0 |
+| 00 0D | 000a aaaa | METRONOME BEAT (0 - 31) |
+| | | 1/1, 2/1, 3/1, 4/1, 5/1, 6/1, 7/1, 8/1, 1/2, 2/2, |
+| | | 3/2, 4/2, 5/2, 6/2, 7/2, 8/2, 1/4, 2/4, 3/4, 4/4, |
+| | | 5/4, 6/4, 7/4, 8/4, 1/8, 2/8, 3/8, 4/8, 5/8, 6/8, |
+| | | 7/8, 8/8 |
+| 00 0E | 0000 0000 | N/A(fixed value) (0) |
+| 00 0F | 0000 00aa | AMP CTL1 (0 - 2) |
+| | | LATCH, PULSE, INVERT |
+| 00 10 | 0000 00aa | AMP CTL2 (0 - 2) |
+| | | LATCH, PULSE, INVERT |
+| 00 11 | 0000 000a | EXP1 HOLD (0 - 1) |
+| | | OFF, ON |
+| 00 12 | 0000 000a | EXP2 HOLD (0 - 1) |
+| | | OFF, ON |
+| 00 13 | 0000 000a | EXP3 HOLD (0 - 1) |
+| | | OFF, ON |
+| 00 14 | 0000 0000 | N/A(fixed value) (0) |
+| 00 15 | 0000 000a | AUTO OFF (0 - 1) |
+| | | OFF, ON |
+| 00 16 | 0000 000a | LED LUMINANCE (0 - 1) |
+| | | LOW, HIGH |
+| 00 17 | 0000 000a | N/A(fixed value) (1) |
+| 00 18 | 0000 000a | KNOB LOCK (0 - 1) |
+| | | OFF, ON |
+|# 00 19 | 0000 aaaa | |
+| 00 1A | 0000 bbbb | |
+| 00 1B | 0000 cccc | |
+| 00 1C | 0000 dddd | KNOB1 SETTING (0 - 1024) |
+| | | *1 |
+|# 00 1D | 0000 aaaa | |
+| 00 1E | 0000 bbbb | |
+| 00 1F | 0000 cccc | |
+| 00 20 | 0000 dddd | KNOB2 SETTING (0 - 1024) |
+| | | *1 |
+|# 00 21 | 0000 aaaa | |
+| 00 22 | 0000 bbbb | |
+| 00 23 | 0000 cccc | |
+| 00 24 | 0000 dddd | KNOB3 SETTING (0 - 1024) |
+| | | *1 |
+|# 00 25 | 0000 aaaa | |
+| 00 26 | 0000 bbbb | |
+| 00 27 | 0000 cccc | |
+| 00 28 | 0000 dddd | KNOB4 SETTING (0 - 1024) |
+| | | *1 |
+|# 00 29 | 0000 aaaa | |
+| 00 2A | 0000 bbbb | |
+| 00 2B | 0000 cccc | |
+| 00 2C | 0000 dddd | KNOB5 SETTING (0 - 1024) |
+| | | *1 |
+|# 00 2D | 0000 aaaa | |
+| 00 2E | 0000 bbbb | |
+| 00 2F | 0000 cccc | |
+| 00 30 | 0000 dddd | KNOB6 SETTING (0 - 1024) |
+| | | *1 |
+|-------------+----------------------------------------------------------------|
+| 00 00 00 31 |Total Size |
++------------------------------------------------------------------------------+

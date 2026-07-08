@@ -1,0 +1,74 @@
+{
+    "PHRASE LOOP:MODE": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "MONO": 0,
+            "STEREO": 1
+        }
+    },
+    "PHRASE LOOP:REC ACTION": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "REC>PLAY>DUB": 0,
+            "REC>DUB>PLAY": 1
+        }
+    },
+    "METRONOME LEVEL": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            100
+        ],
+        "values": {}
+    },
+    "MAIN:GROUND LIFT": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            5
+        ],
+        "values": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "5": 4,
+            "6": 5
+        }
+    },
+    "TOTAL:METRONOME OUT": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            2
+        ],
+        "values": {
+            "MAIN OUT": 0,
+            "SUB OUT": 1,
+            "MAIN+SUB": 2
+        }
+    }
+}

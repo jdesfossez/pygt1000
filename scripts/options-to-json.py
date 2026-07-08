@@ -33,6 +33,45 @@ def expand_range(begin, end, unit, divide=1):
     return all_names
 
 
+SPAN_RE = None  # compiled lazily (re imported below main historically)
+
+
+def fix_span_tails(result):
+    """Fix "range span + named tail" value lists (the old FIXME).
+
+    Several params list their values as a numeric span followed by named
+    entries, e.g. delay TIME (1 - 2018): "1ms - 2000ms, 32ndNote, ...".
+    The streaming pass enumerates every comma item from range-min, so the
+    span eats ONE slot and 32ndNote lands on 2 -- wrong: 2 is 2ms. The
+    correct, unit-agnostic rule: the T named tail entries occupy the LAST T
+    values of the range; the span covers everything below. So for TIME the
+    notes are 2001..2018 and the numeric region 1..2000 carries no names
+    (decode falls back to the raw number).
+
+    Applied as a post-pass: spot a span-shaped first value key, drop it, and
+    renumber the remaining (insertion-ordered) names onto the range tail.
+    """
+    import re
+    span_re = re.compile(r"^[\d.]+\s*[a-zA-Z]*\s*-\s*[\d.]+\s*[a-zA-Z]+$")
+    for name, entry in result.items():
+        values = entry.get("values")
+        if not values:
+            continue
+        keys = list(values.keys())
+        if not span_re.match(keys[0]):
+            continue
+        if len(keys) < 2:      # span only, no named tail: numeric fallback
+            entry["values"] = {}
+            continue
+        tail = keys[1:]
+        lo, hi = entry["value_range"]
+        start = hi - len(tail) + 1
+        if start <= lo:
+            continue  # tail would not fit above the span; leave untouched
+        entry["values"] = {n: start + i for i, n in enumerate(tail)}
+    return result
+
+
 def process_data(lines):
     result = {}
     current_name = None
@@ -56,7 +95,7 @@ def process_data(lines):
         # nibble's address; the named row below closes the field.
         if line.startswith("|# "):
             start_txt = line.split("|")[1].strip().lstrip("#").strip()
-            pending_start = [int(x, 16) for x in start_txt.split(" ")]
+            pending_start = [int(x, 16) for x in start_txt.split()]
             continue
         if line.startswith("| : | | |"):
             continue
@@ -89,7 +128,7 @@ def process_data(lines):
             parts = line.split("|")
             offset_txt = parts[1].strip()
             offset_bytes = []
-            for i in offset_txt.split(" "):
+            for i in offset_txt.split():  # whitespace-agnostic (specs vary)
                 offset_bytes.append(int(i, 16))
 
             name_with_range = parts[3].strip()
@@ -141,7 +180,7 @@ def process_data(lines):
             current_value_range = value_range
             offset = 0
 
-    return result
+    return fix_span_tails(result)
 
 
 def main():

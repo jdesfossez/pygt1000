@@ -1,0 +1,228 @@
+| 00 00 | 00aa aaaa | INPUT LEVEL (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 01 | 000a aaaa | MAIN:AIRD OUTPUT SELECT (0 - 23) |
+| | | LINE/PHONES, RECORDING, JC-120 RETURN, |
+| | | JC-120 INPUT, Blues Cube Tour410 RETURN, |
+| | | Blues Cube Tour410 INPUT, |
+| | | Blues Cube Artist212 RETURN, |
+| | | Blues Cube Artist212 INPUT, WAZA Amp 412 RETURN, |
+| | | WAZA Amp 412 INPUT, WAZA Amp 212 RETURN, |
+| | | WAZA Amp 212 INPUT, KATANA-100/212 RETURN, |
+| | | KATANA-100/212 INPUT, KATANA-100 RETURN, |
+| | | KATANA-100 INPUT, TUBE COMBO 212 RETURN, |
+| | | TUBE COMBO 212 INPUT, TUBE COMBO 112 RETURN, |
+| | | TUBE COMBO 112 INPUT, TUBE STACK 412 RETURN, |
+| | | TUBE STACK 412 INPUT, USER 1, USER 2 |
+| 00 02 | 000a aaaa | MAIN R:AIRD OUTPUT SELECT (0 - 23) |
+| | | LINE/PHONES, RECORDING, JC-120 RETURN, |
+| | | JC-120 INPUT, Blues Cube Tour410 RETURN, |
+| | | Blues Cube Tour410 INPUT, |
+| | | Blues Cube Artist212 RETURN, |
+| | | Blues Cube Artist212 INPUT, WAZA Amp 412 RETURN, |
+| | | WAZA Amp 412 INPUT, WAZA Amp 212 RETURN, |
+| | | WAZA Amp 212 INPUT, KATANA-100/212 RETURN, |
+| | | KATANA-100/212 INPUT, KATANA-100 RETURN, |
+| | | KATANA-100 INPUT, TUBE COMBO 212 RETURN, |
+| | | TUBE COMBO 212 INPUT, TUBE COMBO 112 RETURN, |
+| | | TUBE COMBO 112 INPUT, TUBE STACK 412 RETURN, |
+| | | TUBE STACK 412 INPUT, USER 1, USER 2 |
+| 00 03 | 00aa aaaa | MAIN L:LOW GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 04 | 00aa aaaa | MAIN L:MID GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 05 | 000a aaaa | MAIN L:MID FREQ (0 - 29) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz |
+| 00 06 | 0000 0aaa | MAIN L:MID Q (0 - 5) |
+| | | 0.5, 1, 2, 4, 8, 16 |
+| 00 07 | 00aa aaaa | MAIN L:HIGH GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 08 | 000a aaaa | MAIN L:LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | | 63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 09 | 000a aaaa | MAIN L:HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 0A | 00aa aaaa | MAIN R:LOW GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 0B | 00aa aaaa | MAIN R:MID GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 0C | 000a aaaa | MAIN R:MID FREQ (0 - 29) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz |
+| 00 0D | 0000 0aaa | MAIN R:MID Q (0 - 5) |
+| | | 0.5, 1, 2, 4, 8, 16 |
+| 00 0E | 00aa aaaa | MAIN R:HIGH GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 0F | 000a aaaa | MAIN R:LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | | 63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 10 | 000a aaaa | MAIN R:HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 11 | 000a aaaa | SUB:AIRD OUTPUT SELECT (0 - 23) |
+| | | LINE/PHONES, RECORDING, JC-120 RETURN, |
+| | | JC-120 INPUT, Blues Cube Tour410 RETURN, |
+| | | Blues Cube Tour410 INPUT, |
+| | | Blues Cube Artist212 RETURN, |
+| | | Blues Cube Artist212 INPUT, WAZA Amp 412 RETURN, |
+| | | WAZA Amp 412 INPUT, WAZA Amp 212 RETURN, |
+| | | WAZA Amp 212 INPUT, KATANA-100/212 RETURN, |
+| | | KATANA-100/212 INPUT, KATANA-100 RETURN, |
+| | | KATANA-100 INPUT, TUBE COMBO 212 RETURN, |
+| | | TUBE COMBO 212 INPUT, TUBE COMBO 112 RETURN, |
+| | | TUBE COMBO 112 INPUT, TUBE STACK 412 RETURN, |
+| | | TUBE STACK 412 INPUT, USER 1, USER 2 |
+| 00 12 | 000a aaaa | SUB R:AIRD OUTPUT SELECT (0 - 23) |
+| | | LINE/PHONES, RECORDING, JC-120 RETURN, |
+| | | JC-120 INPUT, Blues Cube Tour410 RETURN, |
+| | | Blues Cube Tour410 INPUT, |
+| | | Blues Cube Artist212 RETURN, |
+| | | Blues Cube Artist212 INPUT, WAZA Amp 412 RETURN, |
+| | | WAZA Amp 412 INPUT, WAZA Amp 212 RETURN, |
+| | | WAZA Amp 212 INPUT, KATANA-100/212 RETURN, |
+| | | KATANA-100/212 INPUT, KATANA-100 RETURN, |
+| | | KATANA-100 INPUT, TUBE COMBO 212 RETURN, |
+| | | TUBE COMBO 212 INPUT, TUBE COMBO 112 RETURN, |
+| | | TUBE COMBO 112 INPUT, TUBE STACK 412 RETURN, |
+| | | TUBE STACK 412 INPUT, USER 1, USER 2 |
+| 00 13 | 00aa aaaa | SUB L:LOW GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 14 | 00aa aaaa | SUB L:MID GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 15 | 000a aaaa | SUB L:MID FREQ (0 - 29) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz |
+| 00 16 | 0000 0aaa | SUB L:MID Q (0 - 5) |
+| | | 0.5, 1, 2, 4, 8, 16 |
+| 00 17 | 00aa aaaa | SUB L:HIGH GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 18 | 000a aaaa | SUB L:LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | | 63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 19 | 000a aaaa | SUB L:HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 1A | 00aa aaaa | SUB R:LOW GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 1B | 00aa aaaa | SUB R:MID GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 1C | 000a aaaa | SUB R:MID FREQ (0 - 29) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz |
+| 00 1D | 0000 0aaa | SUB R:MID Q (0 - 5) |
+| | | 0.5, 1, 2, 4, 8, 16 |
+| 00 1E | 00aa aaaa | SUB R:HIGH GAIN (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+| 00 1F | 000a aaaa | SUB R:LOW CUT (0 - 31) |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | | 63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| | | FLAT, 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, |
+| | | 63.0Hz, 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, |
+| | | 315Hz, 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, |
+| | | 1.25kHz, 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, |
+| | | 4.00kHz, 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, |
+| | | 12.5kHz, 16.0kHz, 20.0kHz |
+| 00 20 | 000a aaaa | SUB R:HIGH CUT (0 - 31) |
+| | | 20.0Hz, 25.0Hz, 31.5Hz, 40.0Hz, 50.0Hz, 63.0Hz, |
+| | | 80.0Hz, 100Hz, 125Hz, 160Hz, 200Hz, 250Hz, 315Hz, |
+| | | 400Hz, 500Hz, 630Hz, 800Hz, 1.00kHz, 1.25kHz, |
+| | | 1.60kHz, 2.00kHz, 2.50kHz, 3.15kHz, 4.00kHz, |
+| | | 5.00kHz, 6.30kHz, 8.00kHz, 10.0kHz, 12.5kHz, |
+| | | 16.0kHz, 20.0kHz, FLAT |
+| 00 21 | 0000 00aa | PHONES SETTING (0 - 2) |
+| | | MAIN OUT, SUB OUT, MAIN+SUB |
+| 00 22 | 00aa aaaa | TOTAL:NS THRESHOLD (12 - 52) |
+| | | -20 - 0 - +20 [dB] |
+|# 00 23 | 0000 aaaa | |
+| 00 24 | 0000 bbbb | TOTAL:REVERB LEVEL (0 - 200) |
+| | | 0 - 200 [%] |
+| 00 25 | 0000 000a | MAIN:LEVEL SELECT (0 - 1) |
+| | | -10dBu, +4dBu |
+|# 00 26 | 0000 aaaa | |
+| 00 27 | 0000 bbbb | USB DRY:OUT (0 - 200) |
+| | | 0 - 200 [%] |
+|# 00 28 | 0000 aaaa | |
+| 00 29 | 0000 bbbb | USB DRY:TO EFX (0 - 200) |
+| | | 0 - 200 [%] |
+| 00 2A | 0000 000a | N/A(fixed value) (1) |
+|# 00 2B | 0000 aaaa | |
+| 00 2C | 0000 bbbb | USB MAIN:EFX OUT (0 - 200) |
+| | | 0 - 200 [%] |
+|# 00 2D | 0000 aaaa | |
+| 00 2E | 0000 bbbb | USB MAIN:MIX LEVEL (0 - 200) |
+| | | 0 - 200 [%] |
+| 00 2F | 0000 000a | N/A(fixed value) (1) |
+|# 00 30 | 0000 aaaa | |
+| 00 31 | 0000 bbbb | USB SUB:EFX OUT (0 - 200) |
+| | | 0 - 200 [%] |
+|# 00 32 | 0000 aaaa | |
+| 00 33 | 0000 bbbb | USB SUB:MIX LEVEL (0 - 200) |
+| | | 0 - 200 [%] |
+| 00 34 | 0000 000a | N/A(fixed value) (1) |
+|# 00 35 | 0000 aaaa | |
+| 00 36 | 0000 bbbb | N/A(fixed value) (200) |
+|# 00 37 | 0000 aaaa | |
+| 00 38 | 0000 bbbb | N/A(fixed value) (200) |
+| 00 39 | 0000 000a | N/A(fixed value) (1) |
+| 00 3A | 0000 000a | SUB:LEVEL SELECT (0 - 1) |
+| | | -10dBu, +4dBu |
+| 00 3B | 0aaa aaaa | SUB:OUTPUT LEVEL (0 - 100) |
+| 00 3C | 0000 000a | SUB:GROUND LIFT (0 - 1) |
+| | | OFF, ON |
+| 00 3D | 0000 000a | MAIN:STEREO LINK (0 - 1) |
+| | | OFF, ON |
+| 00 3E | 0000 000a | SUB:STEREO LINK (0 - 1) |
+| | | OFF, ON |
+| 00 3F | 00aa aaaa | MAIN L:LEVEL (12 - 52) |
+| | | [dB] |
+| 00 40 | 00aa aaaa | MAIN R:LEVEL (12 - 52) |
+| | | [dB] |
+| 00 41 | 00aa aaaa | SUB L:LEVEL (12 - 52) |
+| | | [dB] |
+| 00 42 | 00aa aaaa | SUB R:LEVEL (12 - 52) |
+| | | [dB] |

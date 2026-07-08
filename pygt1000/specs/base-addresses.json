@@ -46,7 +46,7 @@
             1,
             0
         ],
-        "table": "SetupEfct",
+        "table": "SystemEfct",
         "hex_address": "[0x0, 0x20, 0x1, 0x0]"
     },
     "pitch": {

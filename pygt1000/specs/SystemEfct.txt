@@ -1,0 +1,9 @@
+| 00 00 | 0000 000a | PHRASE LOOP:MODE (0 - 1) |
+| | | MONO, STEREO |
+| 00 01 | 0000 000a | PHRASE LOOP:REC ACTION (0 - 1) |
+| | | REC>PLAY>DUB, REC>DUB>PLAY |
+| 00 02 | 0aaa aaaa | METRONOME LEVEL (0 - 100) |
+| 00 03 | 0000 0aaa | MAIN:GROUND LIFT (0 - 5) |
+| | | 1, 2, 3, 4, 5, 6 |
+| 00 04 | 0000 00aa | TOTAL:METRONOME OUT (0 - 2) |
+| | | MAIN OUT, SUB OUT, MAIN+SUB |

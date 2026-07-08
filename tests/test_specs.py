@@ -52,3 +52,54 @@ def test_chain_element_lookup_round_trips(gt):
     # ChainElement is loaded as a bidirectional name<->int map.
     assert gt._address_map.chain_element_int("COMPRESSOR") == 0
     assert gt._address_map.chain_element_name(0) == "COMPRESSOR"
+
+
+# ---- span + named-tail value lists (delay TIME et al) ------------------------
+# The option tables list e.g. "1ms - 2000ms, 32ndNote, ..." for TIME (1-2018):
+# values 1..2000 are numeric milliseconds and the named notes occupy the LAST
+# 18 slots (2001..2018). The extractor used to enumerate the tail from 2.
+
+def _spec(name):
+    import json
+    from pathlib import Path
+    p = Path(__file__).parent.parent / "pygt1000" / "specs" / f"{name}.json"
+    with p.open() as f:
+        return json.load(f)
+
+
+def test_delay_time_named_tail_starts_after_ms_span():
+    time = _spec("PatchDelay")["TIME"]
+    assert time["value_range"] == [1, 2018]
+    assert time["values"]["32ndNote"] == 2001
+    assert time["values"]["DoubleWholeNote"] == 2018
+    assert "1ms - 2000ms" not in time["values"]
+
+
+def test_mst_delay_time_named_tail():
+    time = _spec("PatchMstDelay")["TIME"]
+    assert time["values"]["32ndNote"] == time["value_range"][1] - 18 + 1
+
+
+def test_system_tables_extracted():
+    sc = _spec("SystemCommon")
+    assert sc["Patch Number"]["bytes"] == 4
+    assert sc["Patch Number"]["value_range"] == [0, 499]
+    assert sc["METRONOME BPM"]["bytes"] == 4
+    assert sc["TUNER MODE"]["values"] == {"NORMAL": 0, "STREAM": 1}
+    se = _spec("SystemEfct")
+    assert "PHRASE LOOP:REC ACTION" in se
+    assert se["METRONOME LEVEL"]["value_range"] == [0, 100]
+
+
+def test_consumed_base_addresses_reference_existing_tables():
+    # Not every base-addresses section has a transcribed table yet (e.g.
+    # "control" -> SystemControl2 is still todo); assert only the sections the
+    # library and downstream consumers actually resolve today.
+    import json
+    from pathlib import Path
+    specs = Path(__file__).parent.parent / "pygt1000" / "specs"
+    base = json.loads((specs / "base-addresses.json").read_text())
+    for section in ("patch (temporary patch)", "common", "efct", "inout"):
+        table = base[section]["table"]
+        assert (specs / f"{table}.json").exists(), (
+            f"{section} references missing table {table}")
