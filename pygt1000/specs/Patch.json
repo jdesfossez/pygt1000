@@ -1,4 +1,58 @@
 {
+    "common": {
+        "address": [
+            0,
+            0,
+            0
+        ],
+        "table": "PatchCommon",
+        "hex_address": "[0x0, 0x0, 0x0]"
+    },
+    "stompBox": {
+        "address": [
+            0,
+            1,
+            0
+        ],
+        "table": "PatchStompBox",
+        "hex_address": "[0x0, 0x1, 0x0]"
+    },
+    "led": {
+        "address": [
+            0,
+            2,
+            0
+        ],
+        "table": "PatchLed",
+        "hex_address": "[0x0, 0x2, 0x0]"
+    },
+    "assign 1": {
+        "address": [
+            0,
+            3,
+            0
+        ],
+        "table": "Assign",
+        "hex_address": "[0x0, 0x3, 0x0]"
+    },
+    "assign 2": {
+        "address": [
+            0,
+            3,
+            64
+        ],
+        "table": "Assign",
+        "hex_address": "[0x0, 0x3, 0x40]"
+    },
+    "assign 16": {
+        "address": [
+            0,
+            10,
+            64
+        ],
+        "table": "Assign",
+        "hex_address": "[0x0, 0xa, 0x40]"
+    },
     "efct": {
         "address": [
             0,

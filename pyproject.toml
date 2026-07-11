@@ -17,6 +17,8 @@ python-lsp-server = "^1.11.0"
 pylsp-mypy = "^0.6.8"
 python-lsp-ruff = "^2.2.2"
 ruff = "^0.6.1"
+# scripts/pdf-to-tables.py only; [crypto] because Roland ships encrypted PDFs.
+pypdf = {version = "^5.1", extras = ["crypto"]}
 
 
 [tool.poetry.group.test.dependencies]

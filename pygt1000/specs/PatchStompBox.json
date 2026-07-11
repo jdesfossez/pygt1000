@@ -1,0 +1,1402 @@
+{
+    "STOMPBOX (Comp)": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CMP-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Dist1)": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Dist2)": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Preamp1)": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "AMP-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Preamp2)": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "AMP-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Ns1)": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "NS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Ns2)": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "NS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Eq1)": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "EQ-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Eq2)": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "EQ-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Eq3)": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "EQ-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Eq4)": {
+        "offset": [
+            0,
+            10
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "EQ-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Delay1)": {
+        "offset": [
+            0,
+            11
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DLY-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Delay2)": {
+        "offset": [
+            0,
+            12
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DLY-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Delay3)": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DLY-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Delay4)": {
+        "offset": [
+            0,
+            14
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DLY-1 - 10": 1
+        }
+    },
+    "STOMPBOX (MstDelay)": {
+        "offset": [
+            0,
+            15
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "MDL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Chorus)": {
+        "offset": [
+            0,
+            16
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CHO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1AGSim)": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "ACO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1AcReso)": {
+        "offset": [
+            0,
+            18
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "ACR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1AWah)": {
+        "offset": [
+            0,
+            19
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "AW-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Chorus)": {
+        "offset": [
+            0,
+            20
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CHO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1CVibe)": {
+        "offset": [
+            0,
+            21
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CV-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Comp)": {
+        "offset": [
+            0,
+            22
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CMP-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Defretter)": {
+        "offset": [
+            0,
+            23
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DEF-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Feedbacker)": {
+        "offset": [
+            0,
+            24
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "FB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Flanger)": {
+        "offset": [
+            0,
+            25
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "FL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Harmonist)": {
+        "offset": [
+            0,
+            26
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "HRM-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Humanizer)": {
+        "offset": [
+            0,
+            27
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "HMN-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Octave)": {
+        "offset": [
+            0,
+            28
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "OC-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Overtone)": {
+        "offset": [
+            0,
+            29
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "OT-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Pan)": {
+        "offset": [
+            0,
+            30
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PAN-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Phaser)": {
+        "offset": [
+            0,
+            31
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PH-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1PitchShift)": {
+        "offset": [
+            0,
+            32
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1RingMod)": {
+        "offset": [
+            0,
+            33
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "RM-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Rotary)": {
+        "offset": [
+            0,
+            34
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "RT-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1SitarSim)": {
+        "offset": [
+            0,
+            35
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "STR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Slicer)": {
+        "offset": [
+            0,
+            36
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1SlowGear)": {
+        "offset": [
+            0,
+            37
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SG-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1SoundHold)": {
+        "offset": [
+            0,
+            38
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SH-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1SBend)": {
+        "offset": [
+            0,
+            39
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1TWah)": {
+        "offset": [
+            0,
+            40
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "TW-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Tremolo)": {
+        "offset": [
+            0,
+            41
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "TR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx1Vibrato)": {
+        "offset": [
+            0,
+            42
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "VIB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2AGSim)": {
+        "offset": [
+            0,
+            43
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "ACO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2AcReso)": {
+        "offset": [
+            0,
+            44
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "ACR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2AWah)": {
+        "offset": [
+            0,
+            45
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "AW-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Chorus)": {
+        "offset": [
+            0,
+            46
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CHO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2CVibe)": {
+        "offset": [
+            0,
+            47
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CV-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Comp)": {
+        "offset": [
+            0,
+            48
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CMP-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Defretter)": {
+        "offset": [
+            0,
+            49
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DEF-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Feedbacker)": {
+        "offset": [
+            0,
+            50
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "FB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Flanger)": {
+        "offset": [
+            0,
+            51
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "FL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Harmonist)": {
+        "offset": [
+            0,
+            52
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "HRM-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Humanizer)": {
+        "offset": [
+            0,
+            53
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "HMN-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Octave)": {
+        "offset": [
+            0,
+            54
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "OC-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Overtone)": {
+        "offset": [
+            0,
+            55
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "OT-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Pan)": {
+        "offset": [
+            0,
+            56
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PAN-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Phaser)": {
+        "offset": [
+            0,
+            57
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PH-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2PitchShift)": {
+        "offset": [
+            0,
+            58
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2RingMod)": {
+        "offset": [
+            0,
+            59
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "RM-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Rotary)": {
+        "offset": [
+            0,
+            60
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "RT-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2SitarSim)": {
+        "offset": [
+            0,
+            61
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "STR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Slicer)": {
+        "offset": [
+            0,
+            62
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2SlowGear)": {
+        "offset": [
+            0,
+            63
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SG-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2SoundHold)": {
+        "offset": [
+            0,
+            64
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SH-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2SBend)": {
+        "offset": [
+            0,
+            65
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2TWah)": {
+        "offset": [
+            0,
+            66
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "TW-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Tremolo)": {
+        "offset": [
+            0,
+            67
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "TR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx2Vibrato)": {
+        "offset": [
+            0,
+            68
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "VIB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3AGSim)": {
+        "offset": [
+            0,
+            69
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "ACO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3AcReso)": {
+        "offset": [
+            0,
+            70
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "ACR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3AWah)": {
+        "offset": [
+            0,
+            71
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "AW-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Chorus)": {
+        "offset": [
+            0,
+            72
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CHO-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3CVibe)": {
+        "offset": [
+            0,
+            73
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CV-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Comp)": {
+        "offset": [
+            0,
+            74
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "CMP-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Defretter)": {
+        "offset": [
+            0,
+            75
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DEF-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Feedbacker)": {
+        "offset": [
+            0,
+            76
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "FB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Flanger)": {
+        "offset": [
+            0,
+            77
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "FL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Harmonist)": {
+        "offset": [
+            0,
+            78
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "HRM-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Humanizer)": {
+        "offset": [
+            0,
+            79
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "HMN-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Octave)": {
+        "offset": [
+            0,
+            80
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "OC-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Overtone)": {
+        "offset": [
+            0,
+            81
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "OT-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Pan)": {
+        "offset": [
+            0,
+            82
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PAN-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Phaser)": {
+        "offset": [
+            0,
+            83
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PH-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3PitchShift)": {
+        "offset": [
+            0,
+            84
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PS-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3RingMod)": {
+        "offset": [
+            0,
+            85
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "RM-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Rotary)": {
+        "offset": [
+            0,
+            86
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "RT-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3SitarSim)": {
+        "offset": [
+            0,
+            87
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "STR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Slicer)": {
+        "offset": [
+            0,
+            88
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SL-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3SlowGear)": {
+        "offset": [
+            0,
+            89
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SG-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3SoundHold)": {
+        "offset": [
+            0,
+            90
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SH-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3SBend)": {
+        "offset": [
+            0,
+            91
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "SB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3TWah)": {
+        "offset": [
+            0,
+            92
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "TW-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Tremolo)": {
+        "offset": [
+            0,
+            93
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "TR-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Fx3Vibrato)": {
+        "offset": [
+            0,
+            94
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "VIB-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Reverb)": {
+        "offset": [
+            0,
+            95
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "REV-1 - 10": 1
+        }
+    },
+    "STOMPBOX (PedalFx)": {
+        "offset": [
+            0,
+            96
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "PFX-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Divider1)": {
+        "offset": [
+            0,
+            97
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DIV-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Divider2)": {
+        "offset": [
+            0,
+            98
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DIV-1 - 10": 1
+        }
+    },
+    "STOMPBOX (Divider3)": {
+        "offset": [
+            0,
+            99
+        ],
+        "value_range": [
+            0,
+            10
+        ],
+        "values": {
+            "---": 0,
+            "DIV-1 - 10": 1
+        }
+    }
+}

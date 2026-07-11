@@ -55,6 +55,26 @@ def test_lookup_unknown_address_returns_none(gt):
     assert gt.lookup([0x77, 0x77, 0x77, 0x77], 0x1) is None
 
 
+def test_lookup_patch_common_patch_midi_channel(gt):
+    # PatchCommon (PDF-extracted): PATCH MIDI slot 1 channel at patch offset
+    # 00 4A; 0 = OFF, 1-16 = MIDI channel.
+    ret = gt.lookup([0x10, 0x0, 0x0, 0x4A], 0x0F)
+    assert ret is not None
+    assert ret.name == "common"
+    assert ret.patch_table == "PatchCommon"
+    assert ret.value_name == "PATCH MIDI 1:CH"
+    assert ret.int_value == 15
+
+
+def test_lookup_patch_common_patch_midi_pc_is_nibblised(gt):
+    # PATCH MIDI 1:PC# is a 2-nibble field starting at 00 4F; nibbles
+    # [0x00, 0x02] reassemble to 2 (0 = OFF, n = transmit PC n-1).
+    ret = gt.lookup([0x10, 0x0, 0x0, 0x4F], [0x00, 0x02])
+    assert ret is not None
+    assert ret.value_name == "PATCH MIDI 1:PC#"
+    assert ret.int_value == 2
+
+
 # --------------------------------------------------------------------------
 # encode <-> decode roundtrip
 # --------------------------------------------------------------------------

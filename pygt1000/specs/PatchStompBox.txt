@@ -1,0 +1,200 @@
+| 00 00 | 0000 aaaa | STOMPBOX (Comp) (0 - 10) |
+| | | ---, CMP-1 - 10 |
+| 00 01 | 0000 aaaa | STOMPBOX (Dist1) (0 - 10) |
+| | | ---, DS-1 - 10 |
+| 00 02 | 0000 aaaa | STOMPBOX (Dist2) (0 - 10) |
+| | | ---, DS-1 - 10 |
+| 00 03 | 0000 aaaa | STOMPBOX (Preamp1) (0 - 10) |
+| | | ---, AMP-1 - 10 |
+| 00 04 | 0000 aaaa | STOMPBOX (Preamp2) (0 - 10) |
+| | | ---, AMP-1 - 10 |
+| 00 05 | 0000 aaaa | STOMPBOX (Ns1) (0 - 10) |
+| | | ---, NS-1 - 10 |
+| 00 06 | 0000 aaaa | STOMPBOX (Ns2) (0 - 10) |
+| | | ---, NS-1 - 10 |
+| 00 07 | 0000 aaaa | STOMPBOX (Eq1) (0 - 10) |
+| | | ---, EQ-1 - 10 |
+| 00 08 | 0000 aaaa | STOMPBOX (Eq2) (0 - 10) |
+| | | ---, EQ-1 - 10 |
+| 00 09 | 0000 aaaa | STOMPBOX (Eq3) (0 - 10) |
+| | | ---, EQ-1 - 10 |
+| 00 0A | 0000 aaaa | STOMPBOX (Eq4) (0 - 10) |
+| | | ---, EQ-1 - 10 |
+| 00 0B | 0000 aaaa | STOMPBOX (Delay1) (0 - 10) |
+| | | ---, DLY-1 - 10 |
+| 00 0C | 0000 aaaa | STOMPBOX (Delay2) (0 - 10) |
+| | | ---, DLY-1 - 10 |
+| 00 0D | 0000 aaaa | STOMPBOX (Delay3) (0 - 10) |
+| | | ---, DLY-1 - 10 |
+| 00 0E | 0000 aaaa | STOMPBOX (Delay4) (0 - 10) |
+| | | ---, DLY-1 - 10 |
+| 00 0F | 0000 aaaa | STOMPBOX (MstDelay) (0 - 10) |
+| | | ---, MDL-1 - 10 |
+| 00 10 | 0000 aaaa | STOMPBOX (Chorus) (0 - 10) |
+| | | ---, CHO-1 - 10 |
+| 00 11 | 0000 aaaa | STOMPBOX (Fx1AGSim) (0 - 10) |
+| | | ---, ACO-1 - 10 |
+| 00 12 | 0000 aaaa | STOMPBOX (Fx1AcReso) (0 - 10) |
+| | | ---, ACR-1 - 10 |
+| 00 13 | 0000 aaaa | STOMPBOX (Fx1AWah) (0 - 10) |
+| | | ---, AW-1 - 10 |
+| 00 14 | 0000 aaaa | STOMPBOX (Fx1Chorus) (0 - 10) |
+| | | ---, CHO-1 - 10 |
+| 00 15 | 0000 aaaa | STOMPBOX (Fx1CVibe) (0 - 10) |
+| | | ---, CV-1 - 10 |
+| 00 16 | 0000 aaaa | STOMPBOX (Fx1Comp) (0 - 10) |
+| | | ---, CMP-1 - 10 |
+| 00 17 | 0000 aaaa | STOMPBOX (Fx1Defretter) (0 - 10) |
+| | | ---, DEF-1 - 10 |
+| 00 18 | 0000 aaaa | STOMPBOX (Fx1Feedbacker) (0 - 10) |
+| | | ---, FB-1 - 10 |
+| 00 19 | 0000 aaaa | STOMPBOX (Fx1Flanger) (0 - 10) |
+| | | ---, FL-1 - 10 |
+| 00 1A | 0000 aaaa | STOMPBOX (Fx1Harmonist) (0 - 10) |
+| | | ---, HRM-1 - 10 |
+| 00 1B | 0000 aaaa | STOMPBOX (Fx1Humanizer) (0 - 10) |
+| | | ---, HMN-1 - 10 |
+| 00 1C | 0000 aaaa | STOMPBOX (Fx1Octave) (0 - 10) |
+| | | ---, OC-1 - 10 |
+| 00 1D | 0000 aaaa | STOMPBOX (Fx1Overtone) (0 - 10) |
+| | | ---, OT-1 - 10 |
+| 00 1E | 0000 aaaa | STOMPBOX (Fx1Pan) (0 - 10) |
+| | | ---, PAN-1 - 10 |
+| 00 1F | 0000 aaaa | STOMPBOX (Fx1Phaser) (0 - 10) |
+| | | ---, PH-1 - 10 |
+| 00 20 | 0000 aaaa | STOMPBOX (Fx1PitchShift) (0 - 10) |
+| | | ---, PS-1 - 10 |
+| 00 21 | 0000 aaaa | STOMPBOX (Fx1RingMod) (0 - 10) |
+| | | ---, RM-1 - 10 |
+| 00 22 | 0000 aaaa | STOMPBOX (Fx1Rotary) (0 - 10) |
+| | | ---, RT-1 - 10 |
+| 00 23 | 0000 aaaa | STOMPBOX (Fx1SitarSim) (0 - 10) |
+| | | ---, STR-1 - 10 |
+| 00 24 | 0000 aaaa | STOMPBOX (Fx1Slicer) (0 - 10) |
+| | | ---, SL-1 - 10 |
+| 00 25 | 0000 aaaa | STOMPBOX (Fx1SlowGear) (0 - 10) |
+| | | ---, SG-1 - 10 |
+| 00 26 | 0000 aaaa | STOMPBOX (Fx1SoundHold) (0 - 10) |
+| | | ---, SH-1 - 10 |
+| 00 27 | 0000 aaaa | STOMPBOX (Fx1SBend) (0 - 10) |
+| | | ---, SB-1 - 10 |
+| 00 28 | 0000 aaaa | STOMPBOX (Fx1TWah) (0 - 10) |
+| | | ---, TW-1 - 10 |
+| 00 29 | 0000 aaaa | STOMPBOX (Fx1Tremolo) (0 - 10) |
+| | | ---, TR-1 - 10 |
+| 00 2A | 0000 aaaa | STOMPBOX (Fx1Vibrato) (0 - 10) |
+| | | ---, VIB-1 - 10 |
+| 00 2B | 0000 aaaa | STOMPBOX (Fx2AGSim) (0 - 10) |
+| | | ---, ACO-1 - 10 |
+| 00 2C | 0000 aaaa | STOMPBOX (Fx2AcReso) (0 - 10) |
+| | | ---, ACR-1 - 10 |
+| 00 2D | 0000 aaaa | STOMPBOX (Fx2AWah) (0 - 10) |
+| | | ---, AW-1 - 10 |
+| 00 2E | 0000 aaaa | STOMPBOX (Fx2Chorus) (0 - 10) |
+| | | ---, CHO-1 - 10 |
+| 00 2F | 0000 aaaa | STOMPBOX (Fx2CVibe) (0 - 10) |
+| | | ---, CV-1 - 10 |
+| 00 30 | 0000 aaaa | STOMPBOX (Fx2Comp) (0 - 10) |
+| | | ---, CMP-1 - 10 |
+| 00 31 | 0000 aaaa | STOMPBOX (Fx2Defretter) (0 - 10) |
+| | | ---, DEF-1 - 10 |
+| 00 32 | 0000 aaaa | STOMPBOX (Fx2Feedbacker) (0 - 10) |
+| | | ---, FB-1 - 10 |
+| 00 33 | 0000 aaaa | STOMPBOX (Fx2Flanger) (0 - 10) |
+| | | ---, FL-1 - 10 |
+| 00 34 | 0000 aaaa | STOMPBOX (Fx2Harmonist) (0 - 10) |
+| | | ---, HRM-1 - 10 |
+| 00 35 | 0000 aaaa | STOMPBOX (Fx2Humanizer) (0 - 10) |
+| | | ---, HMN-1 - 10 |
+| 00 36 | 0000 aaaa | STOMPBOX (Fx2Octave) (0 - 10) |
+| | | ---, OC-1 - 10 |
+| 00 37 | 0000 aaaa | STOMPBOX (Fx2Overtone) (0 - 10) |
+| | | ---, OT-1 - 10 |
+| 00 38 | 0000 aaaa | STOMPBOX (Fx2Pan) (0 - 10) |
+| | | ---, PAN-1 - 10 |
+| 00 39 | 0000 aaaa | STOMPBOX (Fx2Phaser) (0 - 10) |
+| | | ---, PH-1 - 10 |
+| 00 3A | 0000 aaaa | STOMPBOX (Fx2PitchShift) (0 - 10) |
+| | | ---, PS-1 - 10 |
+| 00 3B | 0000 aaaa | STOMPBOX (Fx2RingMod) (0 - 10) |
+| | | ---, RM-1 - 10 |
+| 00 3C | 0000 aaaa | STOMPBOX (Fx2Rotary) (0 - 10) |
+| | | ---, RT-1 - 10 |
+| 00 3D | 0000 aaaa | STOMPBOX (Fx2SitarSim) (0 - 10) |
+| | | ---, STR-1 - 10 |
+| 00 3E | 0000 aaaa | STOMPBOX (Fx2Slicer) (0 - 10) |
+| | | ---, SL-1 - 10 |
+| 00 3F | 0000 aaaa | STOMPBOX (Fx2SlowGear) (0 - 10) |
+| | | ---, SG-1 - 10 |
+| 00 40 | 0000 aaaa | STOMPBOX (Fx2SoundHold) (0 - 10) |
+| | | ---, SH-1 - 10 |
+| 00 41 | 0000 aaaa | STOMPBOX (Fx2SBend) (0 - 10) |
+| | | ---, SB-1 - 10 |
+| 00 42 | 0000 aaaa | STOMPBOX (Fx2TWah) (0 - 10) |
+| | | ---, TW-1 - 10 |
+| 00 43 | 0000 aaaa | STOMPBOX (Fx2Tremolo) (0 - 10) |
+| | | ---, TR-1 - 10 |
+| 00 44 | 0000 aaaa | STOMPBOX (Fx2Vibrato) (0 - 10) |
+| | | ---, VIB-1 - 10 |
+| 00 45 | 0000 aaaa | STOMPBOX (Fx3AGSim) (0 - 10) |
+| | | ---, ACO-1 - 10 |
+| 00 46 | 0000 aaaa | STOMPBOX (Fx3AcReso) (0 - 10) |
+| | | ---, ACR-1 - 10 |
+| 00 47 | 0000 aaaa | STOMPBOX (Fx3AWah) (0 - 10) |
+| | | ---, AW-1 - 10 |
+| 00 48 | 0000 aaaa | STOMPBOX (Fx3Chorus) (0 - 10) |
+| | | ---, CHO-1 - 10 |
+| 00 49 | 0000 aaaa | STOMPBOX (Fx3CVibe) (0 - 10) |
+| | | ---, CV-1 - 10 |
+| 00 4A | 0000 aaaa | STOMPBOX (Fx3Comp) (0 - 10) |
+| | | ---, CMP-1 - 10 |
+| 00 4B | 0000 aaaa | STOMPBOX (Fx3Defretter) (0 - 10) |
+| | | ---, DEF-1 - 10 |
+| 00 4C | 0000 aaaa | STOMPBOX (Fx3Feedbacker) (0 - 10) |
+| | | ---, FB-1 - 10 |
+| 00 4D | 0000 aaaa | STOMPBOX (Fx3Flanger) (0 - 10) |
+| | | ---, FL-1 - 10 |
+| 00 4E | 0000 aaaa | STOMPBOX (Fx3Harmonist) (0 - 10) |
+| | | ---, HRM-1 - 10 |
+| 00 4F | 0000 aaaa | STOMPBOX (Fx3Humanizer) (0 - 10) |
+| | | ---, HMN-1 - 10 |
+| 00 50 | 0000 aaaa | STOMPBOX (Fx3Octave) (0 - 10) |
+| | | ---, OC-1 - 10 |
+| 00 51 | 0000 aaaa | STOMPBOX (Fx3Overtone) (0 - 10) |
+| | | ---, OT-1 - 10 |
+| 00 52 | 0000 aaaa | STOMPBOX (Fx3Pan) (0 - 10) |
+| | | ---, PAN-1 - 10 |
+| 00 53 | 0000 aaaa | STOMPBOX (Fx3Phaser) (0 - 10) |
+| | | ---, PH-1 - 10 |
+| 00 54 | 0000 aaaa | STOMPBOX (Fx3PitchShift) (0 - 10) |
+| | | ---, PS-1 - 10 |
+| 00 55 | 0000 aaaa | STOMPBOX (Fx3RingMod) (0 - 10) |
+| | | ---, RM-1 - 10 |
+| 00 56 | 0000 aaaa | STOMPBOX (Fx3Rotary) (0 - 10) |
+| | | ---, RT-1 - 10 |
+| 00 57 | 0000 aaaa | STOMPBOX (Fx3SitarSim) (0 - 10) |
+| | | ---, STR-1 - 10 |
+| 00 58 | 0000 aaaa | STOMPBOX (Fx3Slicer) (0 - 10) |
+| | | ---, SL-1 - 10 |
+| 00 59 | 0000 aaaa | STOMPBOX (Fx3SlowGear) (0 - 10) |
+| | | ---, SG-1 - 10 |
+| 00 5A | 0000 aaaa | STOMPBOX (Fx3SoundHold) (0 - 10) |
+| | | ---, SH-1 - 10 |
+| 00 5B | 0000 aaaa | STOMPBOX (Fx3SBend) (0 - 10) |
+| | | ---, SB-1 - 10 |
+| 00 5C | 0000 aaaa | STOMPBOX (Fx3TWah) (0 - 10) |
+| | | ---, TW-1 - 10 |
+| 00 5D | 0000 aaaa | STOMPBOX (Fx3Tremolo) (0 - 10) |
+| | | ---, TR-1 - 10 |
+| 00 5E | 0000 aaaa | STOMPBOX (Fx3Vibrato) (0 - 10) |
+| | | ---, VIB-1 - 10 |
+| 00 5F | 0000 aaaa | STOMPBOX (Reverb) (0 - 10) |
+| | | ---, REV-1 - 10 |
+| 00 60 | 0000 aaaa | STOMPBOX (PedalFx) (0 - 10) |
+| | | ---, PFX-1 - 10 |
+| 00 61 | 0000 aaaa | STOMPBOX (Divider1) (0 - 10) |
+| | | ---, DIV-1 - 10 |
+| 00 62 | 0000 aaaa | STOMPBOX (Divider2) (0 - 10) |
+| | | ---, DIV-1 - 10 |
+| 00 63 | 0000 aaaa | STOMPBOX (Divider3) (0 - 10) |
+| | | ---, DIV-1 - 10 |

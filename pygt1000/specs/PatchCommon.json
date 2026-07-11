@@ -1,0 +1,2279 @@
+{
+    "Patch Name1": {
+        "offset": [
+            0,
+            0
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name2": {
+        "offset": [
+            0,
+            1
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name3": {
+        "offset": [
+            0,
+            2
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name4": {
+        "offset": [
+            0,
+            3
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name5": {
+        "offset": [
+            0,
+            4
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name6": {
+        "offset": [
+            0,
+            5
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name7": {
+        "offset": [
+            0,
+            6
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name8": {
+        "offset": [
+            0,
+            7
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name9": {
+        "offset": [
+            0,
+            8
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name10": {
+        "offset": [
+            0,
+            9
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name11": {
+        "offset": [
+            0,
+            10
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name12": {
+        "offset": [
+            0,
+            11
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name13": {
+        "offset": [
+            0,
+            12
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name14": {
+        "offset": [
+            0,
+            13
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name15": {
+        "offset": [
+            0,
+            14
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "Patch Name16": {
+        "offset": [
+            0,
+            15
+        ],
+        "value_range": [
+            32,
+            126
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)": {
+        "offset": [
+            0,
+            16
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)1": {
+        "offset": [
+            0,
+            17
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)2": {
+        "offset": [
+            0,
+            18
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)3": {
+        "offset": [
+            0,
+            19
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)4": {
+        "offset": [
+            0,
+            20
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)5": {
+        "offset": [
+            0,
+            21
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)6": {
+        "offset": [
+            0,
+            22
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)7": {
+        "offset": [
+            0,
+            23
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)8": {
+        "offset": [
+            0,
+            24
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)9": {
+        "offset": [
+            0,
+            25
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)10": {
+        "offset": [
+            0,
+            26
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)11": {
+        "offset": [
+            0,
+            27
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)12": {
+        "offset": [
+            0,
+            28
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)13": {
+        "offset": [
+            0,
+            29
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)14": {
+        "offset": [
+            0,
+            30
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)15": {
+        "offset": [
+            0,
+            31
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)16": {
+        "offset": [
+            0,
+            32
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)17": {
+        "offset": [
+            0,
+            33
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "N/A(fixed value)18": {
+        "offset": [
+            0,
+            34
+        ],
+        "value_range": [
+            0
+        ],
+        "values": {}
+    },
+    "Num1 Function": {
+        "offset": [
+            0,
+            35
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "1": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "Num1 Mode": {
+        "offset": [
+            0,
+            36
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Num2 Function": {
+        "offset": [
+            0,
+            37
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "2": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "Num2 Mode": {
+        "offset": [
+            0,
+            38
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Num3 Function": {
+        "offset": [
+            0,
+            39
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "3": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "Num3 Mode": {
+        "offset": [
+            0,
+            40
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Num4 Function": {
+        "offset": [
+            0,
+            41
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "4": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "Num4 Mode": {
+        "offset": [
+            0,
+            42
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Num5 Function": {
+        "offset": [
+            0,
+            43
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "5": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "Num5 Mode": {
+        "offset": [
+            0,
+            44
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "BankDown Function": {
+        "offset": [
+            0,
+            45
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK DOWN": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "BankDown Mode": {
+        "offset": [
+            0,
+            46
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "BankUp Function": {
+        "offset": [
+            0,
+            47
+        ],
+        "value_range": [
+            0,
+            57
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "PATCH +1": 2,
+            "PATCH -1": 3,
+            "LEVEL +10": 4,
+            "LEVEL +20": 5,
+            "LEVEL -10": 6,
+            "LEVEL -20": 7,
+            "BPM TAP": 8,
+            "DLY1 TAP": 9,
+            "DLY2 TAP": 10,
+            "DLY3 TAP": 11,
+            "DLY4 TAP": 12,
+            "MST DLY TAP": 13,
+            "TUNER": 14,
+            "AMP CTL1": 15,
+            "AMP CTL2": 16,
+            "CMP": 17,
+            "DS1": 18,
+            "DS1 SOLO": 19,
+            "DS2": 20,
+            "DS2 SOLO": 21,
+            "AMP-1": 22,
+            "AMP-1 SOLO": 23,
+            "AMP-2": 24,
+            "AMP-2 SOLO": 25,
+            "NS 1": 26,
+            "NS 2": 27,
+            "EQ 1": 28,
+            "EQ 2": 29,
+            "EQ 3": 30,
+            "EQ 4": 31,
+            "DLY1": 32,
+            "DLY2": 33,
+            "DLY3": 34,
+            "DLY4": 35,
+            "MST DLY": 36,
+            "CHO": 37,
+            "FX1": 38,
+            "FX2": 39,
+            "FX3": 40,
+            "FX1 TRIGGER": 41,
+            "FX2 TRIGGER": 42,
+            "FX3 TRIGGER": 43,
+            "REV": 44,
+            "PFX": 45,
+            "DIV1 CH.SEL": 46,
+            "DIV2 CH.SEL": 47,
+            "DIV3 CH.SEL": 48,
+            "S/R 1": 49,
+            "S/R 2": 50,
+            "LOOPER": 51,
+            "LOOPER STOP": 52,
+            "LOOPER CLEAR": 53,
+            "METRONOME": 54,
+            "MIDI START": 55,
+            "MMC PLAY": 56,
+            "MDLY TRIGGER": 57
+        }
+    },
+    "BankUp Mode": {
+        "offset": [
+            0,
+            48
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl1 Function": {
+        "offset": [
+            0,
+            49
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl1 Mode": {
+        "offset": [
+            0,
+            50
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl2 Function": {
+        "offset": [
+            0,
+            51
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl2 Mode": {
+        "offset": [
+            0,
+            52
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl3 Function": {
+        "offset": [
+            0,
+            53
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl3 Mode": {
+        "offset": [
+            0,
+            54
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl4 Function": {
+        "offset": [
+            0,
+            55
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl4 Mode": {
+        "offset": [
+            0,
+            56
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl5 Function": {
+        "offset": [
+            0,
+            57
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl5 Mode": {
+        "offset": [
+            0,
+            58
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl6 Function": {
+        "offset": [
+            0,
+            59
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl6 Mode": {
+        "offset": [
+            0,
+            60
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Ctl7 Function": {
+        "offset": [
+            0,
+            61
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Ctl7 Mode": {
+        "offset": [
+            0,
+            62
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "CNum Function": {
+        "offset": [
+            0,
+            63
+        ],
+        "value_range": [
+            0,
+            54
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "CNum Mode": {
+        "offset": [
+            0,
+            64
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Exp1Sw Function": {
+        "offset": [
+            0,
+            65
+        ],
+        "value_range": [
+            0,
+            58
+        ],
+        "values": {
+            "OFF": 0,
+            "BANK UP": 1,
+            "BANK DOWN": 2,
+            "PATCH +1": 3,
+            "PATCH -1": 4,
+            "LEVEL +10": 5,
+            "LEVEL +20": 6,
+            "LEVEL -10": 7,
+            "LEVEL -20": 8,
+            "BPM TAP": 9,
+            "DLY1 TAP": 10,
+            "DLY2 TAP": 11,
+            "DLY3 TAP": 12,
+            "DLY4 TAP": 13,
+            "MST DLY TAP": 14,
+            "TUNER": 15,
+            "AMP CTL1": 16,
+            "AMP CTL2": 17,
+            "CMP": 18,
+            "DS1": 19,
+            "DS1 SOLO": 20,
+            "DS2": 21,
+            "DS2 SOLO": 22,
+            "AMP-1": 23,
+            "AMP-1 SOLO": 24,
+            "AMP-2": 25,
+            "AMP-2 SOLO": 26,
+            "NS 1": 27,
+            "NS 2": 28,
+            "EQ 1": 29,
+            "EQ 2": 30,
+            "EQ 3": 31,
+            "EQ 4": 32,
+            "DLY1": 33,
+            "DLY2": 34,
+            "DLY3": 35,
+            "DLY4": 36,
+            "MST DLY": 37,
+            "CHO": 38,
+            "FX1": 39,
+            "FX2": 40,
+            "FX3": 41,
+            "FX1 TRIGGER": 42,
+            "FX2 TRIGGER": 43,
+            "FX3 TRIGGER": 44,
+            "REV": 45,
+            "PFX": 46,
+            "DIV1 CH.SEL": 47,
+            "DIV2 CH.SEL": 48,
+            "DIV3 CH.SEL": 49,
+            "S/R 1": 50,
+            "S/R 2": 51,
+            "LOOPER": 52,
+            "LOOPER STOP": 53,
+            "LOOPER CLEAR": 54,
+            "METRONOME": 55,
+            "MIDI START": 56,
+            "MMC PLAY": 57,
+            "MDLY TRIGGER": 58
+        }
+    },
+    "Exp1Sw Mode": {
+        "offset": [
+            0,
+            66
+        ],
+        "value_range": [
+            0,
+            1
+        ],
+        "values": {
+            "TOGGLE": 0,
+            "MOMENT": 1
+        }
+    },
+    "Exp1 Function": {
+        "offset": [
+            0,
+            67
+        ],
+        "value_range": [
+            0,
+            3
+        ],
+        "values": {
+            "OFF": 0,
+            "FOOT VOLUME": 1,
+            "PEDAL FX": 2,
+            "FV/PEDAL FX": 3
+        }
+    },
+    "Exp2 Function": {
+        "offset": [
+            0,
+            68
+        ],
+        "value_range": [
+            0,
+            3
+        ],
+        "values": {
+            "OFF": 0,
+            "FOOT VOLUME": 1,
+            "PEDAL FX": 2,
+            "FV/PEDAL FX": 3
+        }
+    },
+    "Exp3 Function": {
+        "offset": [
+            0,
+            69
+        ],
+        "value_range": [
+            0,
+            3
+        ],
+        "values": {
+            "OFF": 0,
+            "FOOT VOLUME": 1,
+            "PEDAL FX": 2,
+            "FV/PEDAL FX": 3
+        }
+    },
+    "AMP CTL BPM1": {
+        "offset": [
+            0,
+            70
+        ],
+        "value_range": [
+            0,
+            229
+        ],
+        "bytes": 2,
+        "values": {
+            "TAP:OFF": 0,
+            "TAP:DoubleWholeNote": 1,
+            "TAP:DottedWholeNote": 2,
+            "TAP:WholeNote": 3,
+            "TAP:DottedHalfNote": 4,
+            "TAP:TripletWholeNote": 5,
+            "TAP:HalfNote": 6,
+            "TAP:DottedQuarterNote": 7,
+            "TAP:TripletHalfNote": 8,
+            "TAP:QuarterNote": 9,
+            "TAP:Dotted8thNote": 10,
+            "TAP:TripletQuarterNote": 11,
+            "TAP:8thNote": 12,
+            "TAP:Dotted16thNote": 13,
+            "TAP:Triplet8thNote": 14,
+            "TAP:16thNote": 15,
+            "TAP:Dotted32ndNote": 16,
+            "TAP:Triplet16thNote": 17,
+            "TAP:32ndNote": 18,
+            "TAP:40 - 250": 19
+        }
+    },
+    "AMP CTL BPM2": {
+        "offset": [
+            0,
+            72
+        ],
+        "value_range": [
+            0,
+            229
+        ],
+        "bytes": 2,
+        "values": {
+            "TAP:OFF": 0,
+            "TAP:DoubleWholeNote": 1,
+            "TAP:DottedWholeNote": 2,
+            "TAP:WholeNote": 3,
+            "TAP:DottedHalfNote": 4,
+            "TAP:TripletWholeNote": 5,
+            "TAP:HalfNote": 6,
+            "TAP:DottedQuarterNote": 7,
+            "TAP:TripletHalfNote": 8,
+            "TAP:QuarterNote": 9,
+            "TAP:Dotted8thNote": 10,
+            "TAP:TripletQuarterNote": 11,
+            "TAP:8thNote": 12,
+            "TAP:Dotted16thNote": 13,
+            "TAP:Triplet8thNote": 14,
+            "TAP:16thNote": 15,
+            "TAP:Dotted32ndNote": 16,
+            "TAP:Triplet16thNote": 17,
+            "TAP:32ndNote": 18,
+            "TAP:40 - 250": 19
+        }
+    },
+    "PATCH MIDI 1:CH": {
+        "offset": [
+            0,
+            74
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "OFF": 0,
+            "1 - 16": 1
+        }
+    },
+    "PATCH MIDI 1:BANK MSB": {
+        "offset": [
+            0,
+            75
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 1:BANK LSB": {
+        "offset": [
+            0,
+            77
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 1:PC#": {
+        "offset": [
+            0,
+            79
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "1 - 128": 1
+        }
+    },
+    "PATCH MIDI 1:CC1#": {
+        "offset": [
+            0,
+            81
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 1:CC1 VALUE": {
+        "offset": [
+            0,
+            83
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 1:CC2#": {
+        "offset": [
+            0,
+            84
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 1:CC2 VALUE": {
+        "offset": [
+            0,
+            86
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 2:CH": {
+        "offset": [
+            0,
+            87
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "OFF": 0,
+            "1 - 16": 1
+        }
+    },
+    "PATCH MIDI 2:BANK MSB": {
+        "offset": [
+            0,
+            88
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 2:BANK LSB": {
+        "offset": [
+            0,
+            90
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 2:PC#": {
+        "offset": [
+            0,
+            92
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "1 - 128": 1
+        }
+    },
+    "PATCH MIDI 2:CC1#": {
+        "offset": [
+            0,
+            94
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 2:CC1 VALUE": {
+        "offset": [
+            0,
+            96
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 2:CC2#": {
+        "offset": [
+            0,
+            97
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 2:CC2 VALUE": {
+        "offset": [
+            0,
+            99
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 3:CH": {
+        "offset": [
+            0,
+            100
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "OFF": 0,
+            "1 - 16": 1
+        }
+    },
+    "PATCH MIDI 3:BANK MSB": {
+        "offset": [
+            0,
+            101
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 3:BANK LSB": {
+        "offset": [
+            0,
+            103
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 3:PC#": {
+        "offset": [
+            0,
+            105
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "1 - 128": 1
+        }
+    },
+    "PATCH MIDI 3:CC1#": {
+        "offset": [
+            0,
+            107
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 3:CC1 VALUE": {
+        "offset": [
+            0,
+            109
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 3:CC2#": {
+        "offset": [
+            0,
+            110
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 3:CC2 VALUE": {
+        "offset": [
+            0,
+            112
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 4:CH": {
+        "offset": [
+            0,
+            113
+        ],
+        "value_range": [
+            0,
+            16
+        ],
+        "values": {
+            "OFF": 0,
+            "1 - 128": 1
+        }
+    },
+    "PATCH MIDI 4:BANK MSB": {
+        "offset": [
+            0,
+            114
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 4:BANK LSB": {
+        "offset": [
+            0,
+            116
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 4:PC#": {
+        "offset": [
+            0,
+            118
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "1 - 128": 1
+        }
+    },
+    "PATCH MIDI 4:CC1#": {
+        "offset": [
+            0,
+            120
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 4:CC1 VALUE": {
+        "offset": [
+            0,
+            122
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    },
+    "PATCH MIDI 4:CC2#": {
+        "offset": [
+            0,
+            123
+        ],
+        "value_range": [
+            0,
+            128
+        ],
+        "bytes": 2,
+        "values": {
+            "OFF": 0,
+            "0 - 127": 1
+        }
+    },
+    "PATCH MIDI 4:CC2 VALUE": {
+        "offset": [
+            0,
+            125
+        ],
+        "value_range": [
+            0,
+            127
+        ],
+        "values": {}
+    }
+}

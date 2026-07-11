@@ -1,3 +1,9 @@
+| 00 00 00 | common [PatchCommon] |
+| 00 01 00 | stompBox [PatchStompBox] |
+| 00 02 00 | led [PatchLed] |
+| 00 03 00 | assign 1 [Assign] |
+| 00 03 40 | assign 2 [Assign] |
+| 00 0A 40 | assign 16 [Assign] |
 | 00 10 00 | efct [PatchEfct] |
 | 00 12 00 | comp [PatchComp] |
 | 00 13 00 | dist1 [PatchDist1] |
